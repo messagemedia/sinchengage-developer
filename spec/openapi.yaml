@@ -966,6 +966,8 @@ x-tagGroups:
       - Messages
       - Delivery Reports
       - Replies
+  - name: Numbers
+    tags:
       - Source Address
       - Number Authorisation
       - Dedicated Numbers
