@@ -40,6 +40,8 @@ get:
             label: LabelTest0
             id: be3cb602-7c00-4c87-ae4b-b8defc04f179
             number_id: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
@@ -56,8 +58,6 @@ get:
             $ref: ../../components/schemas/404response.yaml
           example:
             message: Not found
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
 post:
   security:
     - basic_auth: []
@@ -124,6 +124,8 @@ post:
           example:
             label: cillum irure
             number_id: et pariatur
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
@@ -140,8 +142,6 @@ post:
             $ref: ../../components/schemas/404response.yaml
           example:
             message: Not found
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
 delete:
   security:
     - basic_auth: []
@@ -180,6 +180,8 @@ delete:
             type: string
             description: No Content
             format: binary
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
@@ -188,8 +190,6 @@ delete:
             $ref: ../../components/schemas/403response.yaml
           example:
             message: Invalid authentication credentials
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
 patch:
   security:
     - basic_auth: []
@@ -244,6 +244,8 @@ patch:
           example:
             id: b06387c0-f4d9-4333-8657-c819bede79c3
             number_id: 073fb6bd-f054-4644-aada-8fb204145d77
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
@@ -252,5 +254,3 @@ patch:
             $ref: ../../components/schemas/403response.yaml
           example:
             message: Invalid authentication credentials
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

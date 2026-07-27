@@ -34,7 +34,7 @@ get:
         application/json:
           schema:
             $ref: ../../components/schemas/messaging-reports/chronosscheduleresponse.yaml
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "404":
       description: Scheduled report not found.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

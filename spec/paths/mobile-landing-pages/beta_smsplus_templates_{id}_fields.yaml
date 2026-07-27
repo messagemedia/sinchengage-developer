@@ -86,7 +86,7 @@ get:
                 type: TEXT
               buttonFontFamily:
                 type: TEXT
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "402":
       description: Account is not postpaid, or does not have Mobile Landing Pages Enabled.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

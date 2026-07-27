@@ -172,5 +172,3 @@ post:
       description: Forbidden
     "409":
       description: Conflict
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

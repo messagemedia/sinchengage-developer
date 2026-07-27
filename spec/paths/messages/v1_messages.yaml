@@ -212,11 +212,9 @@ post:
             $ref: ../../components/schemas/400response.yaml
           example:
             message: Something went wrong. Please try again later.
-    "403":
+    "401":
       description: Unauthorized
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/403response.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

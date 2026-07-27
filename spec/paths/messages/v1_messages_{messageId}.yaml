@@ -59,7 +59,7 @@ get:
         application/json:
           schema:
             $ref: ../../components/schemas/messages/Getmessagestatusresponse.yaml
-    "403":
+    "401":
       description: Unauthorized
       content:
         application/json:
@@ -71,8 +71,6 @@ get:
         application/json:
           schema:
             $ref: ../../components/schemas/404response.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
 put:
   security:
     - basic_auth: []
@@ -140,7 +138,7 @@ put:
         application/json:
           schema:
             $ref: ../../components/schemas/400response.yaml
-    "403":
+    "401":
       description: Unauthorized
       content:
         application/json:
@@ -152,5 +150,3 @@ put:
         application/json:
           schema:
             $ref: ../../components/schemas/404response.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

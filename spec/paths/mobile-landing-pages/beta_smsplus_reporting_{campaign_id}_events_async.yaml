@@ -49,9 +49,9 @@ get:
     "202":
       description: Accepted for processing.
       headers: {}
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "402":
       description: Payment required.
     "404":
       description: Not found.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

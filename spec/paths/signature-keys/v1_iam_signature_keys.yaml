@@ -76,6 +76,8 @@ get:
             message: Bad Request
             details:
               - page property value is invalid
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
@@ -85,8 +87,6 @@ get:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: This feature has not been enabled in your account.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
 post:
   security:
     - basic_auth: []
@@ -214,6 +214,8 @@ post:
             message: Bad Request
             details:
               - "/cipher: [RA] is invalid"
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
@@ -223,5 +225,3 @@ post:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: This feature has not been enabled in your account.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

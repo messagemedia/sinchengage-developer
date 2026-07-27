@@ -45,6 +45,8 @@ get:
             capabilities:
               - SMS
               - MMS
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
@@ -61,5 +63,3 @@ get:
             $ref: ../../components/schemas/404response.yaml
           example:
             message: Not found
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

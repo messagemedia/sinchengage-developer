@@ -65,5 +65,3 @@ post:
         application/json:
           schema:
             $ref: ../../components/schemas/404response.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

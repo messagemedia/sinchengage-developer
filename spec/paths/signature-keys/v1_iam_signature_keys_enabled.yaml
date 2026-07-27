@@ -87,6 +87,8 @@ patch:
             message: Bad Request
             details:
               - "/key_id: Key id cannot be null"
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
@@ -105,8 +107,6 @@ patch:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: Entity not found
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
 get:
   security:
     - basic_auth: []
@@ -152,6 +152,8 @@ get:
             digest: SHA224
             created: "2018-01-18T10:16:12.364Z"
             enabled: true
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
@@ -170,8 +172,6 @@ get:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: Currently no key is enabled
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
 delete:
   security:
     - basic_auth: []
@@ -194,6 +194,8 @@ delete:
     "204":
       description: No content.
       headers: {}
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
@@ -203,5 +205,3 @@ delete:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: This feature has not been enabled in your account.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

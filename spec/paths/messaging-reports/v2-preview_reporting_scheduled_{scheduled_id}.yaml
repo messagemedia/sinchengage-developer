@@ -23,10 +23,10 @@ get:
         application/json:
           schema:
             $ref: ../../components/schemas/messaging-reports/scheduledreport.yaml
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "404":
       description: Scheduled report not found.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
 delete:
   security:
     - basic_auth: []
@@ -47,7 +47,7 @@ delete:
   responses:
     "202":
       description: An empty response indicating the report has been deleted.
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "404":
       description: Scheduled report not found.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

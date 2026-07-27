@@ -45,7 +45,7 @@ get:
             pagination:
               next_page_token: qwerty123
               page_size: 5
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "402":
       description: Payment required.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

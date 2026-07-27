@@ -145,7 +145,7 @@ get:
                 metadata:
                   key1: value1
                   key2: value2
-    "403":
+    "401":
       description: Unauthorized
       content:
         application/json:
@@ -157,5 +157,3 @@ get:
         application/json:
           schema:
             $ref: ../../components/schemas/404response.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

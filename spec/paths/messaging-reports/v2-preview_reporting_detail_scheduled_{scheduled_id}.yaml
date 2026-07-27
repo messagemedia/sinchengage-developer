@@ -37,11 +37,9 @@ put:
         application/json:
           schema:
             $ref: ../../components/schemas/400response.yaml
-    "403":
+    "401":
       description: Unauthorized
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/403response.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

@@ -78,8 +78,8 @@ get:
             $ref: ../../components/schemas/webhooks/UpdateWebhook400response.yaml
           example:
             message: Something went wrong. Please try again later.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
 post:
   security:
     - basic_auth: []
@@ -403,6 +403,8 @@ post:
             $ref: ../../components/schemas/webhooks/UpdateWebhook400response.yaml
           example:
             message: Something went wrong. Please try again later.
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "409":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
@@ -411,5 +413,3 @@ post:
             $ref: ../../components/schemas/webhooks/UpdateWebhook400response.yaml
           example:
             message: A webhook with the given url and method already exists.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

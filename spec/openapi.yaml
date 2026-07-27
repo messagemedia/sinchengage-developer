@@ -1185,8 +1185,6 @@ components:
       $ref: ./components/responses/UnsupportedMediaType.yaml
     PaymentRequired:
       $ref: ./components/responses/PaymentRequired.yaml
-    TooManyRequests:
-      $ref: ./components/responses/TooManyRequests.yaml
   headers:
     ExpiresAfter:
       $ref: ./components/headers/ExpiresAfter.yaml

@@ -40,8 +40,6 @@ get:
         application/json:
           schema:
             $ref: ../../components/schemas/403response.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
 delete:
   security:
     - basic_auth: []
@@ -92,8 +90,6 @@ delete:
         application/json:
           schema:
             $ref: ../../components/schemas/404response.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
 patch:
   security:
     - basic_auth: []
@@ -151,5 +147,3 @@ patch:
         application/json:
           schema:
             $ref: ../../components/schemas/404response.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

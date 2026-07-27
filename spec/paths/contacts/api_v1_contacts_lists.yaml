@@ -28,8 +28,6 @@ post:
       $ref: ../../components/responses/Forbidden.yaml
     "409":
       $ref: ../../components/responses/Conflict.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
     "500":
       $ref: ../../components/responses/InternalServerError.yaml
     "501":
@@ -73,8 +71,6 @@ get:
       $ref: ../../components/responses/Forbidden.yaml
     "409":
       $ref: ../../components/responses/Conflict.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
     "500":
       $ref: ../../components/responses/InternalServerError.yaml
     "501":

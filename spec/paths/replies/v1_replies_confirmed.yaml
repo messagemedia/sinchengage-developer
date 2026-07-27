@@ -63,7 +63,7 @@ post:
         application/json:
           schema:
             $ref: ../../components/schemas/400response.yaml
-    "403":
+    "401":
       description: Unauthorized
       content:
         application/json:
@@ -75,5 +75,3 @@ post:
         application/json:
           schema:
             $ref: ../../components/schemas/404response.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

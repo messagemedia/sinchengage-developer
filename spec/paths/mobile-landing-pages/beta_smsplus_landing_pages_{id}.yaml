@@ -59,10 +59,10 @@ patch:
             modified_timestamp: "2019-11-04T11:49:02.807Z"
     "400":
       description: Bad request.
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "402":
       description: Payment required.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
 delete:
   security:
     - basic_auth: []
@@ -88,7 +88,7 @@ delete:
     "204":
       description: Landing Page deleted.
       headers: {}
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "402":
       description: Payment required.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

@@ -74,6 +74,8 @@ get:
                 available_after: "2019-08-06T23:56:15.633Z"
                 capabilities:
                   - SMS
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
@@ -82,5 +84,3 @@ get:
             $ref: ../../components/schemas/403response.yaml
           example:
             message: Invalid authentication credentials
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

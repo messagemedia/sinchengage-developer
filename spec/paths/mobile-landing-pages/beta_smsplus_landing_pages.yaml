@@ -59,10 +59,10 @@ post:
             modified_timestamp: "2019-11-03T11:49:02.807Z"
     "400":
       description: Bad request.
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "402":
       description: Payment required.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
 get:
   security:
     - basic_auth: []
@@ -121,7 +121,7 @@ get:
         application/json:
           schema:
             type: object
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "402":
       description: Payment required.
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml

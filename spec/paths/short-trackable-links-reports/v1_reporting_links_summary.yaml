@@ -83,9 +83,9 @@ get:
               page_count: 3
     "400":
       description: Bad Request. Invalid data provided
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
     "404":
       description: Data cannot be found
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
     "500":
       description: System Error

@@ -34,8 +34,6 @@ get:
       $ref: ../../components/responses/NotFound.yaml
     "409":
       $ref: ../../components/responses/Conflict.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
     "500":
       $ref: ../../components/responses/InternalServerError.yaml
     "501":
@@ -78,8 +76,6 @@ delete:
       $ref: ../../components/responses/NotFound.yaml
     "409":
       $ref: ../../components/responses/Conflict.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
     "500":
       $ref: ../../components/responses/InternalServerError.yaml
     "501":
@@ -132,8 +128,6 @@ patch:
       $ref: ../../components/responses/NotFound.yaml
     "409":
       $ref: ../../components/responses/Conflict.yaml
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
     "500":
       $ref: ../../components/responses/InternalServerError.yaml
     "501":

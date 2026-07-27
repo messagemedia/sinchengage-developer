@@ -148,7 +148,7 @@ get:
                   available_after: '2019-08-06T23:56:15.633Z'
                   capabilities:
                     - SMS
-    "403":
+    "401":
       description: Unauthorized
       content:
         application/json:
@@ -156,5 +156,3 @@ get:
             $ref: ../../components/schemas/403response.yaml
           example:
             message: Invalid authentication credentials
-    "429":
-      $ref: ../../components/responses/TooManyRequests.yaml
