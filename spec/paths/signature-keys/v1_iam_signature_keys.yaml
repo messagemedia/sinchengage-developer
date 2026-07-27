@@ -13,7 +13,7 @@ get:
     as follows:
 
 
-    ```json
+    ```javascript
 
     [
       {
@@ -110,7 +110,7 @@ post:
     The most basic body has the following structure:
 
 
-    ```json
+    ```javascript
 
     {
         "digest": "SHA224",
@@ -131,7 +131,7 @@ post:
     follows:
 
 
-    ```json
+    ```javascript
 
     {
         "key_id": "7ca628a8-08b0-4e42-aeb8-960b37049c31",

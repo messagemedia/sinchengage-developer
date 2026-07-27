@@ -20,7 +20,7 @@ post:
 
     The confirm replies endpoint takes a list of reply IDs as follows:
 
-    ```json
+    ```javascript
 
     {
         "reply_ids": [

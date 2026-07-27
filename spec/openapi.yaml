@@ -496,7 +496,7 @@ tags:
         
         _Note, multiple delivery report notifications will be received for a single message._
 
-      ```json
+      ```javascript
 
       {
         "callback_url":"http://mockbin.org/bin/ac52ebd4-eca1-4c86-bf38-4dce79633906",

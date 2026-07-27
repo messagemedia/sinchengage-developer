@@ -22,7 +22,7 @@ get:
 
     will have the following structure:
 
-    ```json
+    ```javascript
 
     {
         "replies": [

@@ -14,7 +14,7 @@ post:
     The most basic message has the following structure:
 
 
-    ```json
+    ```javascript
 
 
     {

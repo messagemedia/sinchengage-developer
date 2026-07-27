@@ -19,7 +19,7 @@ get:
 
     delivery reports endpoint will have the following structure:
 
-    ```json
+    ```javascript
 
     {
         "delivery_reports": [

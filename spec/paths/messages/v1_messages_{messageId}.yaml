@@ -12,7 +12,7 @@ get:
     A successful request to the get message status endpoint will return a
     response body as follows:
 
-    ```json
+    ```javascript
 
     {
         "format": "SMS",
@@ -95,7 +95,7 @@ put:
     ```cancelled```.
 
 
-    ```json
+    ```javascript
 
 
     {

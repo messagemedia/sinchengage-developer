@@ -15,7 +15,7 @@ patch:
     The most basic body has the following structure:
 
 
-    ```json
+    ```javascript
 
     {
         "key_id": "7ca628a8-08b0-4e42-aeb8-960b37049c31"
@@ -28,7 +28,7 @@ patch:
     contain the ```enabled``` properties with the value is true as follows:
 
 
-    ```json
+    ```javascript
 
     {
         "key_id": "7ca628a8-08b0-4e42-aeb8-960b37049c31",
@@ -122,7 +122,7 @@ get:
     body as follows:
 
 
-    ```json
+    ```javascript
 
     {
         "key_id": "7ca628a8-08b0-4e42-aeb8-960b37049c31",

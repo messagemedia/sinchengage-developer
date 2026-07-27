@@ -11,7 +11,7 @@ get:
 
     A successful request to the get message status endpoint will return a response body as follows:
 
-    ```json
+    ```javascript
 
     {
         "id": "365dd65f-7101-46cd-8e79-e49c5620eb15",

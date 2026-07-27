@@ -21,7 +21,7 @@ post:
 
     The confirm delivery reports endpoint takes a list of delivery report IDs as follows:
 
-    ```json
+    ```javascript
 
     {
         "delivery_report_ids": [
