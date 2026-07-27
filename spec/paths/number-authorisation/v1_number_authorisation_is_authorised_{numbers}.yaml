@@ -6,7 +6,7 @@ get:
     - Number Authorisation
   summary: Check if one or several numbers are currently blacklisted
   description: >-
-    This endpoints lists for each requested number if you are authorised (which
+    This endpoint lists for each requested number if you are authorised (which
     means the number is not blacklisted) to send to this number.
 
     In the example given +61491570157 is on the blacklist.
@@ -29,7 +29,7 @@ get:
           - "+61491570156"
           - "+61491570157"
       description: >-
-        one or more numbers in international format seperate by a comma, e.g.
+        one or more numbers in international format separated by a comma, e.g.
         ```+61491570156,+61491570157```
       example:
         - "+61491570156"

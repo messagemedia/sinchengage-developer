@@ -51,7 +51,7 @@ post:
 
         - `email:` The preferred contact email for our approval team when additional details are required.
 
-        - `australianGovernmentAgencyOrEntityName:` The name of your organsation.
+        - `australianGovernmentAgencyOrEntityName:` The name of your organisation.
 
         - `abn:` Your organisation’s Australian Business Number
 
