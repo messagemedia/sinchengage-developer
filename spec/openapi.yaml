@@ -270,55 +270,6 @@ tags:
       Authorization: hmac username="uCXUdoogNfCsehEClbO2",
       algorithm="hmac-sha256", headers="Date request-line",
       signature="NTUwMjUwNTVmZGYzZTIxODMyYjc1ZmM3M2EwZWQ1NzA3NzA4ZTZjNw==" ```
-  - name: Development Tools
-    kind: nav
-    description: >
-      ## SDKs
-
-      Software Development Kits are available across six languages to assist
-      with integration with the major endpoints. 
-
-
-      In the event an SDK is not available or does not work with your
-      environment, any standard HTTP client library can be used. These are some
-      client libraries we recommend, 
-
-      that include HMAC authentication capability: 
-
-
-      ### C#
-
-      [RestSharp](http://restsharp.org/) with custom authenticator
-
-
-      ### Java
-
-      [Acquia HTTP Request
-      Interceptor](https://github.com/acquia/http-hmac-java) for the Apache HTTP
-      Client
-
-
-      ### Javascript
-
-      [Acquia HTTP HMAC Signer for
-      JavaScript](https://github.com/acquia/http-hmac-javascript)
-
-
-      ### PHP
-
-      [HTTP HMAC Signer for PHP](https://github.com/acquia/http-hmac-php) Which
-      can be used with [Guzzle](http://docs.guzzlephp.org/en/stable/).
-
-
-      ### Python
-
-      [HMAC](https://github.com/guardian/httpie-hmac-auth) auth plugin for
-      [HTTPie](https://github.com/jakubroztocil/httpie).
-
-
-      ### Ruby
-
-      [APIAuth](https://github.com/mgomes/api_auth) Ruby Gem 
   - name: Sub-accounts
     kind: nav
     description: >
@@ -1009,7 +960,6 @@ x-tagGroups:
     tags:
       - Basic Authentication
       - HMAC Authentication
-      - Development Tools
       - Sub-accounts
   - name: Messaging
     tags:
