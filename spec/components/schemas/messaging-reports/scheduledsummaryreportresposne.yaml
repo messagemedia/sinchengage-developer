@@ -34,5 +34,5 @@ properties:
 
       ```
     example:
-      myKey: myValue
-      anotherKey: anotherValue
+      - myKey: myValue
+      - anotherKey: anotherValue

@@ -23,7 +23,7 @@ get:
       explode: true
       schema:
         type: string
-        example: "223344"
+        example: 223344
     - name: page_size
       in: query
       description: number of results returned per page, default 50
@@ -63,13 +63,11 @@ get:
             $ref: ../../components/schemas/dedicated-numbers/NumbersListResponse.yaml
           example:
             pagination:
-              page: 1
+              next_token: 0428d673-0f75-4063-9493-e89d75f13438
               page_size: 5
-              total_count: 5
-              page_count: 1
             data:
               - id: 03cf54ad-a4a3-4cd1-afd5-e0ca2cf158a3
-                phone_number: "61436489205"
+                phone_number: 61436489205
                 country: AU
                 type: MOBILE
                 classification: BRONZE

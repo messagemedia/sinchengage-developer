@@ -12,7 +12,7 @@ properties:
     example: https://nxt.to/abc1234
   destination_number:
     type: string
-    example: '61491570157'
+    example: 61491570157
   click_count:
     type: number
     example: 3
@@ -35,7 +35,7 @@ example:
   message_id: 00000000-0000-0000-0000-000000000000
   long_url: https://developers.sinch.com
   short_url: https://nxt.to/abc1234
-  destination_number: '61491570157'
+  destination_number: 61491570157
   click_count: 3
   view_count: 2
   clicks:

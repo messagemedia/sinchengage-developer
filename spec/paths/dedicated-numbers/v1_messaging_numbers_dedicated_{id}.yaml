@@ -36,8 +36,15 @@ get:
           schema:
             $ref: ../../components/schemas/Number.yaml
           example:
-            number: "614111111111"
-            authorised: true
+            id: be3cb602-7c00-4c87-ae4b-b8defc04f179
+            phone_number: 614111111111
+            country: AU
+            type: MOBILE
+            classification: SILVER
+            available_after: '2019-06-21T04:04:31.707Z'
+            capabilities:
+              - SMS
+              - MMS
     "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:

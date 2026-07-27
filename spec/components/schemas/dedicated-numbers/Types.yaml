@@ -5,4 +5,4 @@ enum:
   - TOLL_FREE
   - SHORT_CODE
 type: string
-example: MOBILE
+example: MOBILE,LANDLINE,TOLL_FREE

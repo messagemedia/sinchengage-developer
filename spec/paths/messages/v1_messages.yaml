@@ -212,8 +212,6 @@ post:
             $ref: ../../components/schemas/400response.yaml
           example:
             message: Something went wrong. Please try again later.
-            details:
-              - Request validation failed.
     "403":
       description: Unauthorized
       content:

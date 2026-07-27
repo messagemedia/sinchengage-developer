@@ -43,9 +43,8 @@ get:
               - id: 7614456e-844f-4d83-bdfe-20c17ce0f97c
                 name: Background image and 0 or 1 CTA
             pagination:
-              page: 1
+              next_page_token: qwerty123
               page_size: 5
-              total_count: 3
     "402":
       description: Payment required.
     "429":

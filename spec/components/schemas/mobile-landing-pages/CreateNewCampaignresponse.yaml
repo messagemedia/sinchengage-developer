@@ -23,6 +23,5 @@ example:
     callToAction: http://www.example.com/
   message:
     content: This is the message.
-    destination_number: '+61491570156'
     metadata:
       key: value

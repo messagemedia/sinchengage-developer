@@ -382,6 +382,9 @@ post:
             - ENROUTE_DR
             - DELIVERED_DR
           template: "{\"id\":\"$mtId\",\"status\":\"$statusCode\"}"
+          read_timeout: 5000
+          retries: 3
+          retry_delay: 30
     required: true
   responses:
     "201":

@@ -45,7 +45,7 @@ get:
       explode: true
       schema:
         type: string
-        example: "223344"
+        example: 223344
     - name: country
       in: query
       description: >-
@@ -129,10 +129,8 @@ get:
             $ref: ../../components/schemas/dedicated-numbers/AssignedNumberListResponse.yaml
           example:
             pagination:
-              page: 1
+              next_token: 0428d673-0f75-4063-9493-e89d75f13438
               page_size: 5
-              total_count: 5
-              page_count: 1
             data:
               - assignment:
                   metadata:
@@ -142,8 +140,14 @@ get:
                   id: be3cb602-7c00-4c87-ae4b-b8defc04f179
                   number_id: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
                 number:
-                  number: "61436489205"
-                  authorised: true
+                  id: 03cf54ad-a4a3-4cd1-afd5-e0ca2cf158a3
+                  phone_number: 61436489205
+                  country: AU
+                  type: MOBILE
+                  classification: BRONZE
+                  available_after: '2019-08-06T23:56:15.633Z'
+                  capabilities:
+                    - SMS
     "403":
       description: Unauthorized
       content:

@@ -87,8 +87,8 @@ get:
         enum:
           - ASCENDING
           - DESCENDING
-        example: ASCENDING
-      example: ASCENDING
+        example: DESCENDING
+      example: DESCENDING
   responses:
     "200":
       description: A list of async reports for the current account.

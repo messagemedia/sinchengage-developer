@@ -18,4 +18,4 @@ properties:
     example: https://nxt.to/abc1234
   destination_number:
     type: string
-    example: '61491570157'
+    example: 61491570157
