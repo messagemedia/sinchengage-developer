@@ -6,12 +6,12 @@ get:
     - Signature Key Management
   summary: Get signature key detail
   description: >-
-    Retrieve the current detail of a signature key using the key_id returned in the ```create
-    signature key``` endpoint.
+    Retrieve the current detail of a signature key using the key_id returned in
+    the ```create signature key``` endpoint.
 
 
-    A successful request for the ```get signature key detail``` endpoint will return a response body
-    as follows:
+    A successful request for the ```get signature key detail``` endpoint will
+    return a response body as follows:
 
 
     ```javascript
@@ -27,8 +27,8 @@ get:
     ```
 
 
-    *Note: If an invalid or non-existent key_id parameter is specified in the request, then an HTTP
-    404 Not Found response will be returned*
+    *Note: If an invalid or non-existent key_id parameter is specified in the
+    request, then an HTTP 404 Not Found response will be returned*
   operationId: GetSignatureKeyDetail
   parameters:
     - name: key_id
@@ -92,15 +92,16 @@ delete:
     - Signature Key Management
   summary: Delete signature key
   description: >-
-    Delete a signature key using the key_id returned in the ```create signature key``` endpoint.
+    Delete a signature key using the key_id returned in the ```create signature
+    key``` endpoint.
 
 
-    A successful request for the ```delete signature key``` endpoint will return an empty response
-    body.
+    A successful request for the ```delete signature key``` endpoint will return
+    an empty response body.
 
 
-    *Note: If an invalid or non-existent key_id parameter is specified in the request, then an HTTP
-    404 Not Found response will be returned*
+    *Note: If an invalid or non-existent key_id parameter is specified in the
+    request, then an HTTP 404 Not Found response will be returned*
   operationId: DeleteSignatureKey
   parameters:
     - name: key_id

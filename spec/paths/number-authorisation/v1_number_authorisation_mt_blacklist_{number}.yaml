@@ -6,12 +6,13 @@ delete:
     - Number Authorisation
   summary: Remove a number from the blacklist
   description: >-
-    This endpoint allows you to remove a number from the blacklist.  Only one number can be deleted
-    per request.
+    This endpoint allows you to remove a number from the blacklist.  Only one
+    number can be deleted per request.
 
     In the example +61491570157 will be removed from the blacklist.
 
-    NOTE:  numbers need to be in international format and therefore start with a +
+    NOTE:  numbers need to be in international format and therefore start with a
+    +
   operationId: RemoveANumberFromTheBlacklist
   parameters:
     - in: path

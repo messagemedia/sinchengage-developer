@@ -22,8 +22,8 @@ get:
     - name: page_token
       in: query
       description: >-
-        A pagination token returned from a previous call. Pass this to retrieve the next page of
-        results.
+        A pagination token returned from a previous call. Pass this to retrieve
+        the next page of results.
       required: false
       style: form
       explode: true

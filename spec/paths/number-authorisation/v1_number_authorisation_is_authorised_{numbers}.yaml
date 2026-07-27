@@ -6,14 +6,15 @@ get:
     - Number Authorisation
   summary: Check if one or several numbers are currently blacklisted
   description: >-
-    This endpoints lists for each requested number if you are authorised (which means the number is
-    not blacklisted) to send to this number.
+    This endpoints lists for each requested number if you are authorised (which
+    means the number is not blacklisted) to send to this number.
 
     In the example given +61491570157 is on the blacklist.
 
-    NOTE: We do this call for you internally no matter what. Use this endpoint only if you want to
-    have some indication upfront. If you send a message which is on the blacklist, we issue a
-    delivery receipt with the appropriate status code.
+    NOTE: We do this call for you internally no matter what. Use this endpoint
+    only if you want to have some indication upfront. If you send a message
+    which is on the blacklist, we issue a delivery receipt with the appropriate
+    status code.
   operationId: CheckIfOneOrSeveralNumbersAreCurrentlyBlacklisted
   parameters:
     - in: path

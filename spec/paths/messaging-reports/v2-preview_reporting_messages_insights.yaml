@@ -6,8 +6,8 @@ post:
     - Messaging Reports
   summary: Post insight report
   description: >-
-    Create report summary containing total number of sent, received and billing units, using
-    pre-calculated data to improve performance.
+    Create report summary containing total number of sent, received and billing
+    units, using pre-calculated data to improve performance.
   operationId: PostInsightReport
   requestBody:
     description: Request body.

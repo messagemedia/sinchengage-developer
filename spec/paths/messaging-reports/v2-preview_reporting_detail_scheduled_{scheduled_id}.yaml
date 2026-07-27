@@ -6,8 +6,8 @@ put:
     - Messaging Reports
   summary: Update a scheduled detail report
   description: >-
-    Updates a selected scheduled report in detail, which contains a total number of sent, received
-    and billing units.
+    Updates a selected scheduled report in detail, which contains a total number
+    of sent, received and billing units.
   operationId: updatedetailscheduledreport
   parameters:
     - name: scheduled_id

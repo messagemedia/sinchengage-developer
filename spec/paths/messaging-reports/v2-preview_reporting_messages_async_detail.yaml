@@ -6,8 +6,8 @@ post:
     - Messaging Reports
   summary: Post async detail report
   description: >-
-    Generates an asynchronous report listing all sent and/or received messages within a specified
-    time period.
+    Generates an asynchronous report listing all sent and/or received messages
+    within a specified time period.
   operationId: PostAsyncDetailReport
   parameters: []
   requestBody:

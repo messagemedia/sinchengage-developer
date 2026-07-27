@@ -6,20 +6,22 @@ post:
     - Delivery Reports
   summary: Confirm delivery reports as received
   description: >-
-    Mark a delivery report as confirmed so it is no longer return in check delivery reports
-    requests.
+    Mark a delivery report as confirmed so it is no longer return in check
+    delivery reports requests.
 
-    The confirm delivery reports endpoint is intended to be used in conjunction with the check
-    delivery
+    The confirm delivery reports endpoint is intended to be used in conjunction
+    with the check delivery
 
-    reports endpoint to allow for robust processing of delivery reports. Once one or more delivery
+    reports endpoint to allow for robust processing of delivery reports. Once
+    one or more delivery
 
-    reports have been processed, they can then be confirmed using the confirm delivery reports
-    endpoint so they
+    reports have been processed, they can then be confirmed using the confirm
+    delivery reports endpoint so they
 
     are no longer returned in subsequent check delivery reports requests.
 
-    The confirm delivery reports endpoint takes a list of delivery report IDs as follows:
+    The confirm delivery reports endpoint takes a list of delivery report IDs as
+    follows:
 
     ```javascript
 
@@ -33,8 +35,8 @@ post:
 
     ```
 
-    The expiry date for getting an entity is 45 days. Up to 100 delivery reports can be confirmed in
-    a single confirm delivery reports request.
+    The expiry date for getting an entity is 45 days. Up to 100 delivery reports
+    can be confirmed in a single confirm delivery reports request.
   operationId: ConfirmDeliveryReportsAsReceived
   parameters: []
   requestBody:

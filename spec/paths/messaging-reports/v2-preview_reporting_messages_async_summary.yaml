@@ -6,8 +6,8 @@ post:
     - Messaging Reports
   summary: Post async summary report
   description: >-
-    Creates an asynchronous report summary containing total number of sent, received and billing
-    units.
+    Creates an asynchronous report summary containing total number of sent,
+    received and billing units.
   operationId: PostAsyncSummaryReport
   parameters: []
   requestBody:

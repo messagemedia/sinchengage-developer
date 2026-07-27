@@ -8,17 +8,22 @@ get:
   description: >-
     Check for any replies that have been received.
 
-    Replies are messages that have been sent from a handset in response to a message sent by an
+    Replies are messages that have been sent from a handset in response to a
+    message sent by an
 
-    application or messages that have been sent from a handset to a inbound number associated with
+    application or messages that have been sent from a handset to a inbound
+    number associated with
 
-    an account, known as a dedicated inbound number (contact <support@app.sinch.com> for more
+    an account, known as a dedicated inbound number (contact
+    <support@app.sinch.com> for more
 
     information on dedicated inbound numbers).
 
-    Each request to the check replies endpoint will return any replies received that have not yet
+    Each request to the check replies endpoint will return any replies received
+    that have not yet
 
-    been confirmed using the confirm replies endpoint. A response from the check replies endpoint
+    been confirmed using the confirm replies endpoint. A response from the check
+    replies endpoint
 
     will have the following structure:
 
@@ -65,37 +70,42 @@ get:
 
     ```
 
-    Each reply will contain details about the reply message, as well as details of the message the
-    reply was sent
+    Each reply will contain details about the reply message, as well as details
+    of the message the reply was sent
 
-    in response to, including any metadata specified. Every reply will have a reply ID to be used
-    with the
+    in response to, including any metadata specified. Every reply will have a
+    reply ID to be used with the
 
     confirm replies endpoint.
 
-    *Note: The source number and destination number properties in a reply are the inverse of those
+    *Note: The source number and destination number properties in a reply are
+    the inverse of those
 
-    specified in the message the reply is in response to. The source number of the reply message is
-    the
+    specified in the message the reply is in response to. The source number of
+    the reply message is the
 
-    same as the destination number of the original message, and the destination number of the reply
+    same as the destination number of the original message, and the destination
+    number of the reply
 
-    message is the same as the source number of the original message. If a source number
+    message is the same as the source number of the original message. If a
+    source number
 
-    wasn't specified in the original message, then the destination number property will not be
-    present
+    wasn't specified in the original message, then the destination number
+    property will not be present
 
     in the reply message.*
 
-    Subsequent requests to the check replies endpoint will return the same reply messages and a
-    maximum
+    Subsequent requests to the check replies endpoint will return the same reply
+    messages and a maximum
 
-    of 100 replies will be returned in each request. Applications should use the confirm replies
-    endpoint
+    of 100 replies will be returned in each request. Applications should use the
+    confirm replies endpoint
 
-    in the following pattern so that replies that have been processed are no longer returned in
+    in the following pattern so that replies that have been processed are no
+    longer returned in
 
-    subsequent check replies requests. The expiry date for getting an entity is 45 days.
+    subsequent check replies requests. The expiry date for getting an entity is
+    45 days.
 
     1. Call check replies endpoint
 
@@ -103,8 +113,8 @@ get:
 
     3. Confirm all processed reply messages using the confirm replies endpoint
 
-    *Note: It is recommended to use the Webhooks feature to receive reply messages rather than
-    polling
+    *Note: It is recommended to use the Webhooks feature to receive reply
+    messages rather than polling
 
     the check replies endpoint.*
   operationId: CheckReplies

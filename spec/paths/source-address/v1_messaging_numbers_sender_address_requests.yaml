@@ -6,21 +6,23 @@ post:
     - Source Address
   summary: Request a Sender Address
   description: >
-    Submit a request to register a new Sender ID. When making a request to this endpoint, you will
-    always need to specify ```sender_address_type``` and ```usage_type``` parameters. The following
-    table shows the acceptable values and combinations for these parameters:
+    Submit a request to register a new Sender ID. When making a request to this
+    endpoint, you will always need to specify ```sender_address_type``` and
+    ```usage_type``` parameters. The following table shows the acceptable values
+    and combinations for these parameters:
       | Sender ID       | sender_address_type | usage_type     |
       |---              |---                  |---             |
       | Alpha tag       | `ALPHANUMERIC`      | `ALPHANUMERIC` |
       | Personal number | `INTERNATIONAL`     | `OWN_NUMBER`   | 
 
-    The other parameters required for your request will depend on the type of Sender ID you are
-    registering.
+    The other parameters required for your request will depend on the type of
+    Sender ID you are registering.
 
 
     ### Sender ID is an Alpha Tag
 
-    The following parameters are used when registering an alpha tag as a Sender ID:
+    The following parameters are used when registering an alpha tag as a Sender
+    ID:
       - ```sender_address:``` **(Required)**. The alphanumeric string that you wish register as an alpha tag. This parameter is case insensitive. If this alpha tag already exists on your account, you will receive a conflict error message.
       - ```destination_countries:``` **(Required)**. The countries that you wish to register the alpha tag for use in, in two-character ISO 3166 format. Currently AD, AI, AL, AS, AT, AW, BA, BB, BH, BW, CD, CH, CK, CY, DE, DJ, DK, DM, EE, ES, FI, FJ, FM, FO, FR, GB, GD, GG, GI, GL, GM, GQ, GR, GY, IL, IM, IS, JE, JM, JP, KI, KY, LA, LI, LS, LT, LU, LV, MC, ME, MH, MO, MR, MS, MT, MV, NC, NF, NL, NO, NR, NU, PF, PM, PT, SB, SC, SE, SH, SL, SM, ST, TC, TD, TO, VC, VG and WS are supported.
       - ```sender_address_type:``` **(Required)**. For alpha tags this is always ALPHANUMERIC
@@ -57,14 +59,14 @@ post:
           - If applying for your own business: "We are authorized to use the Sender ID with a valid use case."
           - If applying on behalf of a third-party entity: "We are authorized to use the Sender ID on behalf of [full entity name of sender] with a valid use case."
 
-    The reason parameter must contain all the above items. A well formatted reason looks like the
-    following:
+    The reason parameter must contain all the above items. A well formatted
+    reason looks like the following:
       - "reason": "{\n&nbsp;&nbsp;\\"useCase\\":\\"AUSTRALIAN_GOVERNMENT_AGENCY_OR_ENTITY\\",\n&nbsp;&nbsp;\\"description\\":\\"bal bla\\",\n&nbsp;&nbsp;\\"email\\":\\"example@email.com\\",\n&nbsp;&nbsp;\\"australianGovernmentAgencyOrEntityName\\":\\"bla bla\\",\n&nbsp;&nbsp;\\"statement\\":\\"We are authorised to use the Sender ID on behalf of [full entity name of sender] with a valid use case.\\"\n}\n"
 
     ### Sender ID is a Personal Number
 
-    The following parameters are used when registering a personal mobile phone number as a Sender
-    ID: 
+    The following parameters are used when registering a personal mobile phone
+    number as a Sender ID: 
 
       - ```sender_address:``` **(Required)**. The phone number that you wish register as a personal number. This number must be in E.164. If this number is already registered to an account, you will receive a conflict error message. 
 

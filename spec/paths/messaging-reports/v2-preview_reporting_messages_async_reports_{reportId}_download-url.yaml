@@ -7,8 +7,9 @@ get:
     - Messaging Reports
   summary: Get async report download URL
   description: >-
-    Returns a temporary pre-signed URL for downloading the generated report. The URL allows
-    customers to securely download the report file directly using the provided reportId.
+    Returns a temporary pre-signed URL for downloading the generated report. The
+    URL allows customers to securely download the report file directly using the
+    provided reportId.
   operationId: GetAsyncReportDownloadUrl
   parameters:
     - name: reportId

@@ -6,10 +6,11 @@ get:
     - Source Address
   summary: Get status of a sender address request
   description: >
-    Retrieve the current status of a sender address request using the request ID returned in the
-    sender address request end point.
+    Retrieve the current status of a sender address request using the request ID
+    returned in the sender address request end point.
 
-    A successful request to the get message status endpoint will return a response body as follows:
+    A successful request to the get message status endpoint will return a
+    response body as follows:
 
     ```javascript
 

@@ -73,8 +73,8 @@ post:
     for this number assignment.
 
 
-    If you receive a *conflict* error then the number that you have selected is unavailable for
-    assignment. 
+    If you receive a *conflict* error then the number that you have selected is
+    unavailable for assignment. 
 
     This means that the number is either already assigned to another account, 
 
@@ -198,9 +198,9 @@ patch:
     - Dedicated Numbers
   summary: Update assignment
   description: >-
-    Retain the dedicated number assignment, and edit or add additional metadata or title
-    information. You can exclude any data from the body of this request that you do not want
-    updated.
+    Retain the dedicated number assignment, and edit or add additional metadata
+    or title information. You can exclude any data from the body of this request
+    that you do not want updated.
   operationId: UpdateAssignment
   parameters:
     - name: numberId

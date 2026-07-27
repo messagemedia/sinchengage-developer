@@ -9,8 +9,8 @@ get:
     Retrieve the paginated list of signature keys.
 
 
-    A successful request for the ```get signature key list``` endpoint will return a response body
-    as follows:
+    A successful request for the ```get signature key list``` endpoint will
+    return a response body as follows:
 
 
     ```javascript
@@ -120,15 +120,16 @@ post:
     ```
 
 
-    - ```digest``` is used to hash the message. The valid values for digest type are: SHA224,
-    SHA256, SHA512
+    - ```digest``` is used to hash the message. The valid values for digest type
+    are: SHA224, SHA256, SHA512
 
 
-    - ```cipher``` is used to encrypt the hashed message. The valid value for cipher type is: RSA
+    - ```cipher``` is used to encrypt the hashed message. The valid value for
+    cipher type is: RSA
 
 
-    A successful request for the ```create signature key``` endpoint will return a response body as
-    follows:
+    A successful request for the ```create signature key``` endpoint will return
+    a response body as follows:
 
 
     ```javascript
@@ -145,12 +146,12 @@ post:
     ```
 
 
-    The response body of a successful POST request to the ```create signature key``` endpoint will
-    contain six properties:
+    The response body of a successful POST request to the ```create signature
+    key``` endpoint will contain six properties:
 
 
-    - ```key_id``` will be a 36 character UUID which can be used to enable, delete or get the
-    details.
+    - ```key_id``` will be a 36 character UUID which can be used to enable,
+    delete or get the details.
 
 
     - ```public_key``` is used to decrypt the signature.
@@ -165,8 +166,8 @@ post:
     - ```created``` is the created date.
 
 
-    - ```enabled``` is false for the new signature key. You can use the ```enable signature key```
-    endpoint to set this field to true.
+    - ```enabled``` is false for the new signature key. You can use the
+    ```enable signature key``` endpoint to set this field to true.
   operationId: CreateSignatureKey
   parameters:
     - name: Accept

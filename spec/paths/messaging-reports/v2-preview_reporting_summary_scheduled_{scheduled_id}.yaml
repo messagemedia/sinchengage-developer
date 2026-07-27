@@ -6,8 +6,8 @@ put:
     - Messaging Reports
   summary: Update a scheduled summary report
   description: >-
-    Updates a selected scheduled report summary, which contains a total number of sent, received and
-    billing units.
+    Updates a selected scheduled report summary, which contains a total number
+    of sent, received and billing units.
   operationId: updatesummaryscheduledreport
   parameters:
     - name: scheduled_id

@@ -21,9 +21,9 @@ get:
     - name: token
       in: query
       description: >-
-        In paginated data the original request will return with a "next_token" attribute. This token
-        must be entered into subsequent call in the "token" query parameter to obtain the next set
-        of records.
+        In paginated data the original request will return with a "next_token"
+        attribute. This token must be entered into subsequent call in the
+        "token" query parameter to obtain the next set of records.
       style: form
       explode: true
       schema:
@@ -49,8 +49,8 @@ get:
     - name: country
       in: query
       description: >-
-        Filter results by ISO_3166 country code, 2 character code to filter available numbers by
-        country
+        Filter results by ISO_3166 country code, 2 character code to filter
+        available numbers by country
       style: form
       explode: true
       schema:
@@ -59,8 +59,8 @@ get:
     - name: type
       in: query
       description: >-
-        Filter results by Number type. When both `type` and `types` are provided, `types` will take
-        precedence, and `type` will be ignored.
+        Filter results by Number type. When both `type` and `types` are
+        provided, `types` will take precedence, and `type` will be ignored.
       style: form
       explode: true
       schema:

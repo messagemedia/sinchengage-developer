@@ -8,14 +8,14 @@ get:
   description: >-
     Check for any delivery reports that have been received.
 
-    Delivery reports are a notification of the change in status of a message as it is being
-    processed.
+    Delivery reports are a notification of the change in status of a message as
+    it is being processed.
 
-    Each request to the check delivery reports endpoint will return any delivery reports received
-    that
+    Each request to the check delivery reports endpoint will return any delivery
+    reports received that
 
-    have not yet been confirmed using the confirm delivery reports endpoint. A response from the
-    check
+    have not yet been confirmed using the confirm delivery reports endpoint. A
+    response from the check
 
     delivery reports endpoint will have the following structure:
 
@@ -68,39 +68,47 @@ get:
 
     ```
 
-    Each delivery report will contain details about the message, including any metadata specified
+    Each delivery report will contain details about the message, including any
+    metadata specified
 
-    and the new status of the message (as each delivery report indicates a change in status of a
+    and the new status of the message (as each delivery report indicates a
+    change in status of a
 
-    message) and the timestamp at which the status changed. Every delivery report will have a 
+    message) and the timestamp at which the status changed. Every delivery
+    report will have a 
 
-    unique delivery report ID for use with the confirm delivery reports endpoint.
+    unique delivery report ID for use with the confirm delivery reports
+    endpoint.
 
-    *Note: The source number and destination number properties in a delivery report are the inverse
-    of
+    *Note: The source number and destination number properties in a delivery
+    report are the inverse of
 
-    those specified in the message that the delivery report relates to. The source number of the
+    those specified in the message that the delivery report relates to. The
+    source number of the
 
     delivery report is the destination number of the original message.*
 
-    Subsequent requests to the check delivery reports endpoint will return the same delivery reports
+    Subsequent requests to the check delivery reports endpoint will return the
+    same delivery reports
 
-    and a maximum of 100 delivery reports will be returned in each request. Applications should use
-    the
+    and a maximum of 100 delivery reports will be returned in each request.
+    Applications should use the
 
-    confirm delivery reports endpoint in the following pattern so that delivery reports that have
-    been
+    confirm delivery reports endpoint in the following pattern so that delivery
+    reports that have been
 
-    processed are no longer returned in subsequent check delivery reports requests. The expiry date
-    for getting an entity is 45 days.
+    processed are no longer returned in subsequent check delivery reports
+    requests. The expiry date for getting an entity is 45 days.
 
     1. Call check delivery reports endpoint
 
     2. Process each delivery report
 
-    3. Confirm all processed delivery reports using the confirm delivery reports endpoint
+    3. Confirm all processed delivery reports using the confirm delivery reports
+    endpoint
 
-    *Note: It is recommended to use the Webhooks feature to receive reply messages rather than
+    *Note: It is recommended to use the Webhooks feature to receive reply
+    messages rather than
 
     polling the check delivery reports endpoint.*
   operationId: CheckDeliveryReports

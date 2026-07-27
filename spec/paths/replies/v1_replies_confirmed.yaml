@@ -6,15 +6,17 @@ post:
     - Replies
   summary: Confirm replies as received
   description: >-
-    Mark a reply message as confirmed so it is no longer returned in check replies requests.
+    Mark a reply message as confirmed so it is no longer returned in check
+    replies requests.
 
-    The confirm replies endpoint is intended to be used in conjunction with the check replies
-    endpoint
+    The confirm replies endpoint is intended to be used in conjunction with the
+    check replies endpoint
 
-    to allow for robust processing of reply messages. Once one or more reply messages have been
-    processed
+    to allow for robust processing of reply messages. Once one or more reply
+    messages have been processed
 
-    they can then be confirmed using the confirm replies endpoint so they are no longer returned in
+    they can then be confirmed using the confirm replies endpoint so they are no
+    longer returned in
 
     subsequent check replies requests.
 
@@ -32,8 +34,8 @@ post:
 
     ```
 
-    The expiry date for getting an entity is 45 days. Up to 100 replies can be confirmed in a single
-    confirm replies request.
+    The expiry date for getting an entity is 45 days. Up to 100 replies can be
+    confirmed in a single confirm replies request.
   operationId: ConfirmRepliesAsReceived
   parameters: []
   requestBody:

@@ -6,10 +6,11 @@ patch:
     - Signature Key Management
   summary: Enable signature key
   description: >-
-    Enable a signature key using the key_id returned in the ```create signature key``` endpoint.
+    Enable a signature key using the key_id returned in the ```create signature
+    key``` endpoint.
 
-    There is only one signature key is enabled at the one moment in time. So if you enable the new
-    signature key, the old one will be disabled.
+    There is only one signature key is enabled at the one moment in time. So if
+    you enable the new signature key, the old one will be disabled.
 
 
     The most basic body has the following structure:
@@ -24,8 +25,9 @@ patch:
     ```
 
 
-    The response body of a successful PATCH request to ```enable signature key``` endpoint will
-    contain the ```enabled``` properties with the value is true as follows:
+    The response body of a successful PATCH request to ```enable signature
+    key``` endpoint will contain the ```enabled``` properties with the value is
+    true as follows:
 
 
     ```javascript
@@ -41,8 +43,8 @@ patch:
     ```
 
 
-    *Note: If an invalid or non-existent key_id parameter is specified in the request, then an HTTP
-    404 Not Found response will be returned*
+    *Note: If an invalid or non-existent key_id parameter is specified in the
+    request, then an HTTP 404 Not Found response will be returned*
   operationId: EnableSignatureKey
   parameters:
     - name: Accept
@@ -118,8 +120,8 @@ get:
     Retrieve the currently enabled signature key.
 
 
-    A successful request for the ```get enabled signature key``` endpoint will return a response
-    body as follows:
+    A successful request for the ```get enabled signature key``` endpoint will
+    return a response body as follows:
 
 
     ```javascript
@@ -135,8 +137,8 @@ get:
     ```
 
 
-    *Note: If there is no enabled signature key, then an HTTP 404 Not Found response will be
-    returned*
+    *Note: If there is no enabled signature key, then an HTTP 404 Not Found
+    response will be returned*
   operationId: GetEnabledSignatureKey
   responses:
     "200":
@@ -183,10 +185,11 @@ delete:
     Disable the current enabled signature key.
 
 
-    A successful request for the ```disable the current enabled signature key``` endpoint will
-    return no content when successful.
+    A successful request for the ```disable the current enabled signature
+    key``` endpoint will return no content when successful.
 
-    If there is an enabled key, it will be disabled; and the 204 status code is returned.
+    If there is an enabled key, it will be disabled; and the 204 status code is
+    returned.
 
     If there is no key or no enabled key, the 204 status code is also returned.
   operationId: DisableTheCurrentEnabledSignatureKey

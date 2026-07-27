@@ -3,7 +3,8 @@ post:
     - Source Address
   summary: Re-verify Sender Address
   description: >
-    The below table defines the allowed combination of `sender_address_type` and `usage_type` values
+    The below table defines the allowed combination of `sender_address_type` and
+    `usage_type` values
 
 
     | Description      | sender_address_type | usage_type    |
@@ -13,10 +14,11 @@ post:
     | Own Number       | INTERNATIONAL       | OWN_NUMBER    |
 
 
-    OWN_NUMBER Sender Addresses require reverification every 12 months to allow continued use.
+    OWN_NUMBER Sender Addresses require reverification every 12 months to allow
+    continued use.
 
-    The reverification process is quite similar to the original verification process for the Sender
-    Address, and requires a fresh 2FA check.
+    The reverification process is quite similar to the original verification
+    process for the Sender Address, and requires a fresh 2FA check.
 
 
     To reverify an OWN_NUMBER Sender Address:

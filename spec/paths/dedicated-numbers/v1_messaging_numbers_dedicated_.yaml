@@ -44,9 +44,9 @@ get:
     - name: token
       in: query
       description: >-
-        In paginated data the original request will return with a "next_token" attribute. This token
-        must be entered into subsequent call in the "token" query parameter to obtain the next set
-        of records.
+        In paginated data the original request will return with a "next_token"
+        attribute. This token must be entered into subsequent call in the
+        "token" query parameter to obtain the next set of records.
       style: form
       explode: true
       schema:

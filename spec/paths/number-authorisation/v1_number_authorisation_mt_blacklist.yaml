@@ -6,19 +6,20 @@ get:
     - Number Authorisation
   summary: List all blocked numbers
   description: >-
-    This endpoint returns a list of 100 numbers that are on the blacklist.  There is a pagination
-    token to retrieve the next 100 numbers
+    This endpoint returns a list of 100 numbers that are on the blacklist. 
+    There is a pagination token to retrieve the next 100 numbers
 
 
-    In the example response the numbers `+61491570156` and `+61491570157` are on the blacklist and
-    therefore will never receive any messages from you.
+    In the example response the numbers `+61491570156` and `+61491570157` are on
+    the blacklist and therefore will never receive any messages from you.
   operationId: ListAllBlockedNumbers
   parameters:
     - name: token
       in: query
       description: >
-        Opaque pagination token from a previous response. Omit on the first request. Pass the
-        returned token to retrieve the next page of up to 100 numbers.
+        Opaque pagination token from a previous response. Omit on the first
+        request. Pass the returned token to retrieve the next page of up to 100
+        numbers.
       required: false
       schema:
         type: string
@@ -45,10 +46,11 @@ post:
     - Number Authorisation
   summary: Add one or more numbers to your blacklist
   description: >-
-    This endpoint allows you to add one or more numbers to your blacklist. You can add up to 10
-    numbers in one request.
+    This endpoint allows you to add one or more numbers to your blacklist. You
+    can add up to 10 numbers in one request.
 
-    NOTE: numbers need to be in international format and therefore start with a +
+    NOTE: numbers need to be in international format and therefore start with a
+    +
   operationId: AddOneOrMoreNumbersToYourBlacklist
   parameters: []
   requestBody:
