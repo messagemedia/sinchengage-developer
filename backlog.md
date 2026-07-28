@@ -118,15 +118,15 @@ Draft follow-up tickets for the Sinch Engage API documentation. Create them in J
 
 ---
 
-## 7. Align OpenAPI schemas with production examples
+## 7. Resolve schema ↔ example mismatches
 
 | Field | Value |
 |-------|-------|
 | **Suggested type** | Story |
-| **Suggested title** | Fix Engage OpenAPI schemas that disagree with production-accurate examples |
-| **Contract change** | **Yes** — schema changes affect codegen and client expectations; coordinate with each owning API team |
+| **Suggested title** | Resolve Engage OpenAPI schema ↔ example mismatches with owning API teams |
+| **Contract change** | **Maybe** — depends whether the schema or the example is wrong; either change can affect clients |
 
-**Problem:** Published examples reflect observed production behaviour, but many OpenAPI schemas disagree with them (~93 Redocly example warnings). Example lint rules (`no-invalid-schema-examples`, `no-invalid-media-type-examples`, `no-invalid-parameter-examples`) are held at `warn` so CI does not force incorrect example edits. 
+**Problem:** Many OpenAPI schemas disagree with their examples (~93 Redocly example warnings). We do **not** know which side is correct in each case — sometimes the example matches production and the schema is wrong; sometimes the schema is right and the example is stale or illustrative. Example lint rules (`no-invalid-schema-examples`, `no-invalid-media-type-examples`, `no-invalid-parameter-examples`) stay at `warn` so CI does not force speculative fixes. Inventory and owner questions: [`docs/schema-example-mismatch-report.md`](docs/schema-example-mismatch-report.md).
 
 **Recurring themes:**
 - Phone numbers declared `string` vs numeric JSON examples
@@ -134,9 +134,9 @@ Draft follow-up tickets for the Sinch Engage API documentation. Create them in J
 - `metadata` as object map vs array of single-key objects
 - Pagination field names (`next_token` / `next_page_token` vs `page` / `total_count`) — overlaps item 2
 
-**Scope:** Per area in the mismatch report, confirm wire format with the owning API team, then fix the **schema** (preferred). Only change an example if the owning team confirms it is stale. After clearance, re-elevate the three example rules to `error`.
+**Scope:** Per mismatch, ask the owning API team what the API actually accepts/returns. Fix the **wrong** side (schema and/or example). Do not assume examples are authoritative. After clearance, re-elevate the three example rules to `error`.
 
 **AC:**
-- Each mismatch resolved (schema or confirmed example fix)
+- Each mismatch in the report has an owner decision and a matching schema/example update
 - Example lint rules restored to `error` with `npm run lint` clean for those rules
-- Changelog notes any client-visible schema changes
+- Changelog notes any client-visible schema or documented-example changes
