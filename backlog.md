@@ -126,7 +126,7 @@ Draft follow-up tickets for the Sinch Engage API documentation. Create them in J
 | **Suggested title** | Resolve Engage OpenAPI schema ↔ example mismatches with owning API teams |
 | **Contract change** | **Maybe** — depends whether the schema or the example is wrong; either change can affect clients |
 
-**Problem:** Many OpenAPI schemas disagree with their examples (~93 Redocly example warnings). We do **not** know which side is correct in each case — sometimes the example matches production and the schema is wrong; sometimes the schema is right and the example is stale or illustrative. Example lint rules (`no-invalid-schema-examples`, `no-invalid-media-type-examples`, `no-invalid-parameter-examples`) stay at `warn` so CI does not force speculative fixes. Inventory and owner questions: [`docs/schema-example-mismatch-report.md`](docs/schema-example-mismatch-report.md).
+**Problem:** Many OpenAPI schemas disagree with their examples (~93 Redocly example warnings). We do **not** know which side is correct in each case — sometimes the example matches production and the schema is wrong; sometimes the schema is right and the example is stale or illustrative. Example lint rules (`no-invalid-schema-examples`, `no-invalid-media-type-examples`, `no-invalid-parameter-examples`) stay at `warn` so CI does not force speculative fixes. 
 
 **Recurring themes:**
 - Phone numbers declared `string` vs numeric JSON examples
