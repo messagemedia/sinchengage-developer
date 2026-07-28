@@ -30,6 +30,7 @@ delete:
         type: string
         format: uuid
         example: a7f11bb0-f299-4861-a5ca-9b29d04bc5ad
+      example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
   responses:
     "204":
       description: Webhook deleted successfully
@@ -58,15 +59,21 @@ patch:
     ```
 
     {
-        "url": "https://webhook.com",
+        "id": "76fa7010-8c1f-4a24-917a-4d62a54e744d",
+        "url": "http://webhook.com",
         "method": "POST",
-        "id": "04442623-0961-464e-9cbc-ec50804e0413",
         "encoding": "JSON",
+        "headers": {
+            "Account": "DeveloperPortal7000"
+        },
         "events": [
-            "RECEIVED_SMS"
+            "ENROUTE_DR",
+            "DELIVERED_DR"
         ],
-        "headers": {},
-        "template": "{\"id\":\"$mtId\", \"status\":\"$statusCode\"}"
+        "template": "{\"id\":\"$mtId\",\"status\":\"$statusCode\"}",
+        "read_timeout": 5000,
+        "retries": 3,
+        "retry_delay": 30
     }
 
     ```
@@ -86,6 +93,7 @@ patch:
         type: string
         format: uuid
         example: a7f11bb0-f299-4861-a5ca-9b29d04bc5ad
+      example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
   requestBody:
     description: Request body.
     content:
@@ -93,12 +101,13 @@ patch:
         schema:
           $ref: ../../components/schemas/webhooks/UpdateWebhookrequest.yaml
         example:
-          url: https://myurl.com
+          url: http://webhook.com
           method: POST
-          encoding: FORM_ENCODED
+          encoding: JSON
           events:
             - ENROUTE_DR
-          template: "{\"id\":\"$mtId\", \"status\":\"$statusCode\"}"
+            - DELIVERED_DR
+          template: "{\"id\":\"$mtId\",\"status\":\"$statusCode\"}"
     required: true
   responses:
     "200":
@@ -107,8 +116,7 @@ patch:
       content:
         application/json:
           schema:
-            type: object
-            description: Webhook updated successfully
+            $ref: ../../components/schemas/webhooks/CreateWebhookresponse.yaml
     "400":
       description: Unexpected error in API call. See HTTP response body for details.
       content:

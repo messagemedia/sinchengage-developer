@@ -83,10 +83,50 @@ Static assets and the Handlebars HTML template used by `redocly build-docs`.
 
 | Path | Purpose |
 |------|---------|
-| `/web/index.html` | ReDoc HTML template (`{{{redocHead}}}` / `{{{redocHTML}}}`). |
+| `/web/index.html` | ReDoc HTML template (`{{{redocHead}}}` / `{{{redocHTML}}}`). Loads the page-actions widget styles (inline) and `llm-actions.js`. |
+| `/web/llm-actions.js` | "Copy for LLM / View as Markdown" page-actions widget script (see below). |
 | `/web/logo.png`, `/web/logo.svg` | Brand logo (`x-logo` in the spec points at `./logo.png`). |
 | `/web/favicon.png` | Favicon linked from the template. |
 | `/web/message-flow.png` | Image referenced from the API description. |
+
+### `/docs`
+Human- and LLM-readable Markdown mirror of the API reference. `scripts/copy-docs.mjs`
+publishes this tree into `web_deploy/docs/` at build time so the page-actions widget can
+serve raw Markdown.
+
+| Path | Purpose |
+|------|---------|
+| `/docs/api/index.md` | Top-level "all services" index. |
+| `/docs/api/webhooks-management/index.md` | Webhooks Management service overview. |
+| `/docs/api/webhooks-management/*.md` | One page per operation (create / retrieve / update / delete). |
+
+#### "Copy for LLM / View as Markdown" page actions
+
+ReDoc Community Edition (`@redocly/cli` + `redocly build-docs`) has **no** built-in page
+actions — `navigation.actions` in `redocly.yaml` is a Redocly Realm/Reunite feature and does
+nothing here. Instead, a small dependency-free widget lives in `web/llm-actions.js` (loaded
+by `web/index.html`; its styles stay inline in the template):
+
+- Two simple text links are added inline with each section's heading, on the light
+  description panel (they scroll with the content — they are **not** a floating overlay):
+  - **Copy for LLM** copies the current section as Markdown to the clipboard.
+  - **View as Markdown** opens the raw `.md` in a new tab (external-link icon).
+- The widget reads each section's ReDoc `data-section-id` (`operation/<operationId>` or
+  `tag/<Tag-Name>`), maps it to the matching file under `docs/api/…`, and resolves the URL
+  against the site root, so it works both locally (`npm run preview-docs`) and on GitHub
+  Pages. The links are anchored to the heading's panel and vertically centred on the heading.
+  A `MutationObserver` re-runs injection after ReDoc hydrates (guarded so bars are never
+  duplicated).
+- Markdown is fetched at click time. If the fetch fails (offline, `file://`, missing file),
+  Copy falls back to a short Markdown summary with the page title and URL.
+
+**Where Markdown is served from:** `scripts/copy-docs.mjs` mirrors `/docs/**/*.md` into
+`web_deploy/docs/**` during `npm run build` (and copies `web/llm-actions.js` into
+`web_deploy/`), so the published site serves, for example,
+`https://docs.app.api.sinch.com/docs/api/webhooks-management/create-webhook.md`.
+
+To add coverage for more sections, add the Markdown under `docs/api/…` and register the
+`operationId` (or tag slug) in the `OP_TO_MD` / `TAG_TO_MD` maps in `web/llm-actions.js`.
 
 ### `/scripts`
 Build helpers used by npm scripts.
@@ -95,6 +135,7 @@ Build helpers used by npm scripts.
 |------|---------|
 | `/scripts/inject-code-samples.mjs` | Injects `/spec/code_samples/` into `x-codeSamples` on the bundled spec. |
 | `/scripts/copy-assets.mjs` | Copies `/web` assets into `/web_deploy` and publishes `openapi.yaml` + `openapi.json` for ReDoc downloads. |
+| `/scripts/copy-docs.mjs` | Mirrors `/docs/**/*.md` into `/web_deploy/docs/` and copies `web/llm-actions.js`, so the site can serve raw Markdown and the page-actions widget. |
 
 ### `/changelog`
 Changelog entries for documentation or API updates.
@@ -136,7 +177,7 @@ Validates the OpenAPI spec with Redocly lint rules (follows `$ref`s across the s
 Builds the static docs (bundle → inject code samples → ReDoc) and serves `web_deploy` at http://localhost:8080 so you can preview the same output CI deploys.
 
 #### `npm run build`
-Bundles the multi-file spec, injects code samples, builds static ReDoc HTML into `web_deploy`, and copies web assets (logo, favicon, etc.).
+Bundles the multi-file spec, injects code samples, builds static ReDoc HTML into `web_deploy`, copies web assets (logo, favicon, etc.), and mirrors the `/docs` Markdown into `web_deploy/docs/` (via `scripts/copy-docs.mjs`) for the page-actions widget.
 
 #### `npm run bundle`
 Bundles the OpenAPI spec to `web_deploy/openapi.yaml`.

@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="favicon.png?v=2">
 
+    <!-- LLM discovery tag (F4): points crawlers/agents at the plain-text site
+         index. llms.txt generation is tracked separately. -->
+    <link rel="alternate" type="text/plain" href="https://docs.app.api.sinch.com/llms.txt" title="LLM site index">
+
     <!--
     ReDoc uses font options from the parent element
     So override default browser styles
@@ -22,10 +26,67 @@
         box-sizing: border-box;
         height: auto;
       }
+
+      /* --- "Copy for LLM / View as Markdown" page actions (ReDoc CE) ---
+         Simple inline text links anchored to the top-right of each section's
+         description panel, centred on the heading (see web/llm-actions.js). */
+      .llm-actions {
+        position: absolute;
+        top: 0;
+        right: 8px;
+        z-index: 5;
+        display: inline-flex;
+        align-items: center;
+        gap: 16px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-size: 13px;
+        line-height: 1;
+      }
+      .llm-actions a,
+      .llm-actions button {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: #6b7280;
+        cursor: pointer;
+        font: inherit;
+        text-decoration: none;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+      }
+      .llm-actions a:hover,
+      .llm-actions button:hover {
+        color: #32329f;
+        text-decoration: underline;
+      }
+      .llm-actions a:focus-visible,
+      .llm-actions button:focus-visible {
+        outline: 2px solid #32329f;
+        outline-offset: 2px;
+        border-radius: 3px;
+      }
+      .llm-actions__icon {
+        width: 14px;
+        height: 14px;
+        flex: none;
+      }
+      @media (max-width: 640px) {
+        .llm-actions {
+          position: static;
+          margin: 8px 0 0 auto;
+        }
+      }
     </style>
     {{{redocHead}}}
   </head>
   <body>
     {{{redocHTML}}}
+
+    <!-- Page actions widget: see web/llm-actions.js (copied to web_deploy by
+         scripts/copy-docs.mjs). -->
+    <script src="llm-actions.js" defer></script>
   </body>
 </html>

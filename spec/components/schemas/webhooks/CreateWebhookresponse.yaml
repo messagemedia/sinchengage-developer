@@ -1,13 +1,14 @@
-title: CreateWebhookrequest
+title: CreateWebhookresponse
 required:
+  - id
   - url
   - method
-  - encoding
-  - headers
-  - events
-  - template
 type: object
 properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier for the webhook.
   url:
     type: string
   method:
@@ -20,23 +21,20 @@ properties:
     type: array
     items:
       type: string
-    description: Webhook event types to subscribe to.
+    description: Webhook event types subscribed to.
   template:
     type: string
   read_timeout:
     type: integer
-    default: 20000
-    maximum: 60000
     description: The read timeout for the webhook call in milliseconds.
   retries:
     type: integer
     description: The number of times to retry a failed webhook call.
   retry_delay:
     type: integer
-    minimum: 5
-    maximum: 60
     description: The delay between retries in seconds.
 example:
+  id: 76fa7010-8c1f-4a24-917a-4d62a54e744d
   url: http://webhook.com
   method: POST
   encoding: JSON

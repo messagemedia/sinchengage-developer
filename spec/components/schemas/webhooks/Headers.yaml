@@ -1,6 +1,4 @@
 title: Headers
-required:
-  - Account
 type: object
 properties:
   Account:

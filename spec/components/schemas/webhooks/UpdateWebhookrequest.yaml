@@ -21,9 +21,10 @@ properties:
   template:
     type: string
 example:
-  url: https://myurl.com
+  url: http://webhook.com
   method: POST
-  encoding: FORM_ENCODED
+  encoding: JSON
   events:
     - ENROUTE_DR
-  template: '{"id":"$mtId", "status":"$statusCode"}'
+    - DELIVERED_DR
+  template: '{"id":"$mtId","status":"$statusCode"}'
