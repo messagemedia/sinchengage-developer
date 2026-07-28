@@ -102,8 +102,6 @@ get:
       explode: true
       schema:
         type: string
-        example: created
-      example: created
     - name: sort_direction
       in: query
       description: Can be `ASCENDING` or `DESCENDING`
@@ -111,8 +109,6 @@ get:
       explode: true
       schema:
         type: string
-        example: asc
-      example: asc
   responses:
     "200":
       description: Successful response.

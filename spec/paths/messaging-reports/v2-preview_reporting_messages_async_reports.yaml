@@ -18,7 +18,6 @@ get:
       schema:
         type: integer
         example: 10
-      example: 20
     - name: page_token
       in: query
       description: >-

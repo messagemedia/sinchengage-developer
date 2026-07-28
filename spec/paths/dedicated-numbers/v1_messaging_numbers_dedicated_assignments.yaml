@@ -118,7 +118,6 @@ get:
       schema:
         type: string
         example: application/json;charset=UTF-8
-      example: application/json
   responses:
     "200":
       description: OK
