@@ -115,3 +115,28 @@ Draft follow-up tickets for the Sinch Engage API documentation. Create them in J
 - Written decision in changelog/docs
 - Lint severity matches the decision
 - Filename convention updated if paths change
+
+---
+
+## 7. Align OpenAPI schemas with production examples
+
+| Field | Value |
+|-------|-------|
+| **Suggested type** | Story |
+| **Suggested title** | Fix Engage OpenAPI schemas that disagree with production-accurate examples |
+| **Contract change** | **Yes** — schema changes affect codegen and client expectations; coordinate with each owning API team |
+
+**Problem:** Published examples reflect observed production behaviour, but many OpenAPI schemas disagree with them (~93 Redocly example warnings). Example lint rules (`no-invalid-schema-examples`, `no-invalid-media-type-examples`, `no-invalid-parameter-examples`) are held at `warn` so CI does not force incorrect example edits. 
+
+**Recurring themes:**
+- Phone numbers declared `string` vs numeric JSON examples
+- `format: date-time` vs US-style date strings in examples
+- `metadata` as object map vs array of single-key objects
+- Pagination field names (`next_token` / `next_page_token` vs `page` / `total_count`) — overlaps item 2
+
+**Scope:** Per area in the mismatch report, confirm wire format with the owning API team, then fix the **schema** (preferred). Only change an example if the owning team confirms it is stale. After clearance, re-elevate the three example rules to `error`.
+
+**AC:**
+- Each mismatch resolved (schema or confirmed example fix)
+- Example lint rules restored to `error` with `npm run lint` clean for those rules
+- Changelog notes any client-visible schema changes
