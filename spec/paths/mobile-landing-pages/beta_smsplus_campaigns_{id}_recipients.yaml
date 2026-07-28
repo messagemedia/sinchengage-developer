@@ -16,7 +16,6 @@ post:
       schema:
         type: string
         example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
-      example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
   requestBody:
     description: Request body.
     content:

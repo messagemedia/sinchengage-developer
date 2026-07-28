@@ -16,7 +16,6 @@ post:
         type: string
         format: uuid
         example: 025e93d3-051b-43f9-b12e-4b5842228dee
-      example: 389dc1a8-62a4-4110-ba61-af94806c006f
     - name: contactId
       in: path
       description: Contact id to remove in UUID format
@@ -25,7 +24,6 @@ post:
         type: string
         format: uuid
         example: 4a03d2d8-1f85-463f-bdb4-2891c17258a7
-      example: 389dc1a8-62a4-4110-ba61-af94806c006f
   responses:
     "200":
       description: Contacts have been added
@@ -75,7 +73,6 @@ delete:
         type: string
         format: uuid
         example: 025e93d3-051b-43f9-b12e-4b5842228dee
-      example: 389dc1a8-62a4-4110-ba61-af94806c006f
     - name: contactId
       in: path
       description: Contact id to add in UUID format
@@ -84,7 +81,6 @@ delete:
         type: string
         format: uuid
         example: 4a03d2d8-1f85-463f-bdb4-2891c17258a7
-      example: 389dc1a8-62a4-4110-ba61-af94806c006f
   responses:
     "204":
       description: No Content

@@ -52,7 +52,6 @@ get:
         type: integer
         format: int32
         example: 1
-      example: 1
     - name: page_size
       in: query
       description: Number of results per page.
@@ -62,7 +61,6 @@ get:
         type: integer
         format: int32
         example: 20
-      example: 20
   responses:
     "200":
       description: Successful response.

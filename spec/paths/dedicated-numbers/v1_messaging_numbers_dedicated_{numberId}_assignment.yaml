@@ -15,8 +15,7 @@ get:
       style: simple
       schema:
         type: string
-        example: e2014bc7-5fed-4e27-bd8c-XXXXXXXXXXX
-      example: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
+        example: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
     - name: Accept
       in: header
       description: Requested response media type.
@@ -25,7 +24,6 @@ get:
       schema:
         type: string
         example: application/json;charset=UTF-8
-      example: application/json
   responses:
     "200":
       description: OK
@@ -90,8 +88,7 @@ post:
       style: simple
       schema:
         type: string
-        example: e2014bc7-5fed-4e27-bd8c-XXXXXXXXXXX
-      example: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
+        example: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
     - name: Accept
       in: header
       description: Requested response media type.
@@ -100,7 +97,6 @@ post:
       schema:
         type: string
         example: application/json;charset=UTF-8
-      example: application/json
   requestBody:
     description: Request body.
     content:
@@ -159,8 +155,7 @@ delete:
       style: simple
       schema:
         type: string
-        example: e2014bc7-5fed-4e27-bd8c-XXXXXXXXXXX
-      example: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
+        example: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
     - name: Accept
       in: header
       description: Requested response media type.
@@ -169,7 +164,6 @@ delete:
       schema:
         type: string
         example: application/json;charset=UTF-8
-      example: application/json
   responses:
     "204":
       description: No Content
@@ -210,8 +204,7 @@ patch:
       style: simple
       schema:
         type: string
-        example: e2014bc7-5fed-4e27-bd8c-XXXXXXXXXXX
-      example: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
+        example: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
     - name: Accept
       in: header
       description: Requested response media type.
@@ -220,7 +213,6 @@ patch:
       schema:
         type: string
         example: application/json;charset=UTF-8
-      example: application/json
   requestBody:
     description: Request body.
     content:

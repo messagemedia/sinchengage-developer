@@ -49,7 +49,6 @@ get:
       schema:
         type: string
         example: f56b5806-f732-4693-b87a-90b66a7d7bfc
-      example: f56b5806-f732-4693-b87a-90b66a7d7bfc
   responses:
     "202":
       description: Accepted for processing.

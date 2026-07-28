@@ -16,8 +16,7 @@ get:
       explode: true
       schema:
         type: string
-        example: e2014bc7-5fed-4e27-bd8c-XXXXXXXXXXX
-      example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
+        example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
     - name: Accept
       in: header
       description: Requested response media type.
@@ -26,7 +25,6 @@ get:
       schema:
         type: string
         example: application/json;charset=UTF-8
-      example: application/json
   responses:
     "200":
       description: OK

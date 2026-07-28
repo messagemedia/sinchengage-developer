@@ -45,7 +45,6 @@ get:
         type: number
         format: double
         example: 1
-      example: 1
     - name: pageSize
       in: query
       description: Number of results per page.
@@ -55,7 +54,6 @@ get:
         type: number
         format: double
         example: 20
-      example: 20
   responses:
     "200":
       description: OK

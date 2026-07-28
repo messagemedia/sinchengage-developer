@@ -16,8 +16,7 @@ get:
       schema:
         type: integer
         format: int32
-        example: 3
-      example: 20
+        example: 20
     - name: token
       in: query
       description: >-
@@ -28,8 +27,7 @@ get:
       explode: true
       schema:
         type: string
-        example: example
-      example: eyJwYWdlIjoyfQ
+        example: eyJwYWdlIjoyfQ
     - name: number_id
       in: query
       description: Unique identifier of a specific number

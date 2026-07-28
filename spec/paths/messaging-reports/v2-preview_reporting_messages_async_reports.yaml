@@ -29,7 +29,6 @@ get:
       schema:
         type: string
         example: eyJyZXBvcnRJZCI6IjUxZjAwOTdmLTkwYjItNGE1OS1hZDg4LWEwZmQ5M2FiYWE4MiJ9
-      example: eyJwYWdlIjoyfQ
     - name: report_name
       in: query
       description: Filter results by report name.
@@ -87,7 +86,6 @@ get:
           - ASCENDING
           - DESCENDING
         example: DESCENDING
-      example: DESCENDING
   responses:
     "200":
       description: A list of async reports for the current account.

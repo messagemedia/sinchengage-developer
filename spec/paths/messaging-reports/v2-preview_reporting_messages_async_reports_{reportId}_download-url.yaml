@@ -21,7 +21,6 @@ get:
         type: string
         format: uuid
         example: 51f0097f-90b2-4a59-ad88-a0fd93abaa82
-      example: f56b5806-f732-4693-b87a-90b66a7d7bfc
   responses:
     "200":
       description: A pre-signed URL for downloading the report.

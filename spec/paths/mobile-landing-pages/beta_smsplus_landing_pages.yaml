@@ -85,7 +85,6 @@ get:
       schema:
         type: string
         example: "20"
-      example: "20"
     - name: page_token
       in: query
       description: Token to fetch the next page
@@ -94,7 +93,6 @@ get:
       schema:
         type: string
         example: eyJwYWdlIjoyfQ
-      example: eyJwYWdlIjoyfQ
     - name: sort_by
       in: query
       description: Can be `CREATED_TIMESTAMP` or `UPDATED_TIMESTAMP`

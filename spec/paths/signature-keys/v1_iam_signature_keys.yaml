@@ -35,7 +35,6 @@ get:
       schema:
         type: string
         example: "1"
-      example: "1"
     - name: page_size
       in: query
       description: Number of results per page.
@@ -43,7 +42,6 @@ get:
       schema:
         type: string
         example: "20"
-      example: "20"
   responses:
     "200":
       description: The list of signature keys.
@@ -178,7 +176,6 @@ post:
       schema:
         type: string
         example: application/json
-      example: application/json
   requestBody:
     description: Request body.
     content:
