@@ -3,45 +3,66 @@ required:
   - url
   - method
   - encoding
-  - headers
   - events
-  - template
 type: object
 properties:
   url:
     type: string
+    maxLength: 1000
+    description: HTTP(S) URL for the webhook endpoint.
   method:
     type: string
+    enum:
+      - GET
+      - POST
+      - PATCH
+      - PUT
+      - DELETE
+    description: HTTP method used when invoking the webhook.
   encoding:
     type: string
-  headers:
-    $ref: ./Headers.yaml
+    enum:
+      - JSON
+      - FORM_ENCODED
+      - XML
+    description: Content encoding for the webhook request body.
   events:
     type: array
     items:
       type: string
-    description: Webhook event types to subscribe to.
+    minItems: 1
+    description: Non-empty set of webhook event types to subscribe to.
+  headers:
+    type: object
+    additionalProperties:
+      type: string
+      maxLength: 1000
+    description: |
+      Optional map of custom headers. Content-Type header is not allowed.
+      Key max length is 200 characters, value max length is 1000 characters.
   template:
     type: string
+    description: Optional Velocity template for the webhook request body.
   read_timeout:
     type: integer
-    default: 20000
+    minimum: 1
     maximum: 60000
-    description: The read timeout for the webhook call in milliseconds.
+    description: The read timeout for the webhook call in milliseconds (1-60000).
   retries:
     type: integer
-    description: The number of times to retry a failed webhook call.
+    minimum: 0
+    maximum: 5
+    description: The number of times to retry a failed webhook call (0-5).
   retry_delay:
     type: integer
     minimum: 5
     maximum: 60
-    description: The delay between retries in seconds.
+    description: The delay between retries in seconds (5-60).
 example:
   url: http://webhook.com
   method: POST
   encoding: JSON
-  headers:
-    Account: DeveloperPortal7000
+  headers: {}
   events:
     - ENROUTE_DR
     - DELIVERED_DR

@@ -23,9 +23,7 @@ get:
                 "url": "http://webhook.com",
                 "method": "POST",
                 "encoding": "JSON",
-                "headers": {
-                    "Account": "DeveloperPortal7000"
-                },
+                "headers": {},
                 "events": [
                     "ENROUTE_DR",
                     "DELIVERED_DR"
@@ -47,14 +45,14 @@ get:
   parameters:
     - name: page
       in: query
-      description: Page number for pagination (1-based).
+      description: Page number for pagination (0-based).
       style: form
       explode: true
       schema:
         type: integer
         format: int32
-        example: 1
-      example: 1
+        example: 0
+      example: 0
     - name: page_size
       in: query
       description: Number of results per page.
@@ -103,9 +101,7 @@ post:
       "url": "http://webhook.com",
       "method": "POST",
       "encoding": "JSON",
-      "headers": {
-        "Account": "DeveloperPortal7000"
-      },
+      "headers": {},
       "events": [
         "ENROUTE_DR",
         "DELIVERED_DR"
@@ -394,8 +390,7 @@ post:
           url: http://webhook.com
           method: POST
           encoding: JSON
-          headers:
-            Account: DeveloperPortal7000
+          headers: {}
           events:
             - ENROUTE_DR
             - DELIVERED_DR
@@ -417,8 +412,7 @@ post:
             url: http://webhook.com
             method: POST
             encoding: JSON
-            headers:
-              Account: DeveloperPortal7000
+            headers: {}
             events:
               - ENROUTE_DR
               - DELIVERED_DR

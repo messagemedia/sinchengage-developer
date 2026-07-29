@@ -49,10 +49,14 @@ patch:
   description: >-
     Update a webhook. You can update individual attributes or all of them by
     submitting a PATCH request to the /webhooks/messages endpoint (the same
-    endpoint used above to delete a webhook)
+    endpoint used above to delete a webhook).
 
 
-    A successful request to the retrieve webhook endpoint will return a response
+    All fields in the request body are optional, but at least one must be
+    provided. An empty body or a body with all null fields will be rejected.
+
+
+    A successful request to the update webhook endpoint will return a response
     body as follows:
 
 
@@ -63,9 +67,7 @@ patch:
         "url": "http://webhook.com",
         "method": "POST",
         "encoding": "JSON",
-        "headers": {
-            "Account": "DeveloperPortal7000"
-        },
+        "headers": {},
         "events": [
             "ENROUTE_DR",
             "DELIVERED_DR"
@@ -104,6 +106,7 @@ patch:
           url: http://webhook.com
           method: POST
           encoding: JSON
+          headers: {}
           events:
             - ENROUTE_DR
             - DELIVERED_DR

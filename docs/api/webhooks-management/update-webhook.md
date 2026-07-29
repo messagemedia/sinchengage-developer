@@ -1,18 +1,18 @@
 # Update webhook
 
-Update a webhook. You can update individual attributes or all of them by submitting a PATCH request to the /webhooks/messages endpoint (the same endpoint used above to delete a webhook)
+Update a webhook. You can update individual attributes or all of them by submitting a PATCH request.
 
-A successful request to the retrieve webhook endpoint will return a response body as follows:
+**All fields in the request body are optional, but at least one must be provided.** An empty body or a body with all null fields will be rejected.
 
-```
+A successful request will return a response body as follows:
+
+```json
 {
     "id": "76fa7010-8c1f-4a24-917a-4d62a54e744d",
     "url": "http://webhook.com",
     "method": "POST",
     "encoding": "JSON",
-    "headers": {
-        "Account": "DeveloperPortal7000"
-    },
+    "headers": {},
     "events": [
         "ENROUTE_DR",
         "DELIVERED_DR"
@@ -24,8 +24,6 @@ A successful request to the retrieve webhook endpoint will return a response bod
 }
 ```
 
-*Note: Only pre-created webhooks can be deleted. If an invalid or non existent webhook ID parameter is specified in the request, then a HTTP 404 Not Found response will be returned.*
-
 | | |
 |---|---|
 | **Service** | [Webhooks Management](index.md) |
@@ -36,10 +34,10 @@ A successful request to the retrieve webhook endpoint will return a response bod
 
 ## Authentication
 
-This endpoint supports the following schemes:
+This endpoint supports two authentication methods:
 
-- **Basic Auth** (`basic_auth`): HTTP Basic authentication using your API key as the username and API secret as the password. See the Basic Authentication guide tag.
-- **HMAC Auth** (`hmac_auth`): HMAC request signing. Place the full `hmac username=...` credential in the Authorization header. See the HMAC Authentication guide tag.
+- **Basic Auth**: HTTP Basic authentication using your API key as the username and API secret as the password. See the Basic Authentication guide.
+- **HMAC Auth**: HMAC request signing. Place the full `hmac username=...` credential in the Authorization header. See the HMAC Authentication guide.
 
 ## Parameters
 
@@ -47,7 +45,7 @@ This endpoint supports the following schemes:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `webhookId` | `string` (`uuid`) | Yes | Unique identifier of the webhook. Example: `7ca628a8-08b0-4e42-aeb8-960b37049c31` |
+| `webhookId` | string (uuid) | Yes | Unique identifier of the webhook. Example: `7ca628a8-08b0-4e42-aeb8-960b37049c31` |
 
 ### Query parameters
 
@@ -62,13 +60,18 @@ None.
 - **Content-Type:** `application/json`
 - **Required:** true
 
+All fields are optional, but at least one must be provided. Empty body (all fields null) is rejected.
+
+> **Note:** `read_timeout`, `retries`, and `retry_delay` are not supported on update (create-only fields).
+
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
-| `url` | `string` | Yes | The configured URL which will trigger the webhook when a selected event occurs. |
-| `method` | `string` | Yes | HTTP method used when invoking the webhook. |
-| `encoding` | `string` | Yes | Delivery content type: `JSON`, `FORM_ENCODED`, or `XML`. |
-| `events` | `array` of `string` | Yes | Webhook event types to subscribe to. |
-| `template` | `string` | Yes | Structure of the payload returned by the webhook (JSON or XML string). |
+| `url` | string | No | HTTP(S) URL for the webhook endpoint. Max 1000 characters. |
+| `method` | string | No | HTTP method used when invoking the webhook. Enum: `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
+| `encoding` | string | No | Content encoding for the webhook request body. Enum: `JSON`, `FORM_ENCODED`, `XML` |
+| `headers` | object | No | Optional map of custom headers. Content-Type header is not allowed. Key max length is 200 characters, value max length is 1000 characters. |
+| `template` | string | No | Velocity template for the webhook request body. |
+| `events` | array of strings | No | Webhook event types to subscribe to. If provided, must be non-empty (`events: []` is rejected). |
 
 ### Example request body
 
@@ -77,6 +80,7 @@ None.
   "url": "http://webhook.com",
   "method": "POST",
   "encoding": "JSON",
+  "headers": {},
   "events": [
     "ENROUTE_DR",
     "DELIVERED_DR"
@@ -89,123 +93,74 @@ None.
 
 | Status | Description | Schema |
 |--------|-------------|--------|
-| `200` | Webhook updated successfully | [CreateWebhookresponse](#200-response-schema) |
-| `400` | Unexpected error in API call. See HTTP response body for details. | [Error response](#400-response-schema) |
-| `401` | No valid authentication details were provided | — |
-| `404` | Not found. | — |
+| 200 | Webhook updated successfully | Webhook object |
+| 400 | Invalid request | Error object |
+| 401 | No valid authentication details were provided | — |
+| 404 | Webhook not found | — |
 
 ### 200 response schema
 
-The updated webhook object. Only `id`, `url`, and `method` are required.
+Webhook response object. No fields are strictly required in the schema; however, `id`, `url`, `method`, and `retries` are consistently populated.
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `id` | `string` (`uuid`) | Yes | Unique identifier for the webhook. |
-| `url` | `string` | Yes | The configured URL which triggers the webhook when a selected event occurs. |
-| `method` | `string` | Yes | HTTP method used when invoking the webhook. |
-| `encoding` | `string` | No | Delivery content type: `JSON`, `FORM_ENCODED`, or `XML`. |
-| `headers` | `object` ([Headers](#headers)) | No | HTTP header fields for the webhook request. |
-| `events` | `array` of `string` | No | Webhook event types subscribed to. |
-| `template` | `string` | No | Structure of the payload returned by the webhook (JSON or XML string). |
-| `read_timeout` | `integer` | No | The read timeout for the webhook call in milliseconds. |
-| `retries` | `integer` | No | The number of times to retry a failed webhook call. |
-| `retry_delay` | `integer` | No | The delay between retries in seconds. |
-
-#### Headers
-
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `Account` | `string` | No | Example: `DeveloperPortal7000` |
-
-#### Example
-
-```json
-{
-  "id": "76fa7010-8c1f-4a24-917a-4d62a54e744d",
-  "url": "http://webhook.com",
-  "method": "POST",
-  "encoding": "JSON",
-  "headers": {
-    "Account": "DeveloperPortal7000"
-  },
-  "events": [
-    "ENROUTE_DR",
-    "DELIVERED_DR"
-  ],
-  "template": "{\"id\":\"$mtId\",\"status\":\"$statusCode\"}",
-  "read_timeout": 5000,
-  "retries": 3,
-  "retry_delay": 30
-}
-```
+| Property | Type | Description |
+|----------|------|-------------|
+| `id` | string (uuid) | Unique identifier for the webhook. Always present. |
+| `url` | string | HTTP(S) URL for the webhook endpoint. Always present. |
+| `method` | string | HTTP method used when invoking the webhook. Always present. |
+| `encoding` | string | Content encoding. Usually present; can be null if missing/unknown. |
+| `headers` | object | Custom headers configured for the webhook. May be empty. |
+| `events` | array of strings | Webhook event types subscribed to. May be empty. |
+| `template` | string | Velocity template for the webhook request body. Only present if set. |
+| `read_timeout` | integer | The read timeout in milliseconds. Only present if set. |
+| `retries` | integer | The number of retry attempts. Always present (defaults to 0). |
+| `retry_delay` | integer | The delay between retries in seconds. Only present when retries are configured. |
 
 ### 400 response schema
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `message` | `string` | Yes | Error message. |
-
-#### Example
-
-```json
-{
-  "message": "Something went wrong. Please try again later."
-}
-```
+| Property | Type | Description |
+|----------|------|-------------|
+| `message` | string | Error message describing the issue |
 
 ## Examples
 
 ### cURL
 
 ```bash
-curl -X PATCH "https://eu.app.api.sinch.com/v1/webhooks/messages/7ca628a8-08b0-4e42-aeb8-960b37049c31" \
-  -H "Accept: application/json" \
+curl -X PATCH "https://eu.app.api.sinch.com/v1/webhooks/messages/76fa7010-8c1f-4a24-917a-4d62a54e744d" \
+  -H "Authorization: Basic BASE64_ENCODED_CREDENTIALS" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Basic Base64(api_key:api_secret)" \
   -d '{
-    "url": "http://webhook.com",
-    "method": "POST",
-    "encoding": "JSON",
-    "events": [
-      "ENROUTE_DR",
-      "DELIVERED_DR"
-    ],
-    "template": "{\"id\":\"$mtId\",\"status\":\"$statusCode\"}"
+    "url": "http://new-webhook-url.com",
+    "events": ["DELIVERED_DR", "FAILED_DR"]
   }'
 ```
 
 ### JavaScript (fetch)
 
 ```javascript
-const webhookId = "7ca628a8-08b0-4e42-aeb8-960b37049c31";
+const webhookId = "76fa7010-8c1f-4a24-917a-4d62a54e744d";
 
-const response = await fetch(
-  `https://eu.app.api.sinch.com/v1/webhooks/messages/${webhookId}`,
-  {
-    method: "PATCH",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: "Basic " + btoa("api_key:api_secret"),
-    },
-    body: JSON.stringify({
-      url: "http://webhook.com",
-      method: "POST",
-      encoding: "JSON",
-      events: ["ENROUTE_DR", "DELIVERED_DR"],
-      template: '{"id":"$mtId","status":"$statusCode"}',
-    }),
-  }
-);
+const response = await fetch(`https://eu.app.api.sinch.com/v1/webhooks/messages/${webhookId}`, {
+  method: "PATCH",
+  headers: {
+    "Authorization": "Basic " + btoa("API_KEY:API_SECRET"),
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    url: "http://new-webhook-url.com",
+    events: ["DELIVERED_DR", "FAILED_DR"]
+  })
+});
 
-const data = await response.json();
+const webhook = await response.json();
+console.log(webhook);
 ```
 
 ## Error handling
 
-- **`400`**: Unexpected error in the API call. See the HTTP response body for details. Body includes a `message` string.
-- **`401`**: No valid authentication details were provided.
-- **`404`**: Not found. Returned when an invalid or non-existent webhook ID is specified.
+- **400 Bad Request**: Returned if the request body is empty, all fields are null, `events` is an empty array, or validation fails on any field.
+- **401 Unauthorized**: No valid authentication details were provided.
+- **404 Not Found**: The specified webhook ID does not exist or belongs to a different account.
 
 ## Related endpoints
 

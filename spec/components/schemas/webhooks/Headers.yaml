@@ -1,7 +1,0 @@
-title: Headers
-type: object
-properties:
-  Account:
-    type: string
-example:
-  Account: DeveloperPortal7000

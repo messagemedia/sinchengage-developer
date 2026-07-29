@@ -22,8 +22,7 @@ example:
       url: http://webhook.com
       method: POST
       encoding: JSON
-      headers:
-        Account: DeveloperPortal7000
+      headers: {}
       events:
         - ENROUTE_DR
         - DELIVERED_DR
