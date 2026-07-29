@@ -10,9 +10,7 @@ get:
   parameters:
     - name: country
       in: query
-      description: >-
-        ISO_3166 country code, 2 character code to filter available numbers by
-        country
+      description: ISO_3166 country code, 2 character code to filter available numbers by country
       style: form
       explode: true
       schema:
@@ -34,7 +32,7 @@ get:
       schema:
         type: integer
         format: int32
-        example: 3
+        example: 20
     - name: service_types
       in: query
       description: filter results to include numbers with certain capabilities
@@ -52,9 +50,9 @@ get:
       explode: true
       schema:
         type: string
-        example: example
+        example: eyJwYWdlIjoyfQ
   responses:
-    '200':
+    "200":
       description: OK
       headers: {}
       content:
@@ -71,10 +69,12 @@ get:
                 country: AU
                 type: MOBILE
                 classification: BRONZE
-                available_after: '2019-08-06T23:56:15.633Z'
+                available_after: "2019-08-06T23:56:15.633Z"
                 capabilities:
                   - SMS
-    '403':
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -82,4 +82,3 @@ get:
             $ref: ../../components/schemas/403response.yaml
           example:
             message: Invalid authentication credentials
-  deprecated: false

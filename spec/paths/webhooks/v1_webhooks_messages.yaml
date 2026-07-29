@@ -45,29 +45,31 @@ get:
   parameters:
     - name: page
       in: query
-      description: ''
+      description: Page number for pagination (1-based).
       style: form
       explode: true
       schema:
         type: integer
         format: int32
+        example: 1
     - name: page_size
       in: query
-      description: ''
+      description: Number of results per page.
       style: form
       explode: true
       schema:
         type: integer
         format: int32
+        example: 20
   responses:
-    '200':
-      description: ''
+    "200":
+      description: Successful response.
       headers: {}
       content:
         application/json:
           schema:
             type: object
-    '400':
+    "400":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -75,7 +77,8 @@ get:
             $ref: ../../components/schemas/webhooks/UpdateWebhook400response.yaml
           example:
             message: Something went wrong. Please try again later.
-  deprecated: false
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
 post:
   security:
     - basic_auth: []
@@ -131,7 +134,7 @@ post:
     should NOT include the `Content-Type` header.
 
 
-    - ```events``` Event or events that will trigger the webhook. Atleast one
+    - ```events``` Event or events that will trigger the webhook. At least one
     event should be present.
 
 
@@ -158,7 +161,7 @@ post:
 
 
     You can select all of the events (listed below) or combine them in whatever
-    way you like but atleast one event must be used. Otherwise, the webhook
+    way you like but at least one event must be used. Otherwise, the webhook
     won't be created.
 
 
@@ -167,7 +170,7 @@ post:
 
     + **SMS** 
       + `RECEIVED_SMS` Receive an SMS
-      + `OPT_OUT_SMS` Opt-out occured
+      + `OPT_OUT_SMS` Opt-out occurred
     + **MMS**
       + `RECEIVED_MMS` Receive an MMS
     + **DR (Delivery Reports)**
@@ -182,11 +185,11 @@ post:
 
 
     You can choose what to include in the data that will be sent as the payload
-    via the Webhook. It's upto you to choose what format you would like the
+    via the Webhook. It's up to you to choose what format you would like the
     payload to be returned. You can choose between JSON or XML.
 
 
-    Keep in my mind, if you've chosen JSON as the format, you must escape the
+    Keep in mind, if you've chosen JSON as the format, you must escape the
     JSON in the template value (see example above).
 
 
@@ -314,7 +317,7 @@ post:
 
     * `151`: Message held for screening.
 
-    * `200`: Message submitted to downstream provider for  delivery.
+    * `200`: Message submitted to downstream provider for delivery.
 
     * `210`: Message accepted by downstream provider.
 
@@ -322,15 +325,15 @@ post:
 
     * `212`: Message submitted. Delivery pending.
 
-    * `213`: Message scheduled for delivery by downstream  provider.
+    * `213`: Message scheduled for delivery by downstream provider.
 
     * `220`: Message delivered.
 
     * `221`: Message delivered to the handset.
 
-    * `320`: Message validity period has expired (prior to  submission).
+    * `320`: Message validity period has expired (prior to submission).
 
-    * `401`: Message validity period has expired (before delivery ).
+    * `401`: Message validity period has expired (before delivery).
 
     * `301`: Usage threshold reached. Message discarded.
 
@@ -371,11 +374,11 @@ post:
 
     *Note: A 400 response will be returned if the `url` is invalid, the
     `events`, `encoding` or `method` is null or the `headers` has a
-    Content-Type  attribute.*
+    Content-Type attribute.*
   operationId: CreateWebhook
   parameters: []
   requestBody:
-    description: ''
+    description: Request body.
     content:
       application/json:
         schema:
@@ -389,13 +392,13 @@ post:
           events:
             - ENROUTE_DR
             - DELIVERED_DR
-          template: '{"id":"$mtId","status":"$statusCode"}'
+          template: "{\"id\":\"$mtId\",\"status\":\"$statusCode\"}"
           read_timeout: 5000
           retries: 3
           retry_delay: 30
     required: true
   responses:
-    '201':
+    "201":
       description: Webhook successfully created
       headers: {}
       content:
@@ -403,7 +406,7 @@ post:
           schema:
             type: object
             description: Webhook successfully created
-    '400':
+    "400":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -411,7 +414,9 @@ post:
             $ref: ../../components/schemas/webhooks/UpdateWebhook400response.yaml
           example:
             message: Something went wrong. Please try again later.
-    '409':
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "409":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -419,4 +424,3 @@ post:
             $ref: ../../components/schemas/webhooks/UpdateWebhook400response.yaml
           example:
             message: A webhook with the given url and method already exists.
-  deprecated: false

@@ -8,7 +8,7 @@ properties:
     type: array
     items:
       $ref: ./Template.yaml
-    description: ''
+    description: List of templates.
   pagination:
     $ref: ../Pagination1.yaml
 example:

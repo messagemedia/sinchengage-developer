@@ -15,6 +15,7 @@ get:
       explode: true
       schema:
         type: string
+        example: "20"
     - name: page_token
       in: query
       description: Token to fetch the next page
@@ -22,9 +23,10 @@ get:
       explode: true
       schema:
         type: string
+        example: eyJwYWdlIjoyfQ
   responses:
-    '200':
-      description: ''
+    "200":
+      description: Successful response.
       headers: {}
       content:
         application/json:
@@ -41,6 +43,7 @@ get:
             pagination:
               next_page_token: qwerty123
               page_size: 5
-    '402':
-      description: ''
-  deprecated: false
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "402":
+      description: Payment required.

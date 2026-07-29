@@ -6,7 +6,7 @@ get:
     - Number Authorisation
   summary: Check if one or several numbers are currently blacklisted
   description: >-
-    This endpoints lists for each requested number if you are authorised (which
+    This endpoint lists for each requested number if you are authorised (which
     means the number is not blacklisted) to send to this number.
 
     In the example given +61491570157 is on the blacklist.
@@ -25,12 +25,18 @@ get:
         minimum: 1
         items:
           type: string
+        example:
+          - "+61491570156"
+          - "+61491570157"
       description: >-
-        one or more numbers in international format seperate by a comma, e.g.
+        one or more numbers in international format separated by a comma, e.g.
         ```+61491570156,+61491570157```
+      example:
+        - "+61491570156"
+        - "+61491570157"
   responses:
-    '200':
-      description: ''
+    "200":
+      description: Successful response.
       headers: {}
       content:
         application/json:
@@ -44,4 +50,15 @@ get:
                 authorised: true
               - number: 61491570157
                 authorised: false
-  deprecated: false
+    "400":
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/400response.yaml
+    "401":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/403response.yaml

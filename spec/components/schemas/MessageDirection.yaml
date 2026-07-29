@@ -1,5 +1,5 @@
 title: MessageDirection
-type: object
+type: string
 enum:
   - inbound
   - outbound

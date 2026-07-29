@@ -17,7 +17,7 @@ properties:
     type: array
     items:
       type: string
-    description: ''
+    description: Webhook event types to subscribe to.
   template:
     type: string
 example:

@@ -14,6 +14,7 @@ properties:
     example: 11/3/2016 11:49:02 AM
   delay:
     type: integer
+    deprecated: true
     description: Deprecated, no longer in use
     format: int32
     example: 0

@@ -1,4 +1,7 @@
 get:
+  security:
+    - basic_auth: []
+    - hmac_auth: []
   tags:
     - Signature Key Management
   summary: Get signature key list
@@ -10,7 +13,7 @@ get:
     return a response body as follows:
 
 
-    ```json
+    ```javascript
 
     [
       {
@@ -27,18 +30,20 @@ get:
   parameters:
     - name: page
       in: query
-      description: ''
+      description: Page number for pagination (1-based).
       required: true
       schema:
         type: string
+        example: "1"
     - name: page_size
       in: query
-      description: ''
+      description: Number of results per page.
       required: true
       schema:
         type: string
+        example: "20"
   responses:
-    '200':
+    "200":
       description: The list of signature keys.
       headers: {}
       content:
@@ -52,14 +57,14 @@ get:
             - key_id: 7ca628a8-08b0-4e42-aeb8-960b37049c31
               cipher: RSA
               digest: SHA224
-              created: '2018-01-18T10:16:12.364Z'
+              created: "2018-01-18T10:16:12.364Z"
               enabled: true
             - key_id: 6a0108cf-3659-435e-800e-004beb910fd1
               cipher: RSA
               digest: SHA224
-              created: '2018-01-18T10:15:31.035Z'
+              created: "2018-01-18T10:15:31.035Z"
               enabled: false
-    '400':
+    "400":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -69,7 +74,9 @@ get:
             message: Bad Request
             details:
               - page property value is invalid
-    '403':
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -78,8 +85,10 @@ get:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: This feature has not been enabled in your account.
-  deprecated: false
 post:
+  security:
+    - basic_auth: []
+    - hmac_auth: []
   tags:
     - Signature Key Management
   summary: Create signature key
@@ -90,8 +99,7 @@ post:
     - The ```private key``` stored in Sinch is used to create the signature.
 
 
-    - The ```public key``` is returned and stored at your side to verify the
-    signature in callbacks.
+    - The ```public key``` is returned and stored at your side to verify the signature in webhooks.
 
 
     You need to enable your signature key after creating.
@@ -100,7 +108,7 @@ post:
     The most basic body has the following structure:
 
 
-    ```json
+    ```javascript
 
     {
         "digest": "SHA224",
@@ -122,7 +130,7 @@ post:
     a response body as follows:
 
 
-    ```json
+    ```javascript
 
     {
         "key_id": "7ca628a8-08b0-4e42-aeb8-960b37049c31",
@@ -162,14 +170,14 @@ post:
   parameters:
     - name: Accept
       in: header
-      description: ''
+      description: Requested response media type.
       required: true
       style: simple
       schema:
         type: string
         example: application/json
   requestBody:
-    description: ''
+    description: Request body.
     content:
       application/json:
         schema:
@@ -179,7 +187,7 @@ post:
           cipher: RSA
     required: true
   responses:
-    '201':
+    "201":
       description: The new signature key has been created.
       headers: {}
       content:
@@ -192,9 +200,9 @@ post:
               MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCTIxtRyT5CuOD74r7UCT+AKzWNxvaAP9myjAqR7+vBnJKEvoPnmbKTnm6uLlxutnMbjKrnCCWnQ9vtBVnnd+ElhwLDPADfMcJoOqwi7mTcxucckeEbBsfsgYRfdacxgSZL8hVD1hLViQr3xwjEIkJcx1w3x8npvwMuTY0uW8+PjwIDAQAB
             cipher: RSA
             digest: SHA224
-            created: '2018-01-18T10:16:12.364Z'
+            created: "2018-01-18T10:16:12.364Z"
             enabled: false
-    '400':
+    "400":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -203,8 +211,10 @@ post:
           example:
             message: Bad Request
             details:
-              - '/cipher: [RA] is invalid'
-    '403':
+              - "/cipher: [RA] is invalid"
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -213,4 +223,3 @@ post:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: This feature has not been enabled in your account.
-  deprecated: false

@@ -5,21 +5,20 @@ get:
   tags:
     - Mobile Landing Pages (beta)
   summary: Get Campaign
-  description: >-
-    A single campaign, identified by a unique identifier.Returns the details of
-    a single campaign.
+  description: A single campaign, identified by a unique identifier.Returns the details of a single campaign.
   operationId: GetCampaign
   parameters:
     - name: id
       in: path
-      description: ''
+      description: Unique identifier of the campaign.
       required: true
       style: simple
       schema:
         type: string
+        example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
   responses:
-    '200':
-      description: ''
+    "200":
+      description: Successful response.
       headers: {}
       content:
         application/json:
@@ -34,6 +33,18 @@ get:
               callToAction: http://www.example.com/
             message:
               content: This is the message.
+              destination_number: "+61491570156"
               metadata:
                 key: value
-  deprecated: false
+    "400":
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/400response.yaml
+    "401":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/403response.yaml

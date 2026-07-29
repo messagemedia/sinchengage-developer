@@ -7,7 +7,7 @@ properties:
     type: array
     items:
       $ref: ./Recipient1.yaml
-    description: ''
+    description: List of recipients.
 example:
   recipients:
     - id: 05f81030-95fb-4c17-8736-ac73948e8b82

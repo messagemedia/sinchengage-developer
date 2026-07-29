@@ -7,7 +7,7 @@ properties:
     type: array
     items:
       $ref: ../Message.yaml
-    description: ''
+    description: List of messages.
 example:
   messages:
     - callback_url: https://my.callback.url.com

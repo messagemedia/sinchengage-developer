@@ -10,17 +10,28 @@ post:
     units, using pre-calculated data to improve performance.
   operationId: PostInsightReport
   requestBody:
-    description: ''
+    description: Request body.
     content:
       application/json:
         schema:
           $ref: ../../components/schemas/messaging-reports/insightsrequest.yaml
   responses:
-    '200':
+    "200":
       description: A list of all messages received in the specified time window
       headers: {}
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/messaging-reports/insightsresponse.yaml
-  deprecated: false
+    "400":
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/400response.yaml
+    "401":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/403response.yaml

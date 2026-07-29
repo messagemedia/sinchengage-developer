@@ -12,6 +12,14 @@ const OUT_DIR = path.join(root, '.tmp');
 const OUT_PATH = path.join(OUT_DIR, 'openapi.injected.yaml');
 
 const LANG_ORDER = ['C#', 'Java', 'JavaScript', 'PHP', 'Python', 'Ruby'];
+const LANG_EXTENSIONS = {
+  'C#': new Set(['.cs']),
+  Java: new Set(['.java']),
+  JavaScript: new Set(['.js', '.mjs', '.cjs', '.ts']),
+  PHP: new Set(['.php']),
+  Python: new Set(['.py']),
+  Ruby: new Set(['.rb']),
+};
 const HTTP_METHODS = new Set([
   'get',
   'put',
@@ -49,10 +57,12 @@ function parseSamplePath(filePath) {
   const lang = parts[0];
   const verbWithExt = parts[parts.length - 1];
   const dirParts = parts.slice(1, -1);
-  const verb = path.parse(verbWithExt).name.toLowerCase();
+  const parsed = path.parse(verbWithExt);
+  const verb = parsed.name.toLowerCase();
+  const ext = parsed.ext.toLowerCase();
   const pathKey = '/' + dirParts.join('/').replaceAll('@', '/');
 
-  return { lang, pathKey, verb };
+  return { lang, pathKey, verb, ext };
 }
 
 function sortSamples(samples) {
@@ -78,6 +88,7 @@ function main() {
 
   let injected = 0;
   let skipped = 0;
+  const errors = [];
 
   for (const filePath of walkFiles(SAMPLES_DIR)) {
     const parsed = parseSamplePath(filePath);
@@ -87,18 +98,37 @@ function main() {
       continue;
     }
 
-    const { lang, pathKey, verb } = parsed;
+    const { lang, pathKey, verb, ext } = parsed;
+    const rel = path.relative(root, filePath);
+    const allowedExts = LANG_EXTENSIONS[lang];
+
+    if (!allowedExts) {
+      errors.push(`Unknown language folder "${lang}" (${rel})`);
+      continue;
+    }
+    if (!allowedExts.has(ext)) {
+      errors.push(
+        `Extension ${ext || '(none)'} does not match language "${lang}" (${rel}); expected ${[...allowedExts].join(', ')}`,
+      );
+      continue;
+    }
+
+    const source = fs.readFileSync(filePath, 'utf8');
+    if (source.trim() === '') {
+      errors.push(`Empty code sample (${rel}); remove it or add real source`);
+      continue;
+    }
+
     const operation = spec.paths?.[pathKey]?.[verb];
 
     if (!operation || typeof operation !== 'object' || !HTTP_METHODS.has(verb)) {
       console.warn(
-        `No matching operation for ${lang} ${verb.toUpperCase()} ${pathKey} (${path.relative(root, filePath)})`,
+        `No matching operation for ${lang} ${verb.toUpperCase()} ${pathKey} (${rel})`,
       );
       skipped += 1;
       continue;
     }
 
-    const source = fs.readFileSync(filePath, 'utf8');
     if (!Array.isArray(operation['x-codeSamples'])) {
       operation['x-codeSamples'] = [];
     }
@@ -109,6 +139,15 @@ function main() {
       source,
     });
     injected += 1;
+  }
+
+  if (errors.length > 0) {
+    console.error('Code sample validation failed:');
+    for (const err of errors) {
+      console.error(`  - ${err}`);
+    }
+    process.exitCode = 1;
+    return;
   }
 
   for (const pathItem of Object.values(spec.paths)) {

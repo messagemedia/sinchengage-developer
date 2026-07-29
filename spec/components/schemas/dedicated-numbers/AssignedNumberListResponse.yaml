@@ -5,7 +5,7 @@ properties:
     type: array
     items:
       $ref: ./AssignedNumber.yaml
-    description: ''
+    description: List of result items.
   pagination:
     $ref: ../Pagination.yaml
 example:

@@ -10,50 +10,52 @@ get:
   parameters:
     - name: key
       in: query
-      description: ''
+      description: Metadata key used to filter results.
       style: form
       explode: true
       schema:
         type: string
     - name: value
       in: query
-      description: ''
+      description: Metadata value used to filter results.
       style: form
       explode: true
       schema:
         type: string
     - name: url
       in: query
-      description: ''
+      description: URL used to filter results.
       style: form
       explode: true
       schema:
         type: string
     - name: recipient
       in: query
-      description: ''
+      description: Recipient address used to filter results.
       style: form
       explode: true
       schema:
         type: string
     - name: page
       in: query
-      description: ''
+      description: Page number for pagination (1-based).
       style: form
       explode: true
       schema:
         type: number
         format: double
+        example: 1
     - name: pageSize
       in: query
-      description: ''
+      description: Number of results per page.
       style: form
       explode: true
       schema:
         type: number
         format: double
+        example: 20
   responses:
-    '200':
+    "200":
       description: OK
       headers: {}
       content:
@@ -77,10 +79,11 @@ get:
               page: 1
               page_size: 100
               page_count: 3
-    '400':
+    "400":
       description: Bad Request. Invalid data provided
-    '404':
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "404":
       description: Data cannot be found
-    '500':
+    "500":
       description: System Error
-  deprecated: false

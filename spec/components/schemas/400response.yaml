@@ -10,7 +10,7 @@ properties:
     type: array
     items:
       type: string
-    description: ''
+    description: Additional error detail messages.
 example:
   message: >-
     Request failed to parse correctly. Please ensure input is valid and try

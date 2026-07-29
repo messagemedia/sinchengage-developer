@@ -14,7 +14,7 @@ post:
     The most basic message has the following structure:
 
 
-    ```json
+    ```javascript
 
 
     {
@@ -96,7 +96,7 @@ post:
           - If your account has multiple numbers, you can specify which source number to use in the request.
           - If your account does not have a number, your message may be sent using our shared number pool (in certain countries only)
         - `Alpha tag:` In some countries (AU, GB, some others), you may be able to send using an alpha tag - text that represents your brand of business.  Before using an alpha tag, you must register it in the Numbers section of the web portal.
-        - `Other numbers:` You may use numbers that you own as the source number, but you must register them in the Numbers section of the web portal to confirm  you have a right to use the number.
+        - `Other numbers:` You may use numbers that you own as the source number, but you must register them in the Numbers section of the web portal to confirm you have a right to use the number.
       If you need to register a large number of source numbers/sender IDs, consider using our [Source Address API](#tag/Source-Address)
       
       ⚠️ If you specify a source_number that is not registered to your account, the message may fail to send, or may be sent with an alternative number.
@@ -169,7 +169,7 @@ post:
   operationId: SendMessages
   parameters: []
   requestBody:
-    description: ''
+    description: Request body.
     content:
       application/json:
         schema:
@@ -178,42 +178,42 @@ post:
           messages:
             - callback_url: https://my.callback.url.com
               content: My first message
-              destination_number: '+61491570156'
+              destination_number: "+61491570156"
               delivery_report: true
               format: SMS
-              message_expiry_timestamp: '2016-11-03T11:49:02.807Z'
+              message_expiry_timestamp: "2016-11-03T11:49:02.807Z"
               metadata:
                 key1: value1
                 key2: value2
-              scheduled: '2016-11-03T11:49:02.807Z'
-              source_number: '+61491570157'
+              scheduled: "2016-11-03T11:49:02.807Z"
+              source_number: "+61491570157"
               source_number_type: INTERNATIONAL
             - callback_url: https://my.callback.url.com
               content: My second message
-              destination_number: '+61491570158'
+              destination_number: "+61491570158"
               delivery_report: true
               format: MMS
               subject: This is an MMS message
               media:
                 - >-
                   https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg
-              message_expiry_timestamp: '2016-11-03T11:49:02.807Z'
+              message_expiry_timestamp: "2016-11-03T11:49:02.807Z"
               metadata:
                 key1: value1
                 key2: value2
-              scheduled: '2016-11-03T11:49:02.807Z'
-              source_number: '+61491570159'
+              scheduled: "2016-11-03T11:49:02.807Z"
+              source_number: "+61491570159"
               source_number_type: INTERNATIONAL
     required: true
   responses:
-    '202':
+    "202":
       description: Messages were accepted for processing
       headers: {}
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/messages/Sendmessagesresponse.yaml
-    '400':
+    "400":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -221,10 +221,9 @@ post:
             $ref: ../../components/schemas/400response.yaml
           example:
             message: Something went wrong. Please try again later.
-    '403':
-      description: Unauthorised
+    "401":
+      description: Unauthorized
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/403response.yaml
-  deprecated: false

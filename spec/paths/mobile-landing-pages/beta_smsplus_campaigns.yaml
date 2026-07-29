@@ -9,7 +9,7 @@ post:
   operationId: CreateNewCampaign
   parameters: []
   requestBody:
-    description: ''
+    description: Request body.
     content:
       application/json:
         schema:
@@ -32,7 +32,7 @@ post:
     required: true
     x-send-file-in-body: false
   responses:
-    '201':
+    "201":
       description: Campaign was successfully created.
       headers: {}
       content:
@@ -48,10 +48,12 @@ post:
               callToAction: http://www.example.com/
             message:
               content: This is the message.
+              destination_number: "+61491570156"
               metadata:
                 key: value
-    '400':
-      description: ''
-    '402':
-      description: ''
-  deprecated: false
+    "400":
+      description: Bad request.
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "402":
+      description: Payment required.

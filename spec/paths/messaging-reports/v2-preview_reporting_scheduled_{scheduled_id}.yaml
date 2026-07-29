@@ -16,16 +16,17 @@ get:
       description: The ID of the scheduled report to retrieve.
       example: e6fb8282-c7c3-4367-8590-6c77ddb11c3e
   responses:
-    '200':
+    "200":
       description: The scheduled report matching the provided ID.
       headers: {}
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/messaging-reports/scheduledreport.yaml
-    '404':
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "404":
       description: Scheduled report not found.
-  deprecated: false
 delete:
   security:
     - basic_auth: []
@@ -44,8 +45,9 @@ delete:
       description: The ID of the scheduled report to delete.
       example: e6fb8282-c7c3-4367-8590-6c77ddb11c3e
   responses:
-    '202':
+    "202":
       description: An empty response indicating the report has been deleted.
-    '404':
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "404":
       description: Scheduled report not found.
-  deprecated: false

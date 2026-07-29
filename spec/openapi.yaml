@@ -1,11 +1,15 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
   version: 2.1.0
   title: Sinch Engage
   termsOfService: https://www.sinch.com/legal/terms-and-conditions/
+  contact:
+    name: Sinch Engage Support
+    email: support@app.sinch.com
+    url: https://support.app.sinch.com/hc/en-us/categories/10516535548943-Sinch-Engage-Developer-Guides
   license:
     name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
   x-logo:
     url: ./logo.png
   description: >
@@ -81,7 +85,7 @@ info:
     ### Character Converter
 
     Characters in a message may not always fall within the GSM-7 supported
-    characterset, and when this occurs all 
+    character set, and when this occurs all 
 
     outbound messages will be encoded using UCS-2 leading to the customer being
     double-charged for the SMS. Character Converter 
@@ -89,7 +93,7 @@ info:
     can help you avoid being double-charged for your SMS by converting all
     characters into the GSM-7 format ensuring you always 
 
-    get the maximum characters into an SMS. Bear in my mind, this will downgrade
+    get the maximum characters into an SMS. Bear in mind, this will downgrade
     all your unicode characters so for instance, 
 
     your emojis will be translated into a string of unknown characters (eg: �). 
@@ -99,6 +103,7 @@ info:
     support team.
 tags:
   - name: Basic Authentication
+    kind: nav
     description: >-
 
       Every request requires an `Authorization` header in the following format:
@@ -142,6 +147,7 @@ tags:
 
       _Note: spaces are used as indentation in the body of the above request._
   - name: HMAC Authentication
+    kind: nav
     description: >-
 
       Every request requires an `Authorization` header in the following formats:
@@ -264,55 +270,8 @@ tags:
       Authorization: hmac username="uCXUdoogNfCsehEClbO2",
       algorithm="hmac-sha256", headers="Date request-line",
       signature="NTUwMjUwNTVmZGYzZTIxODMyYjc1ZmM3M2EwZWQ1NzA3NzA4ZTZjNw==" ```
-  - name: Development Tools
-    description: >
-      ## SDKs
-
-      Software Development Kits are available across six languages to assist
-      with integration with the major endpoints. 
-
-
-      In the event an SDK is not available or does not work with your
-      environment, any standard HTTP client library can be used. These are some
-      client libraries we recommend, 
-
-      that include HMAC authentication capability: 
-
-
-      ### C#
-
-      [RestSharp](http://restsharp.org/) with custom authenticator
-
-
-      ### Java
-
-      [Acquia HTTP Request
-      Interceptor](https://github.com/acquia/http-hmac-java) for the Apache HTTP
-      Client
-
-
-      ### Javascript
-
-      [Acquia HTTP HMAC Signer for
-      JavaScript](https://github.com/acquia/http-hmac-javascript)
-
-
-      ### PHP
-
-      [HTTP HMAC Signer for PHP](https://github.com/acquia/http-hmac-php) Which
-      can be used with [Guzzle](http://docs.guzzlephp.org/en/stable/).
-
-
-      ### Python
-
-      [HMAC](https://github.com/guardian/httpie-hmac-auth) auth plugin for
-      [HTTPie](https://github.com/jakubroztocil/httpie).
-
-
-      ### Ruby
-
-      [APIAuth](https://github.com/mgomes/api_auth) Ruby Gem 
   - name: Sub-accounts
+    kind: nav
     description: >
       ## Performing actions on behalf of sub-accounts
 
@@ -342,7 +301,7 @@ tags:
             {
               "content": "Hello World",
               "destination_number": "+61491570156",
-              “delivery_report”: true
+              "delivery_report": true
             }
           ]
         } 
@@ -374,19 +333,19 @@ tags:
 
       Simply put, a sender ID is whatever you send a text message from. This is
       typically either a phone number, or a string of alphanumeric characters
-      (commonly referred to as an “Alpha Tag”).
+      (commonly referred to as an "Alpha Tag").
 
 
       With regulations surrounding SMS becoming much stricter all over the world
-      in an effect to combat scam SMS messages, Sinch is working on “Trusted
-      Sender ID” a concept that allows customers to request a Sender ID and have
+      in an effect to combat scam SMS messages, Sinch is working on "Trusted
+      Sender ID" a concept that allows customers to request a Sender ID and have
       it verified.
 
 
       Currently, Trusted Sender ID supports two types of Sender ID: Alpha Tags
-      and Personal (“Own”) Numbers. It will likely be extended to support
+      and Personal ("Own") Numbers. It will likely be extended to support
       additional number types, such as TFN and 10DLC where additional
-      registration, (external) verification, and overall account whitelist of
+      registration, (external) verification, and overall account allowlist of
       numbers will be required.
 
 
@@ -395,7 +354,7 @@ tags:
         
         Alpha tags are made up of 3-11 letters and/or numbers. Alpha tags must be registered and approved before sending and must have clear relevancy to your business and/or use case.
         
-        Alpha Tags appear as the “From” number when you receive messages.
+        Alpha Tags appear as the "From" number when you receive messages.
         
         A good alpha tag meets at least one of the following valid use cases: 
         * Business names
@@ -421,7 +380,7 @@ tags:
         Once the alpha tag has been approved, you can begin using it as a Sender ID for SMS messages.
 
         ### Personal Number
-        A personal number, or “My Own Number”, is a number that you own rather than one provided to you by Sinch. Typically, this is your personal mobile phone number. You may wish to register this number for use with our service so that you can easily send messages from a number already associated with your organisation.
+        A personal number, or "My Own Number", is a number that you own rather than one provided to you by Sinch. Typically, this is your personal mobile phone number. You may wish to register this number for use with our service so that you can easily send messages from a number already associated with your organisation.
         
         Before you can send messages using your own number, you need to verify that you have a right to use that number. Ensuring you have a right to use a phone number is an important regulatory requirement, aiming to prevent scam, spam, and misuse of messaging services.
 
@@ -465,7 +424,7 @@ tags:
 
       replies received in response to the message or delivery reports received
       for the message will be pushed via a HTTP POST request. An alternative to
-      delivery reports via callbacks is custom webhooks using the webhooks
+      delivery reports via a callback URL is custom webhooks using the webhooks
       management API. 
 
 
@@ -479,16 +438,16 @@ tags:
 
 
       To include billing units in your delivery receipts via Webhooks, ensure
-      that the switch "Enable billing units in Delivery Reports and Callbacks”
+      that the switch "Enable billing units in Delivery Reports and Callbacks"
       is enabled in the API settings of your account.
 
 
       For delivery reports or changes in the status of a message, the POST
       request to the specified URL will be as follows:
         
-        _Note, multiple delivery report notifications will be recieved for a single message._
+        _Note, multiple delivery report notifications will be received for a single message._
 
-      ```json
+      ```javascript
 
       {
         "callback_url":"http://mockbin.org/bin/ac52ebd4-eca1-4c86-bf38-4dce79633906",
@@ -632,7 +591,7 @@ tags:
         
         * `405`: Message cancelled or deleted by provider.
   - name: Replies
-    description: ''
+    description: Endpoints for checking and confirming inbound message replies (MO) received by your account.
   - name: Number Authorisation
     description: >-
       The number authorisation API allows you to manage your blacklists. Sinch
@@ -642,7 +601,7 @@ tags:
       This is a legal requirement. If you decide to handle the legal compliance
       yourself, calls to this endpoint will not affect your messages.
   - name: Dedicated Numbers
-    description: "The Numbers API allows your to purchase, provision and configure the dedicated numbers assigned to your Sinch account. \n\nTo learn more about the benefits of dedicated numbers, and their use cases,\_visit our [feature page](https://sinch.com/au/feature/dedicated-virtual-numbers/).\n\nThis is a paid feature and must be enabled on your account. Please contact [support@app.sinch.com](mailto:support@app.sinch.com) or your account manager.\n\n## Concepts\n\nThis API allows you to purchase and assign to your account a number from a pool of dedicated numbers. Dedicated numbers are priced differently according to their classification.\n\nThe following is the system by which we classify dedicated numbers. \n\n| Pattern Type | Gold|  Silver |\n|---|---|---|\n| Same Number  |  Six of same (e.g. 999999) | Five of same (e.g. 999991 or 199999)  | \n| Sequence  |  Six in sequence (e.g. 234567, or 765432) | Five in sequence (e.g. 245678, 456782, or 287654)  |\n|  Triplets |  Two identical (e.g. 123123) or two double (e.g. 444666) | Identical pairs within triplets (e.g. 004008, or 400800), one identical and one in sequence (e.g. 444789, or 345777), or mirror image (e.g. 468864)| \n|Pair|Three identical (e.g. 454545)|Three non-identical (e.g. 447700) or three in sequence (e.g. 232425, or 090807)|\n\nAny numbers that do not meet the criteria for Gold or Silver are classified as Bronze.\n\nFor pricing on dedicated numbers please refer to the Numbers page in our Hub web portal, or speak with your Sinch Account Manager.\n"
+    description: "The Numbers API allows your to purchase, provision and configure the dedicated numbers assigned to your Sinch account. \n\nTo learn more about the benefits of dedicated numbers, and their use cases,\_visit our [feature page](https://support.app.sinch.com/hc/en-us/articles/10526389880207-Dedicated-numbers).\n\nThis is a paid feature and must be enabled on your account. Please contact [support@app.sinch.com](mailto:support@app.sinch.com) or your account manager.\n\n## Concepts\n\nThis API allows you to purchase and assign to your account a number from a pool of dedicated numbers. Dedicated numbers are priced differently according to their classification.\n\nThe following is the system by which we classify dedicated numbers. \n\n| Pattern Type | Gold|  Silver |\n|---|---|---|\n| Same Number  |  Six of same (e.g. 999999) | Five of same (e.g. 999991 or 199999)  | \n| Sequence  |  Six in sequence (e.g. 234567, or 765432) | Five in sequence (e.g. 245678, 456782, or 287654)  |\n|  Triplets |  Two identical (e.g. 123123) or two double (e.g. 444666) | Identical pairs within triplets (e.g. 004008, or 400800), one identical and one in sequence (e.g. 444789, or 345777), or mirror image (e.g. 468864)| \n|Pair|Three identical (e.g. 454545)|Three non-identical (e.g. 447700) or three in sequence (e.g. 232425, or 090807)|\n\nAny numbers that do not meet the criteria for Gold or Silver are classified as Bronze.\n\nFor pricing on dedicated numbers please refer to the Numbers page in our Hub web portal, or speak with your Sinch Account Manager.\n"
   - name: Messaging Reports
     description: >
       The Sinch Reports API provides a number of endpoints for running reports
@@ -684,7 +643,7 @@ tags:
       them or even delete them if needed.
   - name: Signature Key Management
     description: >
-      As a Sinch customer, you want to be able to ensure that callbacks are
+      As a Sinch customer, you want to be able to ensure that webhooks are
       coming from Sinch and not from a 3rd party. Since 
 
       these are calls to your own system, you should be provided with an extra
@@ -705,7 +664,7 @@ tags:
       The Signature Key API provides seven main endpoints:
 
       - ```Create signature key``` Create a new signature key for signature
-      verification in callbacks.
+      verification in webhooks.
 
       - ```Get signature key detail``` Retrieve the current detail of a
       signature key using the key_id returned in the ```create signature key```
@@ -904,8 +863,8 @@ tags:
       text|  Indicate the color of bar code. Use a color name(eg. 'red',
       'green'), or a hex value(eg. '#F0F8FF') |
 
-      | pageText | |html| For personalisation, use the following format: “Hi
-      ${firstName}, thanks for visiting…”|
+      | pageText | |html| For personalisation, use the following format: "Hi
+      ${firstName}, thanks for visiting…"|
 
       | pageTextColor|Optional - each template has it's own default value|
       text|  Indicate the color of page text. Use a color name(eg. 'red',
@@ -915,8 +874,8 @@ tags:
       pixels, height: 375 pixels, size: less than 300 kB, type: png, gif, or
       jpg.|
 
-      | headline | |text| For personalisation, use the following format: “Hi
-      ${firstName}, thanks for visiting…”. Specifications: 60 characters or less
+      | headline | |text| For personalisation, use the following format: "Hi
+      ${firstName}, thanks for visiting…". Specifications: 60 characters or less
       recommended|
 
       | headlineColor|Optional - each template has it's own default value|
@@ -930,13 +889,13 @@ tags:
       height: 120 pixels, size: less than 300 kB, type: png, gif, or jpg|
 
       | logoLink | Optional|url| For personalisation, use the following format:
-      “https://example.com/?cid=${customerId}”|
+      "https://example.com/?cid=${customerId}"|
 
       | primaryButtonLink | |url| For personalisation, use the following format:
-      “https://example.com/?cid=${customerId}”|
+      "https://example.com/?cid=${customerId}"|
 
       | primaryButtonText | |text| For personalisation, use the following
-      format: “${firstName}, shop now”. Specifications: 36 characters or less
+      format: "${firstName}, shop now". Specifications: 36 characters or less
       recommended |
 
       | primaryButtonTextColor|Optional - each template has it's own default
@@ -949,11 +908,11 @@ tags:
 
       | secondaryButtonLink | Optional - depends on MLP template |url| For
       personalisation, use the following format:
-      “https://example.com/?cid=${customerId}”|
+      "https://example.com/?cid=${customerId}"|
 
       | secondaryButtonText | Optional - depends on MLP template |text| For
-      personalisation, use the following format: “Hi ${firstName}, thanks for
-      visiting…”. Specifications: 36 characters or less recommended |
+      personalisation, use the following format: "Hi ${firstName}, thanks for
+      visiting…". Specifications: 36 characters or less recommended |
 
       | secondaryButtonTextColor|Optional - each template has it's own default
       value| text|  Indicate the color of the secondary button text. Use a color
@@ -996,11 +955,43 @@ tags:
         * **Contacts**: Data associated with the individuals you need to contact.
         * **Lists**: Groups of contacts created for specific purposes.
         * **Custom Fields**: Additional fields that can be tailored to complement the basic contact fields.
+x-tagGroups:
+  - name: Guides
+    tags:
+      - Basic Authentication
+      - HMAC Authentication
+      - Sub-accounts
+  - name: Messaging
+    tags:
+      - Messages
+      - Delivery Reports
+      - Replies
+  - name: Numbers
+    tags:
+      - Source Address
+      - Number Authorisation
+      - Dedicated Numbers
+  - name: Webhooks and security
+    tags:
+      - Webhooks Management
+      - Signature Key Management
+  - name: Reporting
+    tags:
+      - Messaging Reports
+      - Short Trackable Links Reports
+  - name: Contacts
+    tags:
+      - Contacts
+  - name: Beta
+    tags:
+      - Mobile Landing Pages (beta)
 servers:
   - url: https://eu.app.api.sinch.com/
     description: EU instance
+    name: EU
   - url: https://au.app.api.sinch.com/
     description: APAC instance
+    name: APAC
 paths:
   /v2-preview/reporting/messages/metakeys:
     $ref: paths/messaging-reports/v2-preview_reporting_messages_metakeys.yaml
@@ -1127,12 +1118,6 @@ components:
       $ref: ./components/schemas/_format-schemas.yaml#/Format
     format:
       $ref: ./components/schemas/_format-schemas.yaml#/format
-    Lookupaphonenumberresponse:
-      $ref: ./components/schemas/Lookupaphonenumberresponse.yaml
-    Carrier:
-      $ref: ./components/schemas/Carrier.yaml
-    Lookupaphonenumber404response:
-      $ref: ./components/schemas/Lookupaphonenumber404response.yaml
     MessageMLP:
       $ref: ./components/schemas/mobile-landing-pages/MessageMLP.yaml
     MetadataMLP:
@@ -1159,11 +1144,20 @@ components:
     basic_auth:
       type: http
       scheme: basic
+      description: >
+        HTTP Basic authentication using your API key as the username and API
+        secret as the password. See the Basic Authentication guide tag.
     hmac_auth:
       type: apiKey
       in: header
       name: Authorization
+      description: >
+        HMAC request signing. Place the full `hmac username=...` credential in
+        the Authorization header. See the HMAC Authentication guide tag.
     bearer_auth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: >
+        Bearer JWT authentication used by selected messaging-reports async
+        download endpoints. Prefer Basic or HMAC for all other operations.

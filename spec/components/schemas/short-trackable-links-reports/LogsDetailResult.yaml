@@ -23,12 +23,12 @@ properties:
     type: array
     items:
       $ref: ./Click.yaml
-    description: ''
+    description: List of click events.
   views:
     type: array
     items:
       $ref: ./View.yaml
-    description: ''
+    description: List of view events.
   pagination:
     $ref: ../Pagination.yaml
 example:

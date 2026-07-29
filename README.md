@@ -94,7 +94,7 @@ Build helpers used by npm scripts.
 | Path | Purpose |
 |------|---------|
 | `/scripts/inject-code-samples.mjs` | Injects `/spec/code_samples/` into `x-codeSamples` on the bundled spec. |
-| `/scripts/copy-assets.mjs` | Copies `/web` assets into `/web_deploy` after docs are built. |
+| `/scripts/copy-assets.mjs` | Copies `/web` assets into `/web_deploy` and publishes `openapi.yaml` + `openapi.json` for ReDoc downloads. |
 
 ### `/changelog`
 Changelog entries for documentation or API updates.
@@ -109,7 +109,8 @@ CI workflows. The main workflow installs dependencies, lints the OpenAPI entry (
 
 | Path | Purpose |
 |------|---------|
-| `redocly.yaml` | Redocly CLI config: API root (`spec/openapi.yaml`), lint ruleset/extends, and ReDoc theme. |
+| `redocly.yaml` | Redocly CLI config: API root (`spec/openapi.yaml`), lint ruleset/extends, custom plugins, and ReDoc theme. |
+| `vocabulary.yaml` | Controlled vocabulary (banned terms + preferred replacements) enforced by `plugins/vocabulary.mjs`. |
 | `package.json` | Dependencies and npm scripts (`lint`, `build`, `preview-docs`, and so on). |
 
 ### Generated output (not committed)

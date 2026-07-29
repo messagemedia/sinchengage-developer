@@ -47,6 +47,7 @@ get:
       style: simple
       schema:
         type: string
+        example: f56b5806-f732-4693-b87a-90b66a7d7bfc
     - name: page
       in: query
       description: The page of results to retrieve.  If unspecified, defaults to 0.
@@ -55,6 +56,7 @@ get:
       schema:
         type: number
         format: double
+        example: 1
     - name: page_size
       in: query
       description: The size of each page.  Must be between 5 and 100.  Defaults to 25.
@@ -63,16 +65,18 @@ get:
       schema:
         type: number
         format: double
+        example: 20
   responses:
-    '200':
-      description: ''
+    "200":
+      description: Successful response.
       headers: {}
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/mobile-landing-pages/ListCampaignEventPage.yaml
-    '402':
-      description: ''
-    '404':
-      description: ''
-  deprecated: false
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "402":
+      description: Payment required.
+    "404":
+      description: Not found.

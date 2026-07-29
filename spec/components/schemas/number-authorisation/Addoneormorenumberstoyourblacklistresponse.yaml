@@ -1,0 +1,18 @@
+title: Addoneormorenumberstoyourblacklistresponse
+required:
+  - uri
+  - numbers
+type: object
+properties:
+  uri:
+    type: string
+  numbers:
+    type: array
+    items:
+      type: string
+    description: List of phone numbers.
+example:
+  uri: /v1/number_authorisation/mt/blacklist
+  numbers:
+    - '61491570156'
+    - '61491570157'

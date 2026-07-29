@@ -5,7 +5,7 @@ get:
   tags:
     - Dedicated Numbers
   summary: Get assigned numbers
-  description: ''
+  description: Retrieves the list of assigned dedicated numbers.
   operationId: GetAssignedNumbers
   parameters:
     - name: page_size
@@ -16,7 +16,7 @@ get:
       schema:
         type: integer
         format: int32
-        example: 3
+        example: 20
     - name: token
       in: query
       description: >-
@@ -27,7 +27,7 @@ get:
       explode: true
       schema:
         type: string
-        example: example
+        example: eyJwYWdlIjoyfQ
     - name: number_id
       in: query
       description: Unique identifier of a specific number
@@ -99,6 +99,7 @@ get:
       explode: true
       schema:
         $ref: ../../components/schemas/dedicated-numbers/sort_by.yaml
+      example: TIMESTAMP
     - name: sort_direction
       in: query
       description: Sort direction
@@ -106,16 +107,17 @@ get:
       explode: true
       schema:
         $ref: ../../components/schemas/dedicated-numbers/sort_direction.yaml
+      example: ASCENDING
     - name: Accept
       in: header
-      description: ''
+      description: Requested response media type.
       required: true
       style: simple
       schema:
         type: string
         example: application/json;charset=UTF-8
   responses:
-    '200':
+    "200":
       description: OK
       headers: {}
       content:
@@ -143,12 +145,11 @@ get:
                   available_after: '2019-08-06T23:56:15.633Z'
                   capabilities:
                     - SMS
-    '403':
-      description: Unauthorised
+    "401":
+      description: Unauthorized
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/403response.yaml
           example:
             message: Invalid authentication credentials
-  deprecated: false

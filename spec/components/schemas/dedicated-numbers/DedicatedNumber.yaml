@@ -8,7 +8,7 @@ properties:
     type: array
     items:
       $ref: ./Capability.yaml
-    description: ''
+    description: Capabilities supported by this number.
   classification:
     $ref: ./Classification.yaml
   country:

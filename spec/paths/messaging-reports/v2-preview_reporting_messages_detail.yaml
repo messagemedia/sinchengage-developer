@@ -5,22 +5,31 @@ post:
   tags:
     - Messaging Reports
   summary: Post detail report
-  description: >-
-    Generates a report listing all sent and/or received messages within a
-    specified time period.
+  description: Generates a report listing all sent and/or received messages within a specified time period.
   operationId: PostDetailReport
   requestBody:
-    description: ''
+    description: Request body.
     content:
       application/json:
         schema:
           $ref: ../../components/schemas/messaging-reports/detailrequest.yaml
   responses:
-    '200':
+    "200":
       description: A list of all messages received in the specified time window
       headers: {}
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/messaging-reports/detailresponse.yaml
-  deprecated: false
+    "400":
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/400response.yaml
+    "401":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/403response.yaml

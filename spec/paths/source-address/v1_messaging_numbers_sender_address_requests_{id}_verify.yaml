@@ -5,10 +5,8 @@ post:
   tags:
     - Source Address
   summary: Submitting a verification code
-  description: >
-    Complete the 2FA verification process required to register a Personal Number
-    as a Sender ID.
-
+  description: |
+    Complete the 2FA verification process required to register a Personal Number as a Sender ID.
     The following parameters are required for this request:
       - ```id:``` The UUID received in the API response of your request to the **Request a Sender Address** endpoint.
       - ```verification_code:``` The six-digit code received via SMS to the phone number that you are attempting to register
@@ -21,6 +19,7 @@ post:
       style: simple
       schema:
         type: string
+        example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
   requestBody:
     description: Verification code to be verified
     content:
@@ -29,28 +28,28 @@ post:
           $ref: ../../components/schemas/source-address/PostVerificationCode.yaml
     required: true
   responses:
-    '201':
+    "201":
       description: Created
       headers: {}
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/source-address/VerificationCodeRequestItem.yaml
-    '400':
+    "400":
       description: Bad Request
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/400response.yaml
-    '401':
+    "401":
       description: Unauthorized
-    '403':
+    "403":
       description: Forbidden
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/403response.yaml
-    '404':
+    "404":
       description: Resource not found
       content:
         application/json:

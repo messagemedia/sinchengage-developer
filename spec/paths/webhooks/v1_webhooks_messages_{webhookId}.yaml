@@ -23,7 +23,7 @@ delete:
   parameters:
     - name: webhookId
       in: path
-      description: ''
+      description: Unique identifier of the webhook.
       required: true
       style: simple
       schema:
@@ -31,12 +31,13 @@ delete:
         format: uuid
         example: a7f11bb0-f299-4861-a5ca-9b29d04bc5ad
   responses:
-    '204':
+    "204":
       description: Webhook deleted successfully
       headers: {}
-    '404':
-      description: ''
-  deprecated: false
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "404":
+      description: Not found.
 patch:
   security:
     - basic_auth: []
@@ -78,7 +79,7 @@ patch:
   parameters:
     - name: webhookId
       in: path
-      description: ''
+      description: Unique identifier of the webhook.
       required: true
       style: simple
       schema:
@@ -86,7 +87,7 @@ patch:
         format: uuid
         example: a7f11bb0-f299-4861-a5ca-9b29d04bc5ad
   requestBody:
-    description: ''
+    description: Request body.
     content:
       application/json:
         schema:
@@ -97,10 +98,10 @@ patch:
           encoding: FORM_ENCODED
           events:
             - ENROUTE_DR
-          template: '{"id":"$mtId", "status":"$statusCode"}'
+          template: "{\"id\":\"$mtId\", \"status\":\"$statusCode\"}"
     required: true
   responses:
-    '200':
+    "200":
       description: Webhook updated successfully
       headers: {}
       content:
@@ -108,7 +109,7 @@ patch:
           schema:
             type: object
             description: Webhook updated successfully
-    '400':
+    "400":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -116,6 +117,7 @@ patch:
             $ref: ../../components/schemas/webhooks/UpdateWebhook400response.yaml
           example:
             message: Something went wrong. Please try again later.
-    '404':
-      description: ''
-  deprecated: false
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "404":
+      description: Not found.

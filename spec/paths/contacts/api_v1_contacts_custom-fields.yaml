@@ -5,6 +5,7 @@ post:
   tags:
     - Contacts
   summary: Create a custom field
+  description: Creates a new custom field for contacts.
   operationId: createCustomField
   requestBody:
     content:
@@ -13,29 +14,29 @@ post:
           $ref: ../../components/schemas/contacts/CustomFieldCreateRequest.yaml
     required: true
   responses:
-    '201':
+    "201":
       description: Custom field is created
       content:
-        '*/*':
+        "*/*":
           schema:
             $ref: ../../components/schemas/contacts/CustomFieldData.yaml
-    '400':
+    "400":
       $ref: ../../components/responses/BadRequest.yaml
-    '401':
+    "401":
       $ref: ../../components/responses/Unauthorized.yaml
-    '403':
+    "403":
       $ref: ../../components/responses/Forbidden.yaml
-    '409':
+    "409":
       $ref: ../../components/responses/Conflict.yaml
-    '500':
+    "500":
       $ref: ../../components/responses/InternalServerError.yaml
-    '501':
+    "501":
       $ref: ../../components/responses/RequestNotRecognised.yaml
-    '502':
+    "502":
       $ref: ../../components/responses/BadGateway.yaml
-    '503':
+    "503":
       $ref: ../../components/responses/ServerUnavailable.yaml
-    '504':
+    "504":
       $ref: ../../components/responses/GatewayTimeout.yaml
 get:
   security:
@@ -44,35 +45,39 @@ get:
   tags:
     - Contacts
   summary: Get custom fields page
+  description: Retrieves a paginated list of custom fields.
   operationId: getCustomFieldsPage
   parameters:
     - name: request
       in: query
       required: true
+      description: >
+        Pagination and filter options for the custom fields page (page tokens,
+        page size, and related filters).
       schema:
         $ref: ../../components/schemas/contacts/GetCustomFieldsRequest.yaml
   responses:
-    '200':
+    "200":
       description: Returns a custom fields page
       content:
-        '*/*':
+        "*/*":
           schema:
             $ref: ../../components/schemas/contacts/PageTokenDtoCustomFieldData.yaml
-    '400':
+    "400":
       $ref: ../../components/responses/BadRequest.yaml
-    '401':
+    "401":
       $ref: ../../components/responses/Unauthorized.yaml
-    '403':
+    "403":
       $ref: ../../components/responses/Forbidden.yaml
-    '409':
+    "409":
       $ref: ../../components/responses/Conflict.yaml
-    '500':
+    "500":
       $ref: ../../components/responses/InternalServerError.yaml
-    '501':
+    "501":
       $ref: ../../components/responses/RequestNotRecognised.yaml
-    '502':
+    "502":
       $ref: ../../components/responses/BadGateway.yaml
-    '503':
+    "503":
       $ref: ../../components/responses/ServerUnavailable.yaml
-    '504':
+    "504":
       $ref: ../../components/responses/GatewayTimeout.yaml

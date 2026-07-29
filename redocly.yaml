@@ -2,16 +2,49 @@ apis:
   engage:
     root: spec/openapi.yaml
 
+plugins:
+  - './plugins/vocabulary.mjs'
+
 extends:
   - recommended
 
+# CI (`npm run lint`) fails the build on any rule at severity `error`.
+# Trailing-slash rules stay at `warn` until path/server URLs are changed as a
+# deliberate API contract decision (see docs/MAPI-2253-ax-dx-assessment.md).
 rules:
+  # --- Merge blockers (hygiene + vocabulary) ---
+  operation-4xx-response: error
+  operation-description: error
+  operation-operationId: error
+  operation-summary: error
+  parameter-description: error
+  tag-description: error
+  security-defined: error
+  no-enum-type-mismatch: error
+  vocabulary/controlled-terms: error
+
+  # --- Deferred contract (do not block merges) ---
   no-server-trailing-slash: warn
   no-path-trailing-slash: warn
-  no-enum-type-mismatch: warn
-  security-defined: warn
+
+  # --- Known schema/example mismatches (do not block merges) ---
+  # Examples reflect production behaviour; the schemas are believed incorrect and
+  # are with the owning API teams to fix — see docs/schema-example-mismatch-report.md.
+  # Re-elevate to error once the schemas are corrected.
+  no-invalid-media-type-examples: warn
+  no-invalid-schema-examples: warn
+  no-invalid-parameter-examples: warn
 
 openapi:
+  # ReDoc download controls — both files are published next to index.html on Pages.
+  # downloadDefinitionUrl is set so ReDoc does not force download="openapi.json" on every link;
+  # the actual buttons come from downloadUrls (browser then uses the URL filename).
+  downloadDefinitionUrl: ./openapi.yaml
+  downloadUrls:
+    - title: Download OpenAPI (YAML)
+      url: ./openapi.yaml
+    - title: Download OpenAPI (JSON)
+      url: ./openapi.json
   theme:
     colors:
       primary:

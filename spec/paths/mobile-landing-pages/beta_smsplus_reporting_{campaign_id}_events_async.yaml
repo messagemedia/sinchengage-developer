@@ -48,12 +48,14 @@ get:
       style: simple
       schema:
         type: string
+        example: f56b5806-f732-4693-b87a-90b66a7d7bfc
   responses:
-    '202':
-      description: ''
+    "202":
+      description: Accepted for processing.
       headers: {}
-    '402':
-      description: ''
-    '404':
-      description: ''
-  deprecated: false
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "402":
+      description: Payment required.
+    "404":
+      description: Not found.

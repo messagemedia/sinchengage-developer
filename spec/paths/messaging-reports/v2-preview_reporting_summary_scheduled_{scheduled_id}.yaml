@@ -18,17 +18,28 @@ put:
       description: The ID of the scheduled report to update.
       example: e6fb8282-c7c3-4367-8590-6c77ddb11c3e
   requestBody:
-    description: ''
+    description: Request body.
     content:
       application/json:
         schema:
           $ref: ../../components/schemas/messaging-reports/updatescheduledsummaryreport.yaml
     required: true
   responses:
-    '200':
+    "200":
       description: The updated scheduled summary report.
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/messaging-reports/scheduledsummaryreportresposne.yaml
-  deprecated: false
+    "400":
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/400response.yaml
+    "401":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/403response.yaml

@@ -7,12 +7,12 @@ get:
   summary: Get status of a sender address request
   description: >
     Retrieve the current status of a sender address request using the request ID
-    returned in the sender address request end point.
+    returned in the sender address request endpoint.
 
     A successful request to the get message status endpoint will return a
     response body as follows:
 
-    ```json
+    ```javascript
 
     {
         "id": "365dd65f-7101-46cd-8e79-e49c5620eb15",
@@ -40,29 +40,30 @@ get:
       style: simple
       schema:
         type: string
+        example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
   responses:
-    '200':
+    "200":
       description: Get the status of Sender Address Request
       headers: {}
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/source-address/AlphaTagRequestItem.yaml
-    '400':
+    "400":
       description: Bad request
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/400response.yaml
-    '401':
+    "401":
       description: Unauthorized
-    '403':
+    "403":
       description: Forbidden
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/403response.yaml
-    '404':
+    "404":
       description: Resource not found
       content:
         application/json:

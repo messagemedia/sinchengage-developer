@@ -23,7 +23,7 @@ post:
     The confirm delivery reports endpoint takes a list of delivery report IDs as
     follows:
 
-    ```json
+    ```javascript
 
     {
         "delivery_report_ids": [
@@ -52,7 +52,7 @@ post:
             - ba28e94b-c83d-4759-98e7-ff9c7edb87a1
     required: true
   responses:
-    '202':
+    "202":
       description: Requested delivery reports will be marked as confirmed
       headers: {}
       content:
@@ -60,22 +60,21 @@ post:
           schema:
             type: object
             description: Requested delivery reports will be marked as confirmed
-    '400':
+    "400":
       description: Bad request
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/400response.yaml
-    '403':
-      description: Unauthorised
+    "401":
+      description: Unauthorized
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/403response.yaml
-    '404':
+    "404":
       description: Resource not found
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/404response.yaml
-  deprecated: false

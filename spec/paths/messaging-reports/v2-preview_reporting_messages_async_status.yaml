@@ -18,11 +18,22 @@ get:
         type: string
         example: abc
   responses:
-    '200':
+    "200":
       description: The status of the requested detail report.
       headers: {}
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/messaging-reports/reportstatusresponse.yaml
-  deprecated: false
+    "400":
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/400response.yaml
+    "401":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/403response.yaml

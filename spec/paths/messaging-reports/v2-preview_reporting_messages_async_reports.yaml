@@ -6,9 +6,7 @@ get:
   tags:
     - Messaging Reports
   summary: Get async report history
-  description: >-
-    Returns a list of asynchronous reports that have been requested by the
-    current account.
+  description: Returns a list of asynchronous reports that have been requested by the current account.
   operationId: GetAsyncReportHistory
   parameters:
     - name: page_size
@@ -65,7 +63,7 @@ get:
       schema:
         type: string
         format: date-time
-        example: '2020-05-28T10:27:46.259Z'
+        example: "2020-05-28T10:27:46.259Z"
     - name: end_date
       in: query
       description: Filter reports requested on or before this date (ISO 8601).
@@ -75,7 +73,7 @@ get:
       schema:
         type: string
         format: date-time
-        example: '2020-06-28T10:27:46.259Z'
+        example: "2020-06-28T10:27:46.259Z"
     - name: sort_direction
       in: query
       description: Sort direction for the results.
@@ -89,11 +87,22 @@ get:
           - DESCENDING
         example: DESCENDING
   responses:
-    '200':
+    "200":
       description: A list of async reports for the current account.
       headers: {}
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/messaging-reports/reporthistoryresponses.yaml
-  deprecated: false
+    "400":
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/400response.yaml
+    "401":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/403response.yaml

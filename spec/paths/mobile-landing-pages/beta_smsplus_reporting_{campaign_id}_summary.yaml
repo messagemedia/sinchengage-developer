@@ -73,9 +73,10 @@ get:
       style: simple
       schema:
         type: string
+        example: f56b5806-f732-4693-b87a-90b66a7d7bfc
   responses:
-    '200':
-      description: ''
+    "200":
+      description: Successful response.
       headers: {}
       content:
         application/json:
@@ -96,4 +97,15 @@ get:
                 source: Cancel
                 total_events: 4
                 unique_recipients: 1
-  deprecated: false
+    "400":
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/400response.yaml
+    "401":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/403response.yaml

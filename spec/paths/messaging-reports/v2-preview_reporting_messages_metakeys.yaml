@@ -9,20 +9,20 @@ post:
   operationId: PostMetadataKeys
   parameters: []
   requestBody:
-    description: ''
+    description: Request body.
     content:
       application/json:
         schema:
           $ref: ../../components/schemas/messaging-reports/metakeyrequest.yaml
   responses:
-    '200':
+    "200":
       description: A list of metadata keys.
       headers: {}
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/messaging-reports/metakeyresponse.yaml
-    '400':
-      description: >-
-        Bad Request. Check the json response for more details on what went
-        wrong.
+    "400":
+      description: Bad Request. Check the json response for more details on what went wrong.
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml

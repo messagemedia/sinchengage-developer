@@ -1,0 +1,53 @@
+# Controlled vocabulary for Sinch Engage OpenAPI prose (MAPI-2253)
+#
+# Prefer one term per concept in human-readable fields (summary, description).
+# Contract identifiers (paths, property names, operationIds) are not rewritten by
+# this list — exceptions below allow documenting those identifiers in prose.
+
+preferred_locale: en-AU
+# Keep Australian spelling in prose (authorisation, organisation, cancelled).
+# Always use the American spelling "Unauthorized" for HTTP auth-failure response titles.
+# Always use the header name "Authorization" as the HTTP header token.
+
+banned:
+  - id: unauthorised-spelling
+    pattern: '\bUnauthorised\b'
+    prefer: Unauthorized
+    message: >-
+      Use "Unauthorized" for HTTP authentication/authorization failure response
+      descriptions (not "Unauthorised").
+
+  - id: blocklist-term
+    pattern: '\bblocklists?\b'
+    flags: i
+    prefer: blacklist
+    message: >-
+      Use "blacklist" to match the Number Authorisation API paths and schemas
+      (not "blocklist").
+
+  - id: whitelist-term
+    pattern: '\bwhitelists?\b'
+    flags: i
+    prefer: allowlist
+    message: >-
+      Prefer "allowlist" (or "approved list") over "whitelist" in new prose.
+
+  - id: callback-vs-webhook
+    pattern: '(?<![A-Za-z0-9._])callbacks?(?![A-Za-z0-9._])'
+    flags: i
+    prefer: webhook
+    message: >-
+      Prefer "webhook" when referring to HTTP push delivery in general. Document
+      the literal field as `callback_url` / "callback URL" when naming that property.
+    allow_if_matches:
+      - 'callback_url'
+      - 'Callback URL'
+      - 'callback URL'
+      - 'Delivery Reports and Callbacks'
+
+# Terms that are contract-bound and should remain as-is in paths/prose that name them
+preserve:
+  - blacklist
+  - authorisation
+  - Authorization
+  - callback_url

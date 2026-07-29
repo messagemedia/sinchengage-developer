@@ -1,9 +1,0 @@
-title: Lookupaphonenumber404response
-required:
-  - message
-type: object
-properties:
-  message:
-    type: string
-example:
-  message: The number could not be found or is invalid.

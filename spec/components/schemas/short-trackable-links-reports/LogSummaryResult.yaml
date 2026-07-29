@@ -20,7 +20,7 @@ properties:
     type: array
     items:
       $ref: ./ShortUrl.yaml
-    description: ''
+    description: List of short URLs.
   pagination:
     $ref: ../Pagination.yaml
 example:

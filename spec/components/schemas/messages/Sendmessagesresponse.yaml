@@ -6,4 +6,4 @@ properties:
     type: array
     items:
       $ref: ../Message.yaml
-    description: ''
+    description: List of messages.

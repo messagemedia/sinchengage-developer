@@ -16,17 +16,17 @@ get:
       explode: true
       schema:
         type: string
-        example: e2014bc7-5fed-4e27-bd8c-XXXXXXXXXXX
+        example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
     - name: Accept
       in: header
-      description: ''
+      description: Requested response media type.
       required: true
       style: simple
       schema:
         type: string
         example: application/json;charset=UTF-8
   responses:
-    '200':
+    "200":
       description: OK
       headers: {}
       content:
@@ -43,7 +43,9 @@ get:
             capabilities:
               - SMS
               - MMS
-    '403':
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -51,7 +53,7 @@ get:
             $ref: ../../components/schemas/403response.yaml
           example:
             message: Invalid authentication credentials
-    '404':
+    "404":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -59,4 +61,3 @@ get:
             $ref: ../../components/schemas/404response.yaml
           example:
             message: Not found
-  deprecated: false

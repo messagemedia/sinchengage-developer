@@ -1,24 +1,20 @@
-## Global headers (only for OpenAPI 2)
+# Spec layout
 
-When using OpenAPI 2 you can minimize headers duplications by using `headers` global object (similar to `definitions`, `responses`).
-During build process all references to global `headers` will be inlined and `headers` will be removed from the resulting spec so spec will be valid (global `headers` are not allowed by OpenAPI 2 spec):
+This directory holds the multi-file OpenAPI description for Sinch Engage.
 
-Example:
-```yaml
-...
-headers:
-  Rate-Limit-Limit:
-    description: The number of allowed requests in the current period
-    type: integer
-...
-paths:
-  /api-keys:
-    get:
-      summary: Retrieve a list of api keys
-      responses:
-        200:
-          description: A list of api keys was retrieved successfully
-          headers:
-            Rate-Limit-Limit:
-              $ref: "#/headers/Rate-Limit-Limit"
-```
+Edit path and component files under `paths/` and `components/`. The entry document is [`openapi.yaml`](openapi.yaml).
+
+For the full layout, edit rules, and build pipeline (`bundle` → inject code samples → ReDoc), see the [root README](../README.md).
+
+## Path filename conventions
+
+Path files live under `paths/<tag>/` and are named after the URL path with `/` replaced by `_`.
+
+A trailing underscore in a path filename maps to a **trailing slash** in the OpenAPI path key. That is intentional for the current API surface (and still triggers Redocly `no-path-trailing-slash` warnings, kept at `warn` until the URLs change as a contract decision):
+
+| Path file | OpenAPI path |
+|-----------|--------------|
+| `paths/source-address/v1_messaging_numbers_sender_address_addresses_.yaml` | `/v1/messaging/numbers/sender_address/addresses/` |
+| `paths/dedicated-numbers/v1_messaging_numbers_dedicated_.yaml` | `/v1/messaging/numbers/dedicated/` |
+
+Do not rename these files to drop the trailing `_` without also changing the path keys (and confirming the live API).

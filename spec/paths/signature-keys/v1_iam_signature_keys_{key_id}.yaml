@@ -1,4 +1,7 @@
 get:
+  security:
+    - basic_auth: []
+    - hmac_auth: []
   tags:
     - Signature Key Management
   summary: Get signature key detail
@@ -11,7 +14,7 @@ get:
     return a response body as follows:
 
 
-    ```json
+    ```javascript
 
     {
         "key_id": "7ca628a8-08b0-4e42-aeb8-960b37049c31",
@@ -30,13 +33,14 @@ get:
   parameters:
     - name: key_id
       in: path
-      description: ''
+      description: Unique identifier of the signature key.
       required: true
       style: simple
       schema:
         type: string
+        example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
   responses:
-    '200':
+    "200":
       description: The detail of signature key.
       headers: {}
       content:
@@ -47,9 +51,9 @@ get:
             key_id: 7ca628a8-08b0-4e42-aeb8-960b37049c31
             cipher: RSA
             digest: SHA224
-            created: '2018-01-18T10:16:12.364Z'
+            created: "2018-01-18T10:16:12.364Z"
             enabled: false
-    '400':
+    "400":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -59,7 +63,9 @@ get:
             message: Bad Request
             details:
               - key_id property value is invalid
-    '403':
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -68,7 +74,7 @@ get:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: This feature has not been enabled in your account.
-    '404':
+    "404":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -77,8 +83,10 @@ get:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: Entity not found
-  deprecated: false
 delete:
+  security:
+    - basic_auth: []
+    - hmac_auth: []
   tags:
     - Signature Key Management
   summary: Delete signature key
@@ -97,16 +105,19 @@ delete:
   parameters:
     - name: key_id
       in: path
-      description: ''
+      description: Unique identifier of the signature key.
       required: true
       style: simple
       schema:
         type: string
+        example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
   responses:
-    '200':
+    "200":
       description: The signature key has been deleted.
       headers: {}
-    '403':
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -115,7 +126,7 @@ delete:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: This feature has not been enabled in your account.
-    '404':
+    "404":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -124,4 +135,3 @@ delete:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: Entity not found
-  deprecated: false

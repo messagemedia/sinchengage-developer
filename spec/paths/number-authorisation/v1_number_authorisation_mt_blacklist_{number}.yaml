@@ -20,9 +20,11 @@ delete:
       required: true
       schema:
         type: string
+        example: "+61491570156"
       description: a number in international format e.g. ```+61491570156```
+      example: "+61491570156"
   responses:
-    '200':
+    "200":
       description: The number has been successfully deleted.
       headers: {}
       content:
@@ -31,6 +33,7 @@ delete:
             type: string
             description: The number has been successfully deleted.
             format: binary
-    '404':
-      description: ''
-  deprecated: false
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "404":
+      description: Not found.

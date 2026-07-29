@@ -1,0 +1,17 @@
+title: Addoneormorenumberstoyourblacklistrequest
+required:
+  - numbers
+type: object
+properties:
+  numbers:
+    type: array
+    items:
+      type: string
+    description: >-
+      Array of numbers to be added to the blacklist. These should be specified
+      in E.164 international format. For information on E.164, please refer to
+      http://en.wikipedia.org/wiki/E.164.
+example:
+  numbers:
+    - '61491570156'
+    - '61491570157'

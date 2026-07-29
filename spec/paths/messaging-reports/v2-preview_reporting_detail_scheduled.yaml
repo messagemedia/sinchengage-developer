@@ -5,23 +5,32 @@ post:
   tags:
     - Messaging Reports
   summary: Scheduled detail report
-  description: >-
-    Create scheduled report in detail containing total number of sent, received
-    and billing units.
+  description: Create scheduled report in detail containing total number of sent, received and billing units.
   operationId: detailscheduledreport
   parameters: []
   requestBody:
-    description: ''
+    description: Request body.
     content:
       application/json:
         schema:
           $ref: ../../components/schemas/messaging-reports/scheduleddetailreport.yaml
     required: true
   responses:
-    '201':
+    "201":
       description: A scheduled detail report received using the specified parameters.
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/messaging-reports/scheduledreportresponse.yaml
-  deprecated: false
+    "400":
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/400response.yaml
+    "401":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/403response.yaml

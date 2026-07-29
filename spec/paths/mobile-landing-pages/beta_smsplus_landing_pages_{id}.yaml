@@ -6,19 +6,20 @@ patch:
     - Mobile Landing Pages (beta)
   summary: Update a Landing Page
   description: >-
-    The Landing Page datastore makes it easier to create Campiangs based on the
-    saved data.Update a Landing Page.
+    The Landing Page datastore makes it easier to create Campaigns based on the saved data.Update a
+    Landing Page.
   operationId: UpdateaLandingPage
   parameters:
     - name: id
       in: path
-      description: ''
+      description: Unique identifier of the landing page.
       required: true
       style: simple
       schema:
         type: string
+        example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
   requestBody:
-    description: ''
+    description: Request body.
     content:
       application/json:
         schema:
@@ -31,7 +32,7 @@ patch:
     required: true
     x-send-file-in-body: false
   responses:
-    '202':
+    "202":
       description: Landing Page was successfully updated.
       headers: {}
       content:
@@ -40,7 +41,7 @@ patch:
             $ref: ../../components/schemas/mobile-landing-pages/UpdateaLandingPageresponse.yaml
           example:
             id: a94041bb-704b-48fa-ba0b-6f1538fc502f
-            name: ' My Landing Page'
+            name: " My Landing Page"
             template_id: ac895f01-3149-4bf8-a8fe-01d3b8a9ba97
             parameters:
               pageTitle: The new page title
@@ -53,13 +54,14 @@ patch:
                 type: TEXT
               ctaUrl:
                 type: URL
-            created_timestamp: '2019-11-03T11:49:02.807Z'
-            modified_timestamp: '2019-11-04T11:49:02.807Z'
-    '400':
-      description: ''
-    '402':
-      description: ''
-  deprecated: false
+            created_timestamp: "2019-11-03T11:49:02.807Z"
+            modified_timestamp: "2019-11-04T11:49:02.807Z"
+    "400":
+      description: Bad request.
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "402":
+      description: Payment required.
 delete:
   security:
     - basic_auth: []
@@ -68,21 +70,23 @@ delete:
     - Mobile Landing Pages (beta)
   summary: Delete a Landing Page
   description: >-
-    The Landing Page datastore makes it easier to create Campiangs based on the
-    saved data.Delete a Landing Page.
+    The Landing Page datastore makes it easier to create Campaigns based on the saved data.Delete a
+    Landing Page.
   operationId: DeleteaLandingPage
   parameters:
     - name: id
       in: path
-      description: ''
+      description: Unique identifier of the landing page.
       required: true
       style: simple
       schema:
         type: string
+        example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
   responses:
-    '204':
+    "204":
       description: Landing Page deleted.
       headers: {}
-    '402':
-      description: ''
-  deprecated: false
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "402":
+      description: Payment required.

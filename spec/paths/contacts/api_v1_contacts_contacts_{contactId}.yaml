@@ -5,6 +5,7 @@ get:
   tags:
     - Contacts
   summary: Get a single contact
+  description: Retrieves details for a single contact by ID.
   operationId: getContactById
   parameters:
     - name: contactId
@@ -16,31 +17,31 @@ get:
         format: uuid
         example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
   responses:
-    '200':
+    "200":
       description: Returns a single contact
       content:
-        '*/*':
+        "*/*":
           schema:
             $ref: ../../components/schemas/contacts/ContactData.yaml
-    '400':
+    "400":
       $ref: ../../components/responses/BadRequest.yaml
-    '401':
+    "401":
       $ref: ../../components/responses/Unauthorized.yaml
-    '403':
+    "403":
       $ref: ../../components/responses/Forbidden.yaml
-    '404':
+    "404":
       $ref: ../../components/responses/NotFound.yaml
-    '409':
+    "409":
       $ref: ../../components/responses/Conflict.yaml
-    '500':
+    "500":
       $ref: ../../components/responses/InternalServerError.yaml
-    '501':
+    "501":
       $ref: ../../components/responses/RequestNotRecognised.yaml
-    '502':
+    "502":
       $ref: ../../components/responses/BadGateway.yaml
-    '503':
+    "503":
       $ref: ../../components/responses/ServerUnavailable.yaml
-    '504':
+    "504":
       $ref: ../../components/responses/GatewayTimeout.yaml
 delete:
   security:
@@ -49,6 +50,7 @@ delete:
   tags:
     - Contacts
   summary: Delete a contact
+  description: Deletes a contact from the account.
   operationId: deleteContactById
   parameters:
     - name: contactId
@@ -60,27 +62,27 @@ delete:
         format: uuid
         example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
   responses:
-    '204':
+    "204":
       description: Contact is deleted
-    '400':
+    "400":
       $ref: ../../components/responses/BadRequest.yaml
-    '401':
+    "401":
       $ref: ../../components/responses/Unauthorized.yaml
-    '403':
+    "403":
       $ref: ../../components/responses/Forbidden.yaml
-    '404':
+    "404":
       $ref: ../../components/responses/NotFound.yaml
-    '409':
+    "409":
       $ref: ../../components/responses/Conflict.yaml
-    '500':
+    "500":
       $ref: ../../components/responses/InternalServerError.yaml
-    '501':
+    "501":
       $ref: ../../components/responses/RequestNotRecognised.yaml
-    '502':
+    "502":
       $ref: ../../components/responses/BadGateway.yaml
-    '503':
+    "503":
       $ref: ../../components/responses/ServerUnavailable.yaml
-    '504':
+    "504":
       $ref: ../../components/responses/GatewayTimeout.yaml
 patch:
   security:
@@ -89,6 +91,7 @@ patch:
   tags:
     - Contacts
   summary: Update a contact
+  description: Updates an existing contact.
   operationId: updateContact
   parameters:
     - name: contactId
@@ -106,29 +109,29 @@ patch:
           $ref: ../../components/schemas/contacts/UpdateContactRequest.yaml
     required: true
   responses:
-    '200':
+    "200":
       description: Contact is updated
       content:
-        '*/*':
+        "*/*":
           schema:
             $ref: ../../components/schemas/contacts/ContactData.yaml
-    '400':
+    "400":
       $ref: ../../components/responses/BadRequest.yaml
-    '401':
+    "401":
       $ref: ../../components/responses/Unauthorized.yaml
-    '403':
+    "403":
       $ref: ../../components/responses/Forbidden.yaml
-    '404':
+    "404":
       $ref: ../../components/responses/NotFound.yaml
-    '409':
+    "409":
       $ref: ../../components/responses/Conflict.yaml
-    '500':
+    "500":
       $ref: ../../components/responses/InternalServerError.yaml
-    '501':
+    "501":
       $ref: ../../components/responses/RequestNotRecognised.yaml
-    '502':
+    "502":
       $ref: ../../components/responses/BadGateway.yaml
-    '503':
+    "503":
       $ref: ../../components/responses/ServerUnavailable.yaml
-    '504':
+    "504":
       $ref: ../../components/responses/GatewayTimeout.yaml

@@ -5,6 +5,7 @@ post:
   tags:
     - Contacts
   summary: Add contact to a list
+  description: Adds a contact to a contact list.
   operationId: addContactToContactList
   parameters:
     - name: listId
@@ -24,35 +25,35 @@ post:
         format: uuid
         example: 4a03d2d8-1f85-463f-bdb4-2891c17258a7
   responses:
-    '200':
+    "200":
       description: Contacts have been added
       content:
-        '*/*':
+        "*/*":
           schema:
             $ref: ../../components/schemas/contacts/ListData.yaml
-    '201':
+    "201":
       description: Created
       content:
-        '*/*':
+        "*/*":
           schema:
             $ref: ../../components/schemas/contacts/ListData.yaml
-    '400':
+    "400":
       $ref: ../../components/responses/BadRequest.yaml
-    '401':
+    "401":
       $ref: ../../components/responses/Unauthorized.yaml
-    '403':
+    "403":
       $ref: ../../components/responses/Forbidden.yaml
-    '409':
+    "409":
       $ref: ../../components/responses/Conflict.yaml
-    '500':
+    "500":
       $ref: ../../components/responses/InternalServerError.yaml
-    '501':
+    "501":
       $ref: ../../components/responses/RequestNotRecognised.yaml
-    '502':
+    "502":
       $ref: ../../components/responses/BadGateway.yaml
-    '503':
+    "503":
       $ref: ../../components/responses/ServerUnavailable.yaml
-    '504':
+    "504":
       $ref: ../../components/responses/GatewayTimeout.yaml
 delete:
   security:
@@ -61,6 +62,7 @@ delete:
   tags:
     - Contacts
   summary: Remove contact from the contact list
+  description: Removes a contact from a contact list.
   operationId: removeContactFromContactList
   parameters:
     - name: listId
@@ -80,23 +82,23 @@ delete:
         format: uuid
         example: 4a03d2d8-1f85-463f-bdb4-2891c17258a7
   responses:
-    '204':
+    "204":
       description: No Content
-    '400':
+    "400":
       $ref: ../../components/responses/BadRequest.yaml
-    '401':
+    "401":
       $ref: ../../components/responses/Unauthorized.yaml
-    '403':
+    "403":
       $ref: ../../components/responses/Forbidden.yaml
-    '409':
+    "409":
       $ref: ../../components/responses/Conflict.yaml
-    '500':
+    "500":
       $ref: ../../components/responses/InternalServerError.yaml
-    '501':
+    "501":
       $ref: ../../components/responses/RequestNotRecognised.yaml
-    '502':
+    "502":
       $ref: ../../components/responses/BadGateway.yaml
-    '503':
+    "503":
       $ref: ../../components/responses/ServerUnavailable.yaml
-    '504':
+    "504":
       $ref: ../../components/responses/GatewayTimeout.yaml

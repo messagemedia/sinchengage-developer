@@ -5,6 +5,7 @@ post:
   tags:
     - Contacts
   summary: Create a contact
+  description: Creates a new contact in the account.
   operationId: createContact
   requestBody:
     content:
@@ -13,29 +14,29 @@ post:
           $ref: ../../components/schemas/contacts/CreateContactRequest.yaml
     required: true
   responses:
-    '201':
+    "201":
       description: Contact is created
       content:
-        '*/*':
+        "*/*":
           schema:
             $ref: ../../components/schemas/contacts/ContactData.yaml
-    '400':
+    "400":
       $ref: ../../components/responses/BadRequest.yaml
-    '401':
+    "401":
       $ref: ../../components/responses/Unauthorized.yaml
-    '403':
+    "403":
       $ref: ../../components/responses/Forbidden.yaml
-    '409':
+    "409":
       $ref: ../../components/responses/Conflict.yaml
-    '500':
+    "500":
       $ref: ../../components/responses/InternalServerError.yaml
-    '501':
+    "501":
       $ref: ../../components/responses/RequestNotRecognised.yaml
-    '502':
+    "502":
       $ref: ../../components/responses/BadGateway.yaml
-    '503':
+    "503":
       $ref: ../../components/responses/ServerUnavailable.yaml
-    '504':
+    "504":
       $ref: ../../components/responses/GatewayTimeout.yaml
 get:
   security:
@@ -44,35 +45,39 @@ get:
   tags:
     - Contacts
   summary: Get contacts page
+  description: Retrieves a paginated list of contacts.
   operationId: getContactsPage
   parameters:
     - name: request
       in: query
       required: true
+      description: >
+        Pagination and filter options for the contacts page (page tokens, page
+        size, list/contact/channel filters).
       schema:
         $ref: ../../components/schemas/contacts/GetContactsRequest.yaml
   responses:
-    '200':
+    "200":
       description: Returns a contacts page
       content:
-        '*/*':
+        "*/*":
           schema:
             $ref: ../../components/schemas/contacts/PageTokenDtoContactData.yaml
-    '400':
+    "400":
       $ref: ../../components/responses/BadRequest.yaml
-    '401':
+    "401":
       $ref: ../../components/responses/Unauthorized.yaml
-    '403':
+    "403":
       $ref: ../../components/responses/Forbidden.yaml
-    '409':
+    "409":
       $ref: ../../components/responses/Conflict.yaml
-    '500':
+    "500":
       $ref: ../../components/responses/InternalServerError.yaml
-    '501':
+    "501":
       $ref: ../../components/responses/RequestNotRecognised.yaml
-    '502':
+    "502":
       $ref: ../../components/responses/BadGateway.yaml
-    '503':
+    "503":
       $ref: ../../components/responses/ServerUnavailable.yaml
-    '504':
+    "504":
       $ref: ../../components/responses/GatewayTimeout.yaml

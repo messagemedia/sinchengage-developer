@@ -10,13 +10,14 @@ post:
   parameters:
     - name: id
       in: path
-      description: ''
+      description: Unique identifier of the campaign.
       required: true
       style: simple
       schema:
         type: string
+        example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
   requestBody:
-    description: ''
+    description: Request body.
     content:
       application/json:
         schema:
@@ -24,7 +25,7 @@ post:
     required: true
     x-send-file-in-body: false
   responses:
-    '202':
+    "202":
       description: The message recipients have successfully been queued for delivery.
       headers: {}
       content:
@@ -43,4 +44,15 @@ post:
                 parameters:
                   firstName: Mary
                   lastName: Example
-  deprecated: false
+    "400":
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/400response.yaml
+    "401":
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/403response.yaml

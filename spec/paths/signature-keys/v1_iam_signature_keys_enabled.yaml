@@ -1,4 +1,7 @@
 patch:
+  security:
+    - basic_auth: []
+    - hmac_auth: []
   tags:
     - Signature Key Management
   summary: Enable signature key
@@ -13,7 +16,7 @@ patch:
     The most basic body has the following structure:
 
 
-    ```json
+    ```javascript
 
     {
         "key_id": "7ca628a8-08b0-4e42-aeb8-960b37049c31"
@@ -27,7 +30,7 @@ patch:
     true as follows:
 
 
-    ```json
+    ```javascript
 
     {
         "key_id": "7ca628a8-08b0-4e42-aeb8-960b37049c31",
@@ -46,14 +49,14 @@ patch:
   parameters:
     - name: Accept
       in: header
-      description: ''
+      description: Requested response media type.
       required: true
       style: simple
       schema:
         type: string
         example: application/json
   requestBody:
-    description: ''
+    description: Request body.
     content:
       application/json:
         schema:
@@ -62,7 +65,7 @@ patch:
           key_id: 7ca628a8-08b0-4e42-aeb8-960b37049c31
     required: true
   responses:
-    '200':
+    "200":
       description: The enabled signature key.
       headers: {}
       content:
@@ -73,9 +76,9 @@ patch:
             key_id: 7ca628a8-08b0-4e42-aeb8-960b37049c31
             cipher: RSA
             digest: SHA224
-            created: '2018-01-18T10:16:12.364Z'
+            created: "2018-01-18T10:16:12.364Z"
             enabled: true
-    '400':
+    "400":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -84,8 +87,10 @@ patch:
           example:
             message: Bad Request
             details:
-              - '/key_id: Key id cannot be null'
-    '403':
+              - "/key_id: Key id cannot be null"
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -94,7 +99,7 @@ patch:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: This feature has not been enabled in your account.
-    '404':
+    "404":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -103,8 +108,10 @@ patch:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: Entity not found
-  deprecated: false
 get:
+  security:
+    - basic_auth: []
+    - hmac_auth: []
   tags:
     - Signature Key Management
   summary: Get enabled signature key
@@ -116,7 +123,7 @@ get:
     return a response body as follows:
 
 
-    ```json
+    ```javascript
 
     {
         "key_id": "7ca628a8-08b0-4e42-aeb8-960b37049c31",
@@ -133,7 +140,7 @@ get:
     response will be returned*
   operationId: GetEnabledSignatureKey
   responses:
-    '200':
+    "200":
       description: The detail of signature key.
       headers: {}
       content:
@@ -144,9 +151,11 @@ get:
             key_id: 7ca628a8-08b0-4e42-aeb8-960b37049c31
             cipher: RSA
             digest: SHA224
-            created: '2018-01-18T10:16:12.364Z'
+            created: "2018-01-18T10:16:12.364Z"
             enabled: true
-    '403':
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -155,7 +164,7 @@ get:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: This feature has not been enabled in your account.
-    '404':
+    "404":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -164,28 +173,32 @@ get:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: Currently no key is enabled
-  deprecated: false
 delete:
+  security:
+    - basic_auth: []
+    - hmac_auth: []
   tags:
     - Signature Key Management
-  summary: Disable the current enabled signature key.
+  summary: Disable the current enabled signature key
   description: >-
     Disable the current enabled signature key.
 
 
     A successful request for the ```disable the current enabled signature
-    key.``` endpoint will return no content when successful.
+    key``` endpoint will return no content when successful.
 
     If there is an enabled key, it will be disabled; and the 204 status code is
     returned.
 
     If there is no key or no enabled key, the 204 status code is also returned.
-  operationId: DisableTheCurrentEnabledSignatureKey.
+  operationId: DisableTheCurrentEnabledSignatureKey
   responses:
-    '204':
-      description: ''
+    "204":
+      description: No content.
       headers: {}
-    '403':
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "403":
       description: Unexpected error in API call. See HTTP response body for details.
       content:
         application/json:
@@ -194,4 +207,3 @@ delete:
               ../../components/schemas/signature-keys/Disablethecurrentenabledsignaturekey.403response.yaml
           example:
             message: This feature has not been enabled in your account.
-  deprecated: false

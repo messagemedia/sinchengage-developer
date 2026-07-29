@@ -5,6 +5,7 @@ patch:
   tags:
     - Contacts
   summary: Add or remove multiple contacts to/from a list
+  description: Adds or removes multiple contacts to or from a contact list.
   operationId: modifyContactsInContactList
   parameters:
     - name: listId
@@ -22,27 +23,27 @@ patch:
           $ref: ../../components/schemas/contacts/UpdateContactsListRequest.yaml
     required: true
   responses:
-    '200':
+    "200":
       description: Contacts added/removed to/from list
       content:
-        '*/*':
+        "*/*":
           schema:
             $ref: ../../components/schemas/contacts/ListData.yaml
-    '400':
+    "400":
       $ref: ../../components/responses/BadRequest.yaml
-    '401':
+    "401":
       $ref: ../../components/responses/Unauthorized.yaml
-    '403':
+    "403":
       $ref: ../../components/responses/Forbidden.yaml
-    '409':
+    "409":
       $ref: ../../components/responses/Conflict.yaml
-    '500':
+    "500":
       $ref: ../../components/responses/InternalServerError.yaml
-    '501':
+    "501":
       $ref: ../../components/responses/RequestNotRecognised.yaml
-    '502':
+    "502":
       $ref: ../../components/responses/BadGateway.yaml
-    '503':
+    "503":
       $ref: ../../components/responses/ServerUnavailable.yaml
-    '504':
+    "504":
       $ref: ../../components/responses/GatewayTimeout.yaml

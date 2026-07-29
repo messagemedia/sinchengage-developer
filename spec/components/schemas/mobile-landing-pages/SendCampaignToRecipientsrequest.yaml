@@ -7,4 +7,4 @@ properties:
     type: array
     items:
       $ref: ./Recipient.yaml
-    description: ''
+    description: List of recipients.
