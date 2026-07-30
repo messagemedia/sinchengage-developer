@@ -68,21 +68,21 @@ None.
 
 | Status | Description | Schema |
 |--------|-------------|--------|
-| 200 | Successful response | Paginated webhook list |
-| 400 | Invalid request parameters | Error object |
+| 200 | Successful response. | `RetrieveWebhookresponse` |
+| 400 | Unexpected error in API call. See HTTP response body for details. | `UpdateWebhook400response` |
 | 401 | No valid authentication details were provided | — |
 
 ### 200 response schema
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `page` | integer (int32) | The current page number (0-based). |
+| `page` | integer (int32) | The current page number. |
 | `pageSize` | integer (int32) | The number of webhooks returned per page. |
 | `pageData` | array | The list of webhooks created for the connected account. |
 
-#### pageData item schema
+#### `pageData` item schema
 
-Webhook response object. No fields are strictly required in the schema; however, `id`, `url`, `method`, and `retries` are consistently populated.
+Webhook response object. No fields are strictly required in the schema; however, id, url, method, and retries are consistently populated.
 
 | Property | Type | Description |
 |----------|------|-------------|
@@ -99,9 +99,9 @@ Webhook response object. No fields are strictly required in the schema; however,
 
 ### 400 response schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `message` | string | Error message describing the issue |
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `message` | string | Yes | — |
 
 ## Examples
 

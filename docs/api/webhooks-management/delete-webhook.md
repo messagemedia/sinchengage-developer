@@ -45,7 +45,7 @@ None.
 |--------|-------------|--------|
 | 204 | Webhook deleted successfully | — |
 | 401 | No valid authentication details were provided | — |
-| 404 | Webhook not found | — |
+| 404 | Not found. | — |
 
 ### 204 response
 

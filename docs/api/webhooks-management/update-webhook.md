@@ -66,12 +66,12 @@ All fields are optional, but at least one must be provided. Empty body (all fiel
 
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
-| `url` | string | No | HTTP(S) URL for the webhook endpoint. Max 1000 characters. |
+| `url` | string | No | HTTP(S) URL for the webhook endpoint. Max length: 1000. |
 | `method` | string | No | HTTP method used when invoking the webhook. Enum: `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
 | `encoding` | string | No | Content encoding for the webhook request body. Enum: `JSON`, `FORM_ENCODED`, `XML` |
 | `headers` | object | No | Optional map of custom headers. Content-Type header is not allowed. Key max length is 200 characters, value max length is 1000 characters. |
 | `template` | string | No | Velocity template for the webhook request body. |
-| `events` | array of strings | No | Webhook event types to subscribe to. If provided, must be non-empty (`events: []` is rejected). |
+| `events` | array of strings | No | Webhook event types to subscribe to. If provided, must be non-empty (events: [] is rejected). |
 
 ### Example request body
 
@@ -93,10 +93,10 @@ All fields are optional, but at least one must be provided. Empty body (all fiel
 
 | Status | Description | Schema |
 |--------|-------------|--------|
-| 200 | Webhook updated successfully | Webhook object |
-| 400 | Invalid request | Error object |
+| 200 | Webhook updated successfully | `CreateWebhookresponse` |
+| 400 | Unexpected error in API call. See HTTP response body for details. | `UpdateWebhook400response` |
 | 401 | No valid authentication details were provided | — |
-| 404 | Webhook not found | — |
+| 404 | Not found. | — |
 
 ### 200 response schema
 
@@ -117,9 +117,9 @@ Webhook response object. No fields are strictly required in the schema; however,
 
 ### 400 response schema
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `message` | string | Error message describing the issue |
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `message` | string | Yes | — |
 
 ## Examples
 
@@ -158,9 +158,9 @@ console.log(webhook);
 
 ## Error handling
 
-- **400 Bad Request**: Returned if the request body is empty, all fields are null, `events` is an empty array, or validation fails on any field.
-- **401 Unauthorized**: No valid authentication details were provided.
-- **404 Not Found**: The specified webhook ID does not exist or belongs to a different account.
+- **400 Bad Request**: Unexpected error in API call. See HTTP response body for details. Typical causes include an empty body, all-null fields, or `events: []`.
+- **401 Unauthorized**: No valid authentication details were provided. Verify Basic or HMAC credentials on the request.
+- **404 Not Found**: Not found. The `webhookId` is invalid, does not exist, or is not associated with your account.
 
 ## Related endpoints
 
