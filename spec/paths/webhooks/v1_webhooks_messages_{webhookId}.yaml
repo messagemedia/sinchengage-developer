@@ -30,6 +30,7 @@ delete:
         type: string
         format: uuid
         example: a7f11bb0-f299-4861-a5ca-9b29d04bc5ad
+      example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
   responses:
     "204":
       description: Webhook deleted successfully
@@ -48,25 +49,33 @@ patch:
   description: >-
     Update a webhook. You can update individual attributes or all of them by
     submitting a PATCH request to the /webhooks/messages endpoint (the same
-    endpoint used above to delete a webhook)
+    endpoint used above to delete a webhook).
 
 
-    A successful request to the retrieve webhook endpoint will return a response
+    All fields in the request body are optional, but at least one must be
+    provided. An empty body or a body with all null fields will be rejected.
+
+
+    A successful request to the update webhook endpoint will return a response
     body as follows:
 
 
     ```
 
     {
-        "url": "https://webhook.com",
+        "id": "76fa7010-8c1f-4a24-917a-4d62a54e744d",
+        "url": "http://webhook.com",
         "method": "POST",
-        "id": "04442623-0961-464e-9cbc-ec50804e0413",
         "encoding": "JSON",
-        "events": [
-            "RECEIVED_SMS"
-        ],
         "headers": {},
-        "template": "{\"id\":\"$mtId\", \"status\":\"$statusCode\"}"
+        "events": [
+            "ENROUTE_DR",
+            "DELIVERED_DR"
+        ],
+        "template": "{\"id\":\"$mtId\",\"status\":\"$statusCode\"}",
+        "read_timeout": 5000,
+        "retries": 3,
+        "retry_delay": 30
     }
 
     ```
@@ -86,6 +95,7 @@ patch:
         type: string
         format: uuid
         example: a7f11bb0-f299-4861-a5ca-9b29d04bc5ad
+      example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
   requestBody:
     description: Request body.
     content:
@@ -93,12 +103,14 @@ patch:
         schema:
           $ref: ../../components/schemas/webhooks/UpdateWebhookrequest.yaml
         example:
-          url: https://myurl.com
+          url: http://webhook.com
           method: POST
-          encoding: FORM_ENCODED
+          encoding: JSON
+          headers: {}
           events:
             - ENROUTE_DR
-          template: "{\"id\":\"$mtId\", \"status\":\"$statusCode\"}"
+            - DELIVERED_DR
+          template: "{\"id\":\"$mtId\",\"status\":\"$statusCode\"}"
     required: true
   responses:
     "200":
@@ -107,8 +119,7 @@ patch:
       content:
         application/json:
           schema:
-            type: object
-            description: Webhook updated successfully
+            $ref: ../../components/schemas/webhooks/CreateWebhookresponse.yaml
     "400":
       description: Unexpected error in API call. See HTTP response body for details.
       content:

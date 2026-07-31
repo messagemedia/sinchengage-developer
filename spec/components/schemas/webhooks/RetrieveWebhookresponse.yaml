@@ -1,0 +1,32 @@
+title: RetrieveWebhookresponse
+type: object
+properties:
+  page:
+    type: integer
+    format: int32
+    description: The current page number.
+  pageSize:
+    type: integer
+    format: int32
+    description: The number of webhooks returned per page.
+  pageData:
+    type: array
+    description: The list of webhooks created for the connected account.
+    items:
+      $ref: ./CreateWebhookresponse.yaml
+example:
+  page: 0
+  pageSize: 100
+  pageData:
+    - id: 76fa7010-8c1f-4a24-917a-4d62a54e744d
+      url: http://webhook.com
+      method: POST
+      encoding: JSON
+      headers: {}
+      events:
+        - ENROUTE_DR
+        - DELIVERED_DR
+      template: '{"id":"$mtId","status":"$statusCode"}'
+      read_timeout: 5000
+      retries: 3
+      retry_delay: 30

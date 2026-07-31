@@ -1,29 +1,55 @@
 title: UpdateWebhookrequest
-required:
-  - url
-  - method
-  - encoding
-  - events
-  - template
+description: |
+  All fields are optional, but at least one must be provided.
+  Empty body (all fields null) is rejected.
+  Note: read_timeout, retries, and retry_delay are not supported on update (create-only).
 type: object
 properties:
   url:
     type: string
+    maxLength: 1000
+    description: HTTP(S) URL for the webhook endpoint.
   method:
     type: string
+    enum:
+      - GET
+      - POST
+      - PATCH
+      - PUT
+      - DELETE
+    description: HTTP method used when invoking the webhook.
   encoding:
     type: string
+    enum:
+      - JSON
+      - FORM_ENCODED
+      - XML
+    description: Content encoding for the webhook request body.
+  headers:
+    type: object
+    additionalProperties:
+      type: string
+      maxLength: 1000
+    description: |
+      Optional map of custom headers. Content-Type header is not allowed.
+      Key max length is 200 characters, value max length is 1000 characters.
+  template:
+    type: string
+    description: Velocity template for the webhook request body.
   events:
     type: array
     items:
       type: string
-    description: Webhook event types to subscribe to.
-  template:
-    type: string
+    minItems: 1
+    description: |
+      Webhook event types to subscribe to.
+      If provided, must be non-empty (events: [] is rejected).
 example:
-  url: https://myurl.com
+  url: http://webhook.com
   method: POST
-  encoding: FORM_ENCODED
+  encoding: JSON
+  headers: {}
   events:
     - ENROUTE_DR
-  template: '{"id":"$mtId", "status":"$statusCode"}'
+    - DELIVERED_DR
+  template: '{"id":"$mtId","status":"$statusCode"}'
