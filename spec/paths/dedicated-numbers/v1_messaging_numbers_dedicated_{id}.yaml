@@ -32,14 +32,14 @@ get:
       content:
         application/json;charset=UTF-8:
           schema:
-            $ref: ../../components/schemas/Number.yaml
+            $ref: ../../components/schemas/dedicated-numbers/DedicatedNumber.yaml
           example:
             id: be3cb602-7c00-4c87-ae4b-b8defc04f179
-            phone_number: 614111111111
+            phone_number: "614111111111"
             country: AU
             type: MOBILE
             classification: SILVER
-            available_after: '2019-06-21T04:04:31.707Z'
+            available_after: "2019-06-21T04:04:31.707Z"
             capabilities:
               - SMS
               - MMS

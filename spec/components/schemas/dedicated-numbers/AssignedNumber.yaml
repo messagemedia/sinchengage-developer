@@ -1,7 +1,8 @@
 title: AssignedNumber
 type: object
+description: An assigned dedicated number and its assignment metadata
 properties:
   assignment:
     $ref: ./Assignment.yaml
   number:
-    $ref: ../Number.yaml
+    $ref: ./DedicatedNumber.yaml

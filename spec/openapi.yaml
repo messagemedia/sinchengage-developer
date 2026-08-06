@@ -328,6 +328,31 @@ tags:
       SMS sender ID and track its approval status.
 
 
+      ### Sender address request vs sender address
+
+
+      This API uses two different resources, each with its own UUID:
+
+
+      | | Sender address **request** | Approved sender **address** |
+
+      |---|----------------------------|-----------------------------|
+
+      | What it is | Your registration / verification application | The approved sender ID on your account |
+
+      | Path | `/v1/messaging/numbers/sender_address/requests` | `/v1/messaging/numbers/sender_address/addresses` |
+
+      | `id` returned by | **Request a Sender Address** (`POST .../requests`) | **Get all approved sender addresses** (`GET .../addresses/`) |
+
+      | Use that `id` for | Get request status, submit a verification code | Get, update, re-verify, or **delete** the sender |
+
+
+      The request `id` and the address `id` are **not the same**. After a sender
+      is approved, call **Get all approved sender addresses** to obtain the
+      address `id` before deleting or managing it. Using the request `id` on
+      address endpoints (for example delete) returns `404 Not found`.
+
+
       **What is Trusted Sender ID?**
 
 
@@ -387,9 +412,10 @@ tags:
         Personal numbers can currently be registered through the Source Address API for the following countries: ```AT```, ```AU```, ```CH```, ```CY```, ```DE```, ```DK```, ```EE```, ```ES```, ```FI```, ```GB```, ```HR```, ```IE```, ```IT```, ```LT```, ```LU```, ```LV```, ```MT```, ```NL```, ```NO```, ```PT```, ```SE```, and ```SI```
 
         To register a personal number as a Sender ID you must:
-        1. Make a request to the **Request a Sender Address** endpoint
+        1. Make a request to the **Request a Sender Address** endpoint (store the **request** UUID for verification)
         2. A unique verification code will be sent to the requested number
         3. Make a request to the **Submitting a Verification Code** endpoint, using the verification code that was sent in the previous step. A 200 OK response will indicate the number has been verified and is ready for use.
+        4. To delete or manage the sender later, call **Get all approved sender addresses** and use the **address** UUID from that response (different from the request UUID in step 1).
 
         ⚠️ Own numbers need to be re-verified every 12 months. You will be notified by email that verification of your number is about to expire.
 

@@ -6,8 +6,16 @@ post:
     - Source Address
   summary: Request a Sender Address
   description: >
-    Submit a request to register a new Sender ID. When making a request to this
-    endpoint, you will always need to specify ```sender_address_type``` and
+    Submit a **sender address request** to register a new Sender ID.
+
+
+    The `id` in the response is the **request** UUID. Use it only with request
+    endpoints (get status, submit verification code). It is **not** the approved
+    sender address UUID. After approval, use **Get all approved sender
+    addresses** to get the address `id` needed to delete or manage the sender.
+
+
+    When making a request to this endpoint, you will always need to specify ```sender_address_type``` and
     ```usage_type``` parameters. The following table shows the acceptable values
     and combinations for these parameters:
       | Sender ID       | sender_address_type | usage_type     |

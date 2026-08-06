@@ -1,8 +1,12 @@
 title: Types
-enum:
+type: array
+description: >
+  One or more dedicated number types. Pass as a repeated query parameter
+  (`types=MOBILE&types=LANDLINE`) or as a comma-separated list
+  (`types=MOBILE,LANDLINE,TOLL_FREE`).
+items:
+  $ref: ./Type.yaml
+example:
   - MOBILE
   - LANDLINE
   - TOLL_FREE
-  - SHORT_CODE
-type: string
-example: MOBILE,LANDLINE,TOLL_FREE
