@@ -9,5 +9,5 @@ properties:
   authorised:
     type: boolean
 example:
-  number: 61491570156
+  number: '+61491570156'
   authorised: true

@@ -74,7 +74,7 @@ get:
                 message_id: 00000000-0000-0000-0000-000000000000
                 long_url: https://developers.sinch.com
                 short_url: https://nxt.to/abc1234
-                destination_number: 61491570157
+                destination_number: '+61491570157'
             pagination:
               page: 1
               page_size: 100

@@ -30,7 +30,7 @@ properties:
     type: string
     description: Date time after which the message expires and will not be sent
     format: date-time
-    example: 11/3/2016 11:49:02 AM
+    example: '2016-11-03T11:49:02.807Z'
   metadata:
     type: object
     description: >-
@@ -47,13 +47,13 @@ properties:
 
       ```
     example:
-      - myKey: myValue
-      - anotherKey: anotherValue
+      myKey: myValue
+      anotherKey: anotherValue
   scheduled:
     type: string
     description: Scheduled delivery date time of the message
     format: date-time
-    example: 11/3/2016 11:49:02 AM
+    example: '2016-11-03T11:49:02.807Z'
   source_number:
     type: string
     example: '+61491570156'

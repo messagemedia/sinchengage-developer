@@ -149,8 +149,8 @@ post:
     in milliseconds. Set to 20000 by default, max 60000.
 
 
-    - ```retries``` (Optional) The read timeout for the call to the Webhook in
-    milliseconds. Set to 20000 by default, max 60000.
+    - ```retries``` (Optional) The number of times to retry a failed webhook
+    call. Defaults to 0, max 5.
 
 
     - ```retry_delay``` (Optional) The delay period between retries in seconds.

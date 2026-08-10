@@ -17,7 +17,7 @@ properties:
     type: string
     description: Date time when the reply was received
     format: date-time
-    example: 11/3/2016 11:49:02 AM
+    example: '2016-11-03T11:49:02.807Z'
   destination_number:
     maxLength: 15
     minLength: 1

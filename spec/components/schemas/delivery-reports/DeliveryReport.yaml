@@ -11,7 +11,7 @@ properties:
     type: string
     description: The date and time at which this delivery report was generated in UTC.
     format: date-time
-    example: 11/3/2016 11:49:02 AM
+    example: '2016-11-03T11:49:02.807Z'
   delay:
     type: integer
     deprecated: true
@@ -53,6 +53,6 @@ properties:
       DR this may indicate the time at which the message was received on the
       handset.
     format: date-time
-    example: 11/3/2016 11:49:02 AM
+    example: '2016-11-03T11:49:02.807Z'
   vendor_account_id:
     $ref: ../VendorAccountId.yaml
