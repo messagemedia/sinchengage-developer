@@ -1,9 +1,0 @@
-title: Metadata
-required:
-  - key
-type: object
-properties:
-  key:
-    type: string
-example:
-  key: value

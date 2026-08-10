@@ -31,7 +31,7 @@ Draft follow-up tickets for the Sinch Engage API documentation. Create them in J
 | **Suggested title** | Standardize OpenAPI pagination models across Engage list endpoints |
 | **Contract change** | **Yes** — coordinate with the owning API team; converging patterns changes list responses |
 
-**Problem:** Parallel pagination schemas (`Pagination`, `Paginate`, `Pagination1`, `PaginationMLP`, `PaginationNumberAuth`, Contacts page-token style) confuse codegen and agents.
+**Problem:** Parallel pagination schemas (`Pagination`, `Paginate`, `PaginationNumberAuth`, Contacts page-token style) confuse codegen and agents.
 
 **Scope:** Document current variants accurately first (docs-only); then, with the owning API team, converge list endpoints on one or two pagination patterns and update schemas/examples.
 
@@ -66,10 +66,10 @@ Draft follow-up tickets for the Sinch Engage API documentation. Create them in J
 | Field | Value |
 |-------|-------|
 | **Suggested type** | Story |
-| **Suggested title** | Fill missing Engage code samples (~481 gaps across 85 operations) |
+| **Suggested title** | Fill missing Engage code samples (~409 gaps across 73 operations) |
 | **Contract change** | No — docs-only |
 
-**Problem:** Empty/wrong-language sample stubs were removed; the coverage matrix in `spec/code_samples/TODO.md` shows large gaps (Contacts, Messaging Reports, MLP, Source Address, and others).
+**Problem:** Empty/wrong-language sample stubs were removed; the coverage matrix in `spec/code_samples/TODO.md` shows large gaps (Contacts, Messaging Reports, Source Address, and others).
 
 **Scope:** Author real samples for C# / curl / Java / Node / PHP / Python per operation; keep the inject script rejecting empty files.
 

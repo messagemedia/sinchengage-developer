@@ -2,7 +2,7 @@
 
 Request samples are injected as [`x-codeSamples`](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md#x-code-samples) at build time by `scripts/inject-code-samples.mjs`.
 
-**Policy:** only nonempty samples with the correct language extension are published. Empty placeholder files are not kept. Missing coverage is tracked in [`TODO.md`](./TODO.md) (85 operations × 6 languages; **481** gaps today) and fulfilled via follow-up tickets.
+**Policy:** only nonempty samples with the correct language extension are published. Empty placeholder files are not kept. Missing coverage is tracked in [`TODO.md`](./TODO.md) (73 operations × 6 languages; **409** gaps today) and fulfilled via follow-up tickets.
 
 ## Layout
 
