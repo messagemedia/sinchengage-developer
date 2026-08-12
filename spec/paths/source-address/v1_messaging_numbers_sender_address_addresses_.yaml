@@ -7,7 +7,9 @@ get:
   summary: Get all approved sender addresses
   operationId: GetAllApprovedSenderAddresses
   description: |
-    Retrieve all sender addresses currently registered to your account.
+    Retrieve all **approved sender addresses** currently registered to your account.
+
+    Each item's `id` is the **sender address** UUID. Use this UUID to get, update, re-verify, or delete a sender. It is different from the request UUID returned when you created the sender.
   parameters:
     - name: sender_address
       in: query
@@ -22,7 +24,8 @@ get:
         enum:
           - ALPHANUMERIC
           - INTERNATIONAL
-      description: The type of Sender ID. This will be either ALPHANUMERIC or INTERNATIONAL
+          - SHORT_CODE
+      description: The type of Sender ID. This will be either ALPHANUMERIC, INTERNATIONAL, or SHORT_CODE
       example: ALPHANUMERIC
     - name: usage_type
       in: query
@@ -32,7 +35,8 @@ get:
           - ALPHANUMERIC
           - OWN_NUMBER
           - DEDICATED
-      description: The usage type of the Sender ID. This will be ALPHANUMERIC, OWN_NUMBER, or DEDICATED
+          - HOSTED_NUMBER
+      description: The usage type of the Sender ID
       example: ALPHANUMERIC
     - name: include_related_accounts
       in: query
@@ -90,9 +94,9 @@ get:
                   - AU
                 reason: This is my reason 1
                 label: This is my label 1
-                account_id: my_account,
-                created_date: 2023-08-04T04:21:55.958Z,
-                last_modified_date: 2023-08-04T04:21:55.958Z,
+                account_id: my_account
+                created_date: "2023-08-04T04:21:55.958Z"
+                last_modified_date: "2023-08-04T04:21:55.958Z"
               - id: 365dd65f-7101-46cd-8e79-e49c5620eb15
                 sender_address: EXAMPLE2
                 sender_address_type: ALPHANUMERIC
@@ -101,20 +105,20 @@ get:
                   - AU
                 reason: This is my reason 2
                 label: This is my label 2
-                account_id: my_account,
-                created_date: 2023-08-14T04:21:55.958Z,
-                last_modified_date: 2023-08-14T04:21:55.958Z,
+                account_id: my_account
+                created_date: "2023-08-14T04:21:55.958Z"
+                last_modified_date: "2023-08-14T04:21:55.958Z"
               - id: 4a9cb0f4-f383-40b5-84dc-bbb6a3b210dd
-                sender_address: 61491570156
+                sender_address: "61491570156"
                 sender_address_type: INTERNATIONAL
                 usage_type: OWN_NUMBER
                 destination_countries:
                   - AU
                 reason: This is my reason 3
                 label: This is my label 3
-                account_id: my_account,
-                created_date: 2023-08-24T04:21:55.958Z,
-                last_modified_date: 2023-08-24T04:21:55.958Z,
+                account_id: my_account
+                created_date: "2023-08-24T04:21:55.958Z"
+                last_modified_date: "2023-08-24T04:21:55.958Z"
                 expiry: "2024-08-03T04:21:55.958Z"
                 display_status: APPROVED
             pagination:

@@ -18,12 +18,12 @@ get:
         example: AU
     - name: matching
       in: query
-      description: filters results by a pattern of digits contained within the number
+      description: Filters results by a pattern of digits contained within the number
       style: form
       explode: true
       schema:
         type: string
-        example: 223344
+        example: "223344"
     - name: page_size
       in: query
       description: number of results returned per page, default 50
@@ -40,6 +40,15 @@ get:
       explode: true
       schema:
         $ref: ../../components/schemas/dedicated-numbers/service_types.yaml
+    - name: types
+      in: query
+      description: >
+        Filter results by one or more number types. Pass repeated query parameters
+        or a comma-separated list (for example `types=MOBILE,LANDLINE,TOLL_FREE`).
+      style: form
+      explode: true
+      schema:
+        $ref: ../../components/schemas/dedicated-numbers/Types.yaml
     - name: token
       in: query
       description: >-
@@ -50,7 +59,8 @@ get:
       explode: true
       schema:
         type: string
-        example: eyJwYWdlIjoyfQ
+        format: uuid
+        example: 0428d673-0f75-4063-9493-e89d75f13438
   responses:
     "200":
       description: OK
@@ -65,7 +75,7 @@ get:
               page_size: 5
             data:
               - id: 03cf54ad-a4a3-4cd1-afd5-e0ca2cf158a3
-                phone_number: 61436489205
+                phone_number: "61436489205"
                 country: AU
                 type: MOBILE
                 classification: BRONZE

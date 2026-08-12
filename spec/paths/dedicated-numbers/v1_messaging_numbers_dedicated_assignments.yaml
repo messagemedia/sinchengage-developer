@@ -43,7 +43,7 @@ get:
       explode: true
       schema:
         type: string
-        example: 223344
+        example: "223344"
     - name: country
       in: query
       description: >-
@@ -138,11 +138,11 @@ get:
                   number_id: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
                 number:
                   id: 03cf54ad-a4a3-4cd1-afd5-e0ca2cf158a3
-                  phone_number: 61436489205
+                  phone_number: "61436489205"
                   country: AU
                   type: MOBILE
                   classification: BRONZE
-                  available_after: '2019-08-06T23:56:15.633Z'
+                  available_after: "2019-08-06T23:56:15.633Z"
                   capabilities:
                     - SMS
     "401":

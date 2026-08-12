@@ -1,8 +1,12 @@
 title: Type
+type: string
+description: Dedicated number type
 enum:
   - MOBILE
   - LANDLINE
+  - TEN_DLC
   - TOLL_FREE
   - SHORT_CODE
-type: string
+  - HOSTED_TEN_DLC
+  - HOSTED_TOLL_FREE
 example: MOBILE
