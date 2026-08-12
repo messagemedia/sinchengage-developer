@@ -1,0 +1,21 @@
+title: TokenPagination
+type: object
+description: >
+  Cursor-style pagination used by Dedicated Numbers list endpoints.
+  Pass `next_token` back as the `token` query parameter to fetch the next page.
+properties:
+  page_size:
+    type: integer
+    format: int32
+    description: Number of results returned in this page
+    example: 5
+  next_token:
+    type: string
+    format: uuid
+    description: >
+      Token for the next page of results. Omit or null when there are no further
+      pages. Pass this value as the `token` query parameter on the next request.
+    example: 0428d673-0f75-4063-9493-e89d75f13438
+example:
+  page_size: 5
+  next_token: 0428d673-0f75-4063-9493-e89d75f13438

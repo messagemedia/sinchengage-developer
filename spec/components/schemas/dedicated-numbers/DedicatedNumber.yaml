@@ -1,31 +1,40 @@
-title: Number
+title: DedicatedNumber
 type: object
+description: A dedicated number available for purchase or already inventoried
 properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier of the dedicated number
+    example: be3cb602-7c00-4c87-ae4b-b8defc04f179
+  phone_number:
+    type: string
+    description: Phone number as a string (digits; may include a leading +)
+    example: "614111111111"
+  country:
+    type: string
+    description: ISO 3166-1 alpha-2 country code
+    example: AU
+  type:
+    $ref: ./Type.yaml
+  classification:
+    $ref: ./Classification.yaml
   available_after:
     type: string
     format: date-time
+    description: Earliest time this number can be assigned
   capabilities:
     type: array
     items:
       $ref: ./Capability.yaml
-    description: Capabilities supported by this number.
-  classification:
-    $ref: ./Classification.yaml
-  country:
-    type: string
-  id:
-    type: string
-  phone_number:
-    type: string
-  type:
-    $ref: ./Type.yaml
+    description: Capabilities supported by this number
 example:
   id: be3cb602-7c00-4c87-ae4b-b8defc04f179
-  phone_number: 614111111111
+  phone_number: "614111111111"
   country: AU
   type: MOBILE
   classification: SILVER
-  available_after: '2019-06-21T04:04:31.707Z'
+  available_after: "2019-06-21T04:04:31.707Z"
   capabilities:
     - SMS
     - MMS

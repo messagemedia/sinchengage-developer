@@ -9,20 +9,27 @@ properties:
         id:
           type: string
           format: uuid
-          description: Primary ID of the record
+          description: Approved sender address UUID (use for get, update, re-verify, and delete)
+          example: 7927d9eb-4e74-4021-836e-6cae071f84e7
         sender_address:
           type: string
-          description: The Sender Address to be requested
+          description: The sender address value (alpha tag or phone number as a string)
+          example: EXAMPLE1
         sender_address_type:
           type: string
           description: The Sender Address Type
           enum:
             - ALPHANUMERIC
+            - INTERNATIONAL
+            - SHORT_CODE
         usage_type:
           type: string
           description: The Sender Address Usage Type
           enum:
             - ALPHANUMERIC
+            - OWN_NUMBER
+            - DEDICATED
+            - HOSTED_NUMBER
         destination_countries:
           type: array
           description: list of 2-character ISO country codes this sender address applies to
@@ -32,6 +39,10 @@ properties:
           type: string
         label:
           type: string
+        account_id:
+          type: string
+          description: Account that owns this sender address
+          example: my_account
         created_date:
           type: string
           format: date-time
@@ -41,12 +52,12 @@ properties:
         expiry:
           type: string
           format: date-time
-          description: >-
+          description: >
             The Sender Address expiration time (apply for sender_address_type =
             OWN_NUMBER)
         display_status:
           type: string
-          description: >-
+          description: >
             The Sender Address status (apply for sender_address_type =
             OWN_NUMBER)
           enum:

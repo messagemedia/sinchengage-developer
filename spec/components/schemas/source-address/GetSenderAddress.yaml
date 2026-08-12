@@ -4,22 +4,27 @@ properties:
   id:
     type: string
     format: uuid
-    description: Primary ID of the record
+    description: Approved sender address UUID (use for get, update, re-verify, and delete)
     example: 6f79a12e-14f1-4776-adc0-5c5e48a999b8
   sender_address:
     type: string
-    description: The Own Number to be requested
-    example: '+61401234567'
+    description: The sender address value (alpha tag or phone number as a string)
+    example: "+61401234567"
   sender_address_type:
     type: string
     description: The Sender Address Type
     enum:
+      - ALPHANUMERIC
       - INTERNATIONAL
+      - SHORT_CODE
   usage_type:
     type: string
     description: The Sender Address Usage Type
     enum:
+      - ALPHANUMERIC
       - OWN_NUMBER
+      - DEDICATED
+      - HOSTED_NUMBER
   destination_countries:
     type: array
     description: list of 2-character ISO country codes this sender address applies to

@@ -7,11 +7,12 @@ get:
   summary: Get sender address by id
   operationId: GetSenderAddressById
   description: |
-    Retrieve a sender address currently registered to your account by Id
+    Retrieve an approved sender address by its **sender address** UUID (from **Get all approved sender addresses**).
+    Do not use the request UUID returned by **Request a Sender Address**.
   parameters:
     - name: id
       in: path
-      description: The UUID of the sender address
+      description: Sender address UUID (from GET .../addresses/), not the request UUID
       required: true
       schema:
         type: string
@@ -47,12 +48,15 @@ delete:
     - Source Address
   summary: Delete Sender Address
   description: |
-    Remove any registered sender addresses that are no longer required from your account.
+    Remove an approved sender address from your account.
+
+    The path `id` must be the **sender address** UUID from **Get all approved sender addresses**.
+    Using the **request** UUID from **Request a Sender Address** will return `404 Not found`.
   operationId: deleteSenderAddressUsingDELETE
   parameters:
     - name: id
       in: path
-      description: The UUID of the sender address
+      description: Sender address UUID (from GET .../addresses/), not the request UUID
       required: true
       schema:
         type: string
@@ -97,11 +101,12 @@ patch:
   summary: Update My Own Number Label
   description: |
     Update label for my own number only.
+    The path `id` must be the **sender address** UUID from **Get all approved sender addresses**, not the request UUID.
   operationId: updateSenderAddressUsingPATCH
   parameters:
     - name: id
       in: path
-      description: The UUID of the sender address
+      description: Sender address UUID (from GET .../addresses/), not the request UUID
       required: true
       schema:
         type: string

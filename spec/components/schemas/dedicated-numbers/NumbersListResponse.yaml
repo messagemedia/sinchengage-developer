@@ -7,17 +7,17 @@ properties:
       $ref: ./DedicatedNumber.yaml
     description: List of result items.
   pagination:
-    $ref: ../Pagination.yaml
+    $ref: ./TokenPagination.yaml
 example:
   pagination:
     next_token: 0428d673-0f75-4063-9493-e89d75f13438
     page_size: 5
   data:
     - id: 03cf54ad-a4a3-4cd1-afd5-e0ca2cf158a3
-      phone_number: 61436489205
+      phone_number: "61436489205"
       country: AU
       type: MOBILE
       classification: BRONZE
-      available_after: '2019-08-06T23:56:15.633Z'
+      available_after: "2019-08-06T23:56:15.633Z"
       capabilities:
         - SMS
