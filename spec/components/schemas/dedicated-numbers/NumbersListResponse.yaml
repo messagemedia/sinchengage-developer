@@ -21,3 +21,4 @@ example:
       available_after: "2019-08-06T23:56:15.633Z"
       capabilities:
         - SMS
+      status: UNVERIFIED

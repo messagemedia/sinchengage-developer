@@ -1,7 +1,9 @@
 title: Capability
+type: string
+description: Capability supported by a dedicated number
 enum:
   - SMS
   - TTS
   - MMS
-type: string
+  - CALL
 example: SMS

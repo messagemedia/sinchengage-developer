@@ -1,0 +1,8 @@
+title: Status
+type: string
+description: Dedicated number verification / assignment status
+enum:
+  - UNVERIFIED
+  - PENDING
+  - ASSIGNED
+example: ASSIGNED

@@ -26,7 +26,7 @@ get:
         example: "223344"
     - name: page_size
       in: query
-      description: number of results returned per page, default 50
+      description: Number of results returned per page, default 50
       style: form
       explode: true
       schema:
@@ -35,11 +35,28 @@ get:
         example: 20
     - name: service_types
       in: query
-      description: filter results to include numbers with certain capabilities
+      description: Filter results to include numbers with certain capabilities
       style: form
       explode: true
       schema:
         $ref: ../../components/schemas/dedicated-numbers/service_types.yaml
+    - name: exact_service_types
+      in: query
+      description: >
+        When true, only return numbers whose capabilities match the supplied
+        `service_types` exactly.
+      style: form
+      explode: true
+      schema:
+        type: boolean
+        example: false
+    - name: classification
+      in: query
+      description: Filter results by number classification
+      style: form
+      explode: true
+      schema:
+        $ref: ../../components/schemas/dedicated-numbers/Classification.yaml
     - name: types
       in: query
       description: >
@@ -52,9 +69,8 @@ get:
     - name: token
       in: query
       description: >-
-        In paginated data the original request will return with a "next_token"
-        attribute. This token must be entered into subsequent call in the
-        "token" query parameter to obtain the next set of records.
+        Pagination token from a previous response `pagination.next_token`.
+        Pass it as `token` to fetch the next page.
       style: form
       explode: true
       schema:
@@ -82,6 +98,7 @@ get:
                 available_after: "2019-08-06T23:56:15.633Z"
                 capabilities:
                   - SMS
+                status: UNVERIFIED
     "401":
       $ref: ../../components/responses/Unauthorized.yaml
     "403":
