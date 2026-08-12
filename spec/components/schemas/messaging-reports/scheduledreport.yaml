@@ -18,3 +18,12 @@ properties:
   report_type:
     type: string
     example: detail
+  metadata:
+    type: object
+    description: >-
+      Metadata for the scheduled report specified as a set of key value pairs, each
+      key can be up to 100 characters long and each value can be up to 256
+      characters long.
+    example:
+      myKey: myValue
+      anotherKey: anotherValue

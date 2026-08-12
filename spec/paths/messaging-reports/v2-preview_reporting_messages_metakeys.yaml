@@ -24,5 +24,9 @@ post:
             $ref: ../../components/schemas/messaging-reports/metakeyresponse.yaml
     "400":
       description: Bad Request. Check the json response for more details on what went wrong.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/400response.yaml
     "401":
       $ref: ../../components/responses/Unauthorized.yaml

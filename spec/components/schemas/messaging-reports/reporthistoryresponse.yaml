@@ -18,13 +18,7 @@ properties:
       - SUMMARY
     example: DETAIL
   direction:
-    type: string
-    description: The message direction the report covers.
-    enum:
-      - INBOUND
-      - OUTBOUND
-      - ALL
-    example: OUTBOUND
+    $ref: ../MessageDirection.yaml
   requested_by:
     type: string
     description: The UUID of the user who requested the report.
@@ -62,3 +56,6 @@ properties:
     format: int64
     description: The size of the report file in bytes.
     example: 204800
+  request_data:
+    type: object
+    description: The original report request parameters that were submitted, as an echo of the request body/query used to generate this report.

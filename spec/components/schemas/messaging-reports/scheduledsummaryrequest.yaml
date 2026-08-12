@@ -16,11 +16,45 @@ properties:
   source:
     type: string
     example: '+61555555555'
-    description: The source phone number.
+    description: Filter results by source address.
+  sources:
+    description: >-
+      Filter results by multiple source addresses. This property overrides the
+      `source` parameter.
+    type: array
+    items:
+      type: string
+    example:
+      - '+61555555555'
+      - '+614987654321'
   destination:
     type: string
     example: '+61555555555'
-    description: The destination phone number.
+    description: Filter results by destination address.
+  destinations:
+    description: >-
+      Filter results by multiple destination addresses. This property overrides
+      the `destination` parameter.
+    type: array
+    items:
+      type: string
+    example:
+      - '+61555555555'
+      - '+614987654321'
+  addresses:
+    description: >-
+      Filter messages where source OR destination matches one of the provided
+      values. This parameter can only be set when `direction` is `all` and
+      cannot be used in the same request as the `source`, `destination`,
+      `sources`, or `destinations` parameters.
+    type: array
+    items:
+      type: string
+    example:
+      - '+61400000001'
+      - '+61400000002'
+  channels:
+    $ref: ../_format-schemas.yaml#/channels
   metadata_key:
     type: string
     example: broadcastId
@@ -52,8 +86,8 @@ properties:
       - ENROUTE
     description: An array of message statuses.
   opt_out:
-    type: string
-    example: 'true'
+    type: boolean
+    example: true
     description: Filter the report to only include messages that triggered an opt-out.
   group_by:
     type: array
@@ -63,6 +97,14 @@ properties:
       - DAY
       - WEEK
     description: Group results by a list of values, from the enumerable table above.
+  account_activity:
+    type: string
+    description: Filter accounts included in the report by activity level.
+    enum:
+      - ALL
+      - COLD
+      - ACTIVE
+    example: ALL
   delivery_options:
     type: array
     items:

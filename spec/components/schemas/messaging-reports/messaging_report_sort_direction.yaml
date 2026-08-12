@@ -1,0 +1,7 @@
+title: MessagingReportSortDirection
+enum:
+  - ASCENDING
+  - DESCENDING
+type: string
+description: Order to sort results by.
+example: ASCENDING
