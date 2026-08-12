@@ -27,7 +27,8 @@ get:
       explode: true
       schema:
         type: string
-        example: eyJwYWdlIjoyfQ
+        format: uuid
+        example: 0428d673-0f75-4063-9493-e89d75f13438
     - name: number_id
       in: query
       description: Unique identifier of a specific number
