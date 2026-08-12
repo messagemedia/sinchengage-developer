@@ -8,12 +8,12 @@ Tracks real request samples under `spec/code_samples/` for every OpenAPI operati
 
 | Metric | Count |
 |--------|------:|
-| Operations | 85 |
+| Operations | 73 |
 | Languages | 6 (C#, Java, JavaScript, PHP, Python, Ruby) |
-| Full matrix | 510 |
+| Full matrix | 438 |
 | Present | 29 |
-| **Missing** | **481** |
-| Coverage | 5.7% |
+| **Missing** | **409** |
+| Coverage | 6.6% |
 
 ## Required extensions
 
@@ -111,27 +111,7 @@ Missing **96** / 96 cells (16 operations).
 | POST | `/v2-preview/reporting/summary/scheduled` | `summaryscheduledreport` | — | C#, Java, JavaScript, PHP, Python, Ruby |
 | PUT | `/v2-preview/reporting/summary/scheduled/{scheduled_id}` | `updatesummaryscheduledreport` | — | C#, Java, JavaScript, PHP, Python, Ruby |
 
-### Mobile Landing Pages (beta)
-
-Missing **72** / 72 cells (12 operations).
-
-| Method | Path | operationId | Present | Missing |
-|--------|------|-------------|---------|---------|
-| POST | `/beta/smsplus/campaigns` | `CreateNewCampaign` | — | C#, Java, JavaScript, PHP, Python, Ruby |
-| GET | `/beta/smsplus/campaigns/{id}` | `GetCampaign` | — | C#, Java, JavaScript, PHP, Python, Ruby |
-| POST | `/beta/smsplus/campaigns/{id}/recipients` | `SendCampaignToRecipients` | — | C#, Java, JavaScript, PHP, Python, Ruby |
-| GET | `/beta/smsplus/landing_pages` | `GetLandingPages` | — | C#, Java, JavaScript, PHP, Python, Ruby |
-| POST | `/beta/smsplus/landing_pages` | `CreateaLandingPage` | — | C#, Java, JavaScript, PHP, Python, Ruby |
-| DELETE | `/beta/smsplus/landing_pages/{id}` | `DeleteaLandingPage` | — | C#, Java, JavaScript, PHP, Python, Ruby |
-| PATCH | `/beta/smsplus/landing_pages/{id}` | `UpdateaLandingPage` | — | C#, Java, JavaScript, PHP, Python, Ruby |
-| GET | `/beta/smsplus/reporting/{campaign_id}/events` | `GetCampaignEvents` | — | C#, Java, JavaScript, PHP, Python, Ruby |
-| GET | `/beta/smsplus/reporting/{campaign_id}/events/async` | `ExportCampaignEventsAsync` | — | C#, Java, JavaScript, PHP, Python, Ruby |
-| GET | `/beta/smsplus/reporting/{campaign_id}/summary` | `GetCampaignSummary` | — | C#, Java, JavaScript, PHP, Python, Ruby |
-| GET | `/beta/smsplus/templates` | `GetTemplates` | — | C#, Java, JavaScript, PHP, Python, Ruby |
-| GET | `/beta/smsplus/templates/{id}/fields` | `GetTemplatesFieldsDefinition` | — | C#, Java, JavaScript, PHP, Python, Ruby |
-
 ### Number Authorisation
-
 Missing **24** / 24 cells (4 operations).
 
 | Method | Path | operationId | Present | Missing |

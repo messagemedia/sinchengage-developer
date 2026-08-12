@@ -36,7 +36,6 @@ spec/
     signature-keys/
     short-trackable-links-reports/
     messaging-reports/
-    mobile-landing-pages/
   components/
     schemas/
       contacts/
@@ -50,7 +49,6 @@ spec/
       signature-keys/
       short-trackable-links-reports/
       messaging-reports/
-      mobile-landing-pages/
       _format-schemas.yaml           # shared; case-safe Format/format
       Number.yaml                    # shared across tags
       ...                            # other shared schemas stay at this level

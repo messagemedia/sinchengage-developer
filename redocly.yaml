@@ -22,18 +22,13 @@ rules:
   security-defined: error
   no-enum-type-mismatch: error
   vocabulary/controlled-terms: error
+  no-invalid-media-type-examples: error
+  no-invalid-schema-examples: error
+  no-invalid-parameter-examples: error
 
   # --- Deferred contract (do not block merges) ---
   no-server-trailing-slash: warn
   no-path-trailing-slash: warn
-
-  # --- Known schema/example mismatches (do not block merges) ---
-  # Examples reflect production behaviour; the schemas are believed incorrect and
-  # are with the owning API teams to fix — see docs/schema-example-mismatch-report.md.
-  # Re-elevate to error once the schemas are corrected.
-  no-invalid-media-type-examples: warn
-  no-invalid-schema-examples: warn
-  no-invalid-parameter-examples: warn
 
 openapi:
   # ReDoc download controls — both files are published next to index.html on Pages.

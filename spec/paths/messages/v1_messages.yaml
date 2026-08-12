@@ -220,7 +220,14 @@ post:
           schema:
             $ref: ../../components/schemas/400response.yaml
           example:
-            message: Something went wrong. Please try again later.
+            message: >-
+              Request failed to parse correctly. Please ensure input is valid and
+              try again.
+            details:
+              - >-
+                /messages/0/destination_number: International address must be
+                between 8 and 15 characters excluding the first '+', International
+                address contains invalid characters.
     "401":
       description: Unauthorized
       content:

@@ -14,20 +14,37 @@ properties:
   report:
     $ref: ./scheduledsummaryrequest.yaml
   metadata:
-    type: object
+    type: array
     description: >-
-      Metadata for the message specified as a set of key value pairs, each key
-      can be up to 100 characters long and each value can be up to 256
-      characters long
+      Metadata for the message as a list of key/value pairs. Each key can be up
+      to 100 characters long and each value can be up to 256 characters long.
 
       ```
 
-      {
-         "myKey": "myValue",
-         "anotherKey": "anotherValue"
-      }
+      [
+         {
+            "key": "myKey",
+            "value": "myValue"
+         },
+         {
+            "key": "anotherKey",
+            "value": "anotherValue"
+         }
+      ]
 
       ```
+    items:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        key:
+          type: string
+        value:
+          type: string
     example:
-      - myKey: myValue
-      - anotherKey: anotherValue
+      - key: myKey
+        value: myValue
+      - key: anotherKey
+        value: anotherValue

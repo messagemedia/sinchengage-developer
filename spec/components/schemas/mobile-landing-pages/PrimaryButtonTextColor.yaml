@@ -1,9 +1,0 @@
-title: PrimaryButtonTextColor
-required:
-  - type
-type: object
-properties:
-  type:
-    type: string
-example:
-  type: TEXT

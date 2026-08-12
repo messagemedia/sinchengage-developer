@@ -14,7 +14,7 @@ properties:
 example:
   uri: /v1/number_authorisation/is_authorised/+61491570156,+61491570157
   numbers:
-    - number: 61491570156
+    - number: '+61491570156'
       authorised: true
-    - number: 61491570157
+    - number: '+61491570157'
       authorised: false
