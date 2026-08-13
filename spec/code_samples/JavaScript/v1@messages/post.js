@@ -1,38 +1,58 @@
-let body = new lib.SendMessagesRequest();
-body.messages = [];
+const apiKey = 'YOUR_API_KEY';
+const apiSecret = 'YOUR_API_SECRET';
+const apiHost = 'YOUR_API_HOST'; // Set YOUR_API_HOST to the regional host from the servers section in the docs
 
-body.messages[0] = new lib.Message();
-body.messages[0].callbackUrl = 'https://my.callback.url.com';
-body.messages[0].content = 'My first message';
-body.messages[0].destinationNumber = '+61491570156';
-body.messages[0].deliveryReport = true;
-body.messages[0].format = lib.FormatEnum.SMS;
-body.messages[0].messageExpiryTimestamp = moment('2016-11-03T11:49:02.807Z').parseZone('2016-11-03T11:49:02.807Z');
-body.messages[0].metadata = JSON.parse('{"key1":"value1","key2":"value2"}');
-body.messages[0].scheduled = moment('2016-11-03T11:49:02.807Z').parseZone('2016-11-03T11:49:02.807Z');
-body.messages[0].sourceNumber = '+61491570157';
-body.messages[0].sourceNumberType = lib.SourceNumberTypeEnum.INTERNATIONAL;
+const body = {
+  "messages": [
+    {
+      "callback_url": "https://my.callback.url.com",
+      "content": "My first message",
+      "destination_number": "+61491570156",
+      "delivery_report": true,
+      "format": "SMS",
+      "message_expiry_timestamp": "2016-11-03T11:49:02.807Z",
+      "metadata": {
+        "key1": "value1",
+        "key2": "value2"
+      },
+      "scheduled": "2016-11-03T11:49:02.807Z",
+      "source_number": "+61491570157",
+      "source_number_type": "INTERNATIONAL"
+    },
+    {
+      "callback_url": "https://my.callback.url.com",
+      "content": "My second message",
+      "destination_number": "+61491570158",
+      "delivery_report": true,
+      "format": "MMS",
+      "subject": "This is an MMS message",
+      "media": [
+        "https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg"
+      ],
+      "message_expiry_timestamp": "2016-11-03T11:49:02.807Z",
+      "metadata": {
+        "key1": "value1",
+        "key2": "value2"
+      },
+      "scheduled": "2016-11-03T11:49:02.807Z",
+      "source_number": "+61491570159",
+      "source_number_type": "INTERNATIONAL"
+    }
+  ]
+};
 
-body.messages[1] = new lib.Message();
-body.messages[1].callbackUrl = 'https://my.callback.url.com';
-body.messages[1].content = 'My second message';
-body.messages[1].destinationNumber = '+61491570158';
-body.messages[1].deliveryReport = true;
-body.messages[1].format = lib.FormatEnum.MMS;
-body.messages[1].messageExpiryTimestamp = moment('2016-11-03T11:49:02.807Z').parseZone('2016-11-03T11:49:02.807Z');
-body.messages[1].metadata = JSON.parse('{"key1":"value1","key2":"value2"}');
-body.messages[1].scheduled = moment('2016-11-03T11:49:02.807Z').parseZone('2016-11-03T11:49:02.807Z');
-body.messages[1].sourceNumber = '+61491570159';
-body.messages[1].sourceNumberType = lib.SourceNumberTypeEnum.INTERNATIONAL;
-body.messages[1].media = ['https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg'];
-body.messages[1].subject = 'This is an MMS message';
+// HMAC authentication is also supported instead of Basic
+const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
 
-
-const promise = controller.sendMessages(body);
-promise.then((response) => {
-    // this block will be executed on successful endpoint call
-    // `response` will be of type 'SendMessagesResponse'
-}, (err) => {
-    // this block will be executed on endpoint call failure
-    // `err` is an 'object' containing more information about the error
+const response = await fetch(`${apiHost}/v1/messages`, {
+  method: 'POST',
+  headers: {
+    Authorization: `Basic ${auth}`,
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(body),
 });
+
+console.log(response.status);
+console.log(await response.text());

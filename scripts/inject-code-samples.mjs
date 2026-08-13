@@ -11,8 +11,9 @@ const SAMPLES_DIR = path.join(root, 'spec', 'code_samples');
 const OUT_DIR = path.join(root, '.tmp');
 const OUT_PATH = path.join(OUT_DIR, 'openapi.injected.yaml');
 
-const LANG_ORDER = ['C#', 'Java', 'JavaScript', 'PHP', 'Python', 'Ruby'];
+const LANG_ORDER = ['curl', 'C#', 'Java', 'JavaScript', 'PHP', 'Python', 'Ruby'];
 const LANG_EXTENSIONS = {
+  curl: new Set(['.sh']),
   'C#': new Set(['.cs']),
   Java: new Set(['.java']),
   JavaScript: new Set(['.js', '.mjs', '.cjs', '.ts']),
@@ -40,7 +41,12 @@ function walkFiles(dir) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       results.push(...walkFiles(full));
-    } else if (entry.isFile() && entry.name !== 'README.md') {
+    } else if (
+      entry.isFile() &&
+      entry.name !== 'README.md' &&
+      entry.name !== 'TODO.md' &&
+      !entry.name.endsWith('.md')
+    ) {
       results.push(full);
     }
   }

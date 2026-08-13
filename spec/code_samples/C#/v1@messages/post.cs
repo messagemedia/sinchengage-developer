@@ -1,38 +1,68 @@
-SendMessagesRequest body = new SendMessagesRequest();
-body.Messages = new List<Message>();
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 
-Message body_messages_0 = new Message();
-body_messages_0.CallbackUrl = "https://my.callback.url.com";
-body_messages_0.Content = "My first message";
-body_messages_0.DestinationNumber = "+61491570156";
-body_messages_0.DeliveryReport = true;
-body_messages_0.Format = Format.SMS;
-body_messages_0.MessageExpiryTimestamp = DateTime.Parse("2016-11-03T11:49:02.807Z");
-body_messages_0.Metadata = APIHelper.JsonDeserialize<Object>("{\"key1\":\"value1\",\"key2\":\"value2\"}");
-body_messages_0.Scheduled = DateTime.Parse("2016-11-03T11:49:02.807Z");
-body_messages_0.SourceNumber = "+61491570157";
-body_messages_0.SourceNumberType = SourceNumberType.INTERNATIONAL;
-body.Messages.Add(body_messages_0);
-
-Message body_messages_1 = new Message();
-body_messages_1.CallbackUrl = "https://my.callback.url.com";
-body_messages_1.Content = "My second message";
-body_messages_1.DestinationNumber = "+61491570158";
-body_messages_1.DeliveryReport = true;
-body_messages_1.Format = Format.MMS;
-body_messages_1.MessageExpiryTimestamp = DateTime.Parse("2016-11-03T11:49:02.807Z");
-body_messages_1.Metadata = APIHelper.JsonDeserialize<Object>("{\"key1\":\"value1\",\"key2\":\"value2\"}");
-body_messages_1.Scheduled = DateTime.Parse("2016-11-03T11:49:02.807Z");
-body_messages_1.SourceNumber = "+61491570159";
-body_messages_1.SourceNumberType = SourceNumberType.INTERNATIONAL;
-body_messages_1.Media = new List<string>();
-body_messages_1.Media.Add("https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg");
-body_messages_1.Subject = "This is an MMS message";
-body.Messages.Add(body_messages_1);
-
-
-try 
+class Program
 {
-    SendMessagesResponse result = messages.SendMessagesAsync(body).Result;
+    static async Task Main()
+    {
+        var apiKey = "YOUR_API_KEY";
+        var apiSecret = "YOUR_API_SECRET";
+        var apiHost = "YOUR_API_HOST"; // Set YOUR_API_HOST to the regional host from the servers section in the docs
+
+        var body = """
+        {
+          "messages": [
+            {
+              "callback_url": "https://my.callback.url.com",
+              "content": "My first message",
+              "destination_number": "+61491570156",
+              "delivery_report": true,
+              "format": "SMS",
+              "message_expiry_timestamp": "2016-11-03T11:49:02.807Z",
+              "metadata": {
+                "key1": "value1",
+                "key2": "value2"
+              },
+              "scheduled": "2016-11-03T11:49:02.807Z",
+              "source_number": "+61491570157",
+              "source_number_type": "INTERNATIONAL"
+            },
+            {
+              "callback_url": "https://my.callback.url.com",
+              "content": "My second message",
+              "destination_number": "+61491570158",
+              "delivery_report": true,
+              "format": "MMS",
+              "subject": "This is an MMS message",
+              "media": [
+                "https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg"
+              ],
+              "message_expiry_timestamp": "2016-11-03T11:49:02.807Z",
+              "metadata": {
+                "key1": "value1",
+                "key2": "value2"
+              },
+              "scheduled": "2016-11-03T11:49:02.807Z",
+              "source_number": "+61491570159",
+              "source_number_type": "INTERNATIONAL"
+            }
+          ]
+        }
+        """;
+
+        // HMAC authentication is also supported instead of Basic
+        using var client = new HttpClient();
+        var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{apiKey}:{apiSecret}"));
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        var url = $"{apiHost}/v1/messages";
+        using var content = new StringContent(body, Encoding.UTF8, "application/json");
+        using var response = await client.PostAsync(url, content);
+        Console.WriteLine((int)response.StatusCode);
+        Console.WriteLine(await response.Content.ReadAsStringAsync());
+    }
 }
-catch (APIException e){};

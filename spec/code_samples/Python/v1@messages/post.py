@@ -1,31 +1,62 @@
-body = SendMessagesRequest()
-body.messages = []
+import base64
+import json
+import urllib.request
 
-body.messages.append(Message())
-body.messages[0].callback_url = 'https://my.callback.url.com'
-body.messages[0].content = 'My first message'
-body.messages[0].destination_number = '+61491570156'
-body.messages[0].delivery_report = True
-body.messages[0].format = FormatEnum.SMS
-body.messages[0].message_expiry_timestamp = dateutil.parser.parse('2016-11-03T11:49:02.807Z')
-body.messages[0].metadata = jsonpickle.decode('{"key1":"value1","key2":"value2"}')
-body.messages[0].scheduled = dateutil.parser.parse('2016-11-03T11:49:02.807Z')
-body.messages[0].source_number = '+61491570157'
-body.messages[0].source_number_type = SourceNumberTypeEnum.INTERNATIONAL
+api_key = 'YOUR_API_KEY'
+api_secret = 'YOUR_API_SECRET'
+api_host = 'YOUR_API_HOST'  # Set YOUR_API_HOST to the regional host from the servers section in the docs
 
-body.messages.append(Message())
-body.messages[1].callback_url = 'https://my.callback.url.com'
-body.messages[1].content = 'My second message'
-body.messages[1].destination_number = '+61491570158'
-body.messages[1].delivery_report = True
-body.messages[1].format = FormatEnum.MMS
-body.messages[1].message_expiry_timestamp = dateutil.parser.parse('2016-11-03T11:49:02.807Z')
-body.messages[1].metadata = jsonpickle.decode('{"key1":"value1","key2":"value2"}')
-body.messages[1].scheduled = dateutil.parser.parse('2016-11-03T11:49:02.807Z')
-body.messages[1].source_number = '+61491570159'
-body.messages[1].source_number_type = SourceNumberTypeEnum.INTERNATIONAL
-body.messages[1].media = ['https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg']
-body.messages[1].subject = 'This is an MMS message'
+body = {
+  "messages": [
+    {
+      "callback_url": "https://my.callback.url.com",
+      "content": "My first message",
+      "destination_number": "+61491570156",
+      "delivery_report": True,
+      "format": "SMS",
+      "message_expiry_timestamp": "2016-11-03T11:49:02.807Z",
+      "metadata": {
+        "key1": "value1",
+        "key2": "value2"
+      },
+      "scheduled": "2016-11-03T11:49:02.807Z",
+      "source_number": "+61491570157",
+      "source_number_type": "INTERNATIONAL"
+    },
+    {
+      "callback_url": "https://my.callback.url.com",
+      "content": "My second message",
+      "destination_number": "+61491570158",
+      "delivery_report": True,
+      "format": "MMS",
+      "subject": "This is an MMS message",
+      "media": [
+        "https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg"
+      ],
+      "message_expiry_timestamp": "2016-11-03T11:49:02.807Z",
+      "metadata": {
+        "key1": "value1",
+        "key2": "value2"
+      },
+      "scheduled": "2016-11-03T11:49:02.807Z",
+      "source_number": "+61491570159",
+      "source_number_type": "INTERNATIONAL"
+    }
+  ]
+}
 
+# HMAC authentication is also supported instead of Basic
+auth = base64.b64encode(f'{api_key}:{api_secret}'.encode()).decode()
+url = f'{api_host}/v1/messages'
+headers = {
+    'Authorization': f'Basic {auth}',
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+}
 
-result = messages_controller.send_messages(body)
+data = json.dumps(body).encode('utf-8')
+request = urllib.request.Request(url, data=data, headers=headers, method='POST')
+
+with urllib.request.urlopen(request) as response:
+    print(response.status)
+    print(response.read().decode())

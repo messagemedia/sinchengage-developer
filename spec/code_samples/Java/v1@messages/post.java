@@ -1,41 +1,69 @@
-SendMessagesRequest body = new SendMessagesRequest();
-body.setMessages(new LinkedList<Message>());
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
-Message body_messages_0 = new Message();
-body_messages_0.setCallbackUrl("https://my.callback.url.com");
-body_messages_0.setContent("My first message");
-body_messages_0.setDestinationNumber("+61491570156");
-body_messages_0.setDeliveryReport(true);
-body_messages_0.setFormat(FormatEnum.SMS);
-body_messages_0.setMessageExpiryTimestamp(new DateTime("2016-11-03T11:49:02.807Z", DateTimeZone.UTC));
-body_messages_0.setMetadata(com.messagemedia.messages.APIHelper.deserialize("{\"key1\":\"value1\",\"key2\":\"value2\"}"));
-body_messages_0.setScheduled(new DateTime("2016-11-03T11:49:02.807Z", DateTimeZone.UTC));
-body_messages_0.setSourceNumber("+61491570157");
-body_messages_0.setSourceNumberType(SourceNumberTypeEnum.INTERNATIONAL);
-body.getMessages().add(body_messages_0);
+public class Sample {
+    public static void main(String[] args) throws Exception {
+        String apiKey = "YOUR_API_KEY";
+        String apiSecret = "YOUR_API_SECRET";
+        String apiHost = "YOUR_API_HOST"; // Set YOUR_API_HOST to the regional host from the servers section in the docs
 
-Message body_messages_1 = new Message();
-body_messages_1.setCallbackUrl("https://my.callback.url.com");
-body_messages_1.setContent("My second message");
-body_messages_1.setDestinationNumber("+61491570158");
-body_messages_1.setDeliveryReport(true);
-body_messages_1.setFormat(FormatEnum.MMS);
-body_messages_1.setMessageExpiryTimestamp(new DateTime("2016-11-03T11:49:02.807Z", DateTimeZone.UTC));
-body_messages_1.setMetadata(com.messagemedia.messages.APIHelper.deserialize("{\"key1\":\"value1\",\"key2\":\"value2\"}"));
-body_messages_1.setScheduled(new DateTime("2016-11-03T11:49:02.807Z", DateTimeZone.UTC));
-body_messages_1.setSourceNumber("+61491570159");
-body_messages_1.setSourceNumberType(SourceNumberTypeEnum.INTERNATIONAL);
-body_messages_1.setMedia(new LinkedList<String>());
-body_messages_1.getMedia().add("https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg");
-body_messages_1.setSubject("This is an MMS message");
-body.getMessages().add(body_messages_1);
+        String body = """
+        {
+          "messages": [
+            {
+              "callback_url": "https://my.callback.url.com",
+              "content": "My first message",
+              "destination_number": "+61491570156",
+              "delivery_report": true,
+              "format": "SMS",
+              "message_expiry_timestamp": "2016-11-03T11:49:02.807Z",
+              "metadata": {
+                "key1": "value1",
+                "key2": "value2"
+              },
+              "scheduled": "2016-11-03T11:49:02.807Z",
+              "source_number": "+61491570157",
+              "source_number_type": "INTERNATIONAL"
+            },
+            {
+              "callback_url": "https://my.callback.url.com",
+              "content": "My second message",
+              "destination_number": "+61491570158",
+              "delivery_report": true,
+              "format": "MMS",
+              "subject": "This is an MMS message",
+              "media": [
+                "https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg"
+              ],
+              "message_expiry_timestamp": "2016-11-03T11:49:02.807Z",
+              "metadata": {
+                "key1": "value1",
+                "key2": "value2"
+              },
+              "scheduled": "2016-11-03T11:49:02.807Z",
+              "source_number": "+61491570159",
+              "source_number_type": "INTERNATIONAL"
+            }
+          ]
+        }
+        """;
 
-
-messagesController.sendMessagesAsync(body, new APICallBack<SendMessagesResponse>() {
-    public void onSuccess(HttpContext context, SendMessagesResponse response) {
-        // TODO success callback handler
+        // HMAC authentication is also supported instead of Basic
+        String auth = Base64.getEncoder().encodeToString((apiKey + ":" + apiSecret).getBytes(StandardCharsets.UTF_8));
+        String url = apiHost + "/v1/messages";
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest.Builder builder = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .header("Authorization", "Basic " + auth)
+            .header("Accept", "application/json");
+        builder.header("Content-Type", "application/json");
+        builder.method("POST", HttpRequest.BodyPublishers.ofString(body));
+        HttpResponse<String> response = client.send(builder.build(), HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.statusCode());
+        System.out.println(response.body());
     }
-    public void onFailure(HttpContext context, Throwable error) {
-        // TODO failure callback handler
-    }
-});
+}
