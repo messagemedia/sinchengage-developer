@@ -1,4 +1,4 @@
-title: Message
+title: DetailReportMessageRecord
 type: object
 properties:
   message_id:
@@ -44,6 +44,20 @@ properties:
     type: string
     description: Country of the destination address
     example: AU
+  source_address_country:
+    type: string
+    description: Country of the source address
+    example: 'AU'
+  in_response_to:
+    type: string
+    description: The ID of the message this message is a reply to, if any.
+    format: uuid
+  action:
+    type: string
+    description: The action taken on the message, if any.
+  media_url:
+    type: string
+    description: URL of the media attached to this message, if any (MMS/RCS).
   content:
     maxLength: 5000
     minLength: 1

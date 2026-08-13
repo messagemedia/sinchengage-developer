@@ -773,16 +773,16 @@ paths:
       paths/messaging-reports/v2-preview_reporting_messages_async_reports_{reportId}_download-url.yaml
   /v2-preview/reporting/detail/scheduled:
     $ref: paths/messaging-reports/v2-preview_reporting_detail_scheduled.yaml
-  /v2-preview/reporting/detail/scheduled/{scheduled_id}:
-    $ref: paths/messaging-reports/v2-preview_reporting_detail_scheduled_{scheduled_id}.yaml
+  /v2-preview/reporting/detail/scheduled/{id}:
+    $ref: paths/messaging-reports/v2-preview_reporting_detail_scheduled_{id}.yaml
   /v2-preview/reporting/summary/scheduled:
     $ref: paths/messaging-reports/v2-preview_reporting_summary_scheduled.yaml
-  /v2-preview/reporting/summary/scheduled/{scheduled_id}:
-    $ref: paths/messaging-reports/v2-preview_reporting_summary_scheduled_{scheduled_id}.yaml
+  /v2-preview/reporting/summary/scheduled/{id}:
+    $ref: paths/messaging-reports/v2-preview_reporting_summary_scheduled_{id}.yaml
   /v2-preview/reporting/scheduled:
     $ref: paths/messaging-reports/v2-preview_reporting_scheduled.yaml
-  /v2-preview/reporting/scheduled/{scheduled_id}:
-    $ref: paths/messaging-reports/v2-preview_reporting_scheduled_{scheduled_id}.yaml
+  /v2-preview/reporting/scheduled/{id}:
+    $ref: paths/messaging-reports/v2-preview_reporting_scheduled_{id}.yaml
   /v1/messages/{messageId}:
     $ref: paths/messages/v1_messages_{messageId}.yaml
   /v1/messages:

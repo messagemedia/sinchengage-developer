@@ -33,3 +33,7 @@ get:
       $ref: ../../components/responses/Unauthorized.yaml
     "404":
       description: Report not found.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/404response.yaml

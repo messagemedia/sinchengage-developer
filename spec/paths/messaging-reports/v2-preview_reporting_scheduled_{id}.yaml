@@ -8,7 +8,7 @@ get:
   description: Retrieves a scheduled report by providing its id.
   operationId: GetScheduledReport
   parameters:
-    - name: scheduled_id
+    - name: id
       in: path
       required: true
       schema:
@@ -37,7 +37,7 @@ delete:
   description: Deletes a scheduled report by providing its id.
   operationId: DeleteScheduledReport
   parameters:
-    - name: scheduled_id
+    - name: id
       in: path
       required: true
       schema:
