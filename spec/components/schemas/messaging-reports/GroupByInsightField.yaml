@@ -11,5 +11,6 @@ enum:
   - COUNTRY
   - CHANNEL
   - POSTBACK_DATA
+  - MESSAGE_TYPE
 type: string
 example: DAY

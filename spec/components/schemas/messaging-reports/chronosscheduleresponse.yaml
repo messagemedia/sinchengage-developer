@@ -1,13 +1,16 @@
 title: chronosscheduleresponse
 type: object
 properties:
-  page_token:
-    type: string
-    example: abc123
-  page_size:
-    type: number
-    example: 20
-    description: Number of results to return in a page for paginated result sets.
+  pagination:
+    type: object
+    properties:
+      page_token:
+        type: string
+        example: abc123
+      page_size:
+        type: number
+        example: 20
+        description: Number of results to return in a page for paginated result sets.
   data:
     type: array
     items:

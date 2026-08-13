@@ -8,5 +8,9 @@ enum:
   - METADATA_KEY
   - METADATA_VALUE
   - STATUS
+  - COUNTRY
+  - CHANNEL
+  - POSTBACK_DATA
+  - MESSAGE_TYPE
 type: string
 example: DAY

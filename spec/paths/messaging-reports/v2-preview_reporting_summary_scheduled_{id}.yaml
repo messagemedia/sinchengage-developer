@@ -4,13 +4,13 @@ put:
     - hmac_auth: []
   tags:
     - Messaging Reports
-  summary: Update a scheduled detail report
+  summary: Update a scheduled summary report
   description: >-
-    Updates a selected scheduled report in detail, which contains a total number
+    Updates a selected scheduled report summary, which contains a total number
     of sent, received and billing units.
-  operationId: updatedetailscheduledreport
+  operationId: updatesummaryscheduledreport
   parameters:
-    - name: scheduled_id
+    - name: id
       in: path
       required: true
       schema:
@@ -22,15 +22,15 @@ put:
     content:
       application/json:
         schema:
-          $ref: ../../components/schemas/messaging-reports/updatescheduleddetailreport.yaml
+          $ref: ../../components/schemas/messaging-reports/updatescheduledsummaryreport.yaml
     required: true
   responses:
     "200":
-      description: The updated scheduled detail report.
+      description: The updated scheduled summary report.
       content:
         application/json:
           schema:
-            $ref: ../../components/schemas/messaging-reports/scheduleddetailreportresponse.yaml
+            $ref: ../../components/schemas/messaging-reports/scheduledsummaryreportresposne.yaml
     "400":
       description: Bad Request
       content:

@@ -56,6 +56,20 @@ properties:
     example:
       - '+61555555555'
       - '+614987654321'
+  addresses:
+    description: >-
+      Filter messages where source OR destination matches one of the provided
+      values. This parameter can only be set when `direction` is `all` and
+      cannot be used in the same request as the `source`, `destination`,
+      `sources`, or `destinations` parameters.
+    type: array
+    items:
+      type: string
+    example:
+      - '+61400000001'
+      - '+61400000002'
+  channels:
+    $ref: ../_format-schemas.yaml#/channels
   metadata_key:
     description: >-
       Filter results for messages that include a metadata key. Can be used
@@ -98,8 +112,8 @@ properties:
     description: A list of message statuses to filter the report by.
   opt_out:
     description: Filter the report to only include messages that triggered an opt-out
-    type: string
-    example: 'false'
+    type: boolean
+    example: false
   group_by:
     description: Group results by a list of values, from the enumerable table above.
     type: array
@@ -108,6 +122,14 @@ properties:
     example:
       - WEEK
       - ACCOUNT
+  account_activity:
+    type: string
+    description: Filter accounts included in the report by activity level.
+    enum:
+      - ALL
+      - COLD
+      - ACTIVE
+    example: ALL
   delivery_options:
     description: A list of options to configure the delivery of the report.
     type: array

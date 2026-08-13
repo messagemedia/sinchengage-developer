@@ -3,6 +3,8 @@ type: object
 properties:
   delivery_type:
     type: string
+    enum:
+      - EMAIL
     description: How to deliver the report.
     example: EMAIL
   delivery_addresses:
@@ -17,6 +19,8 @@ properties:
       for EMAIL delivery type
   delivery_format:
     type: string
+    enum:
+      - CSV
     description: Format of the report.
     example: CSV
 description: A delivery option

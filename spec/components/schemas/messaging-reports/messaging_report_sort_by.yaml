@@ -1,0 +1,15 @@
+title: MessagingReportSortBy
+enum:
+  - FORMAT
+  - DIRECTION
+  - STATUS
+  - SOURCE_ADDRESS
+  - DESTINATION_ADDRESS
+  - STATUS_CODE
+  - ACCOUNT_ID
+  - DESTINATION_ADDRESS_COUNTRY
+  - SOURCE_ADDRESS_COUNTRY
+  - TIMESTAMP
+type: string
+description: Field to sort results set by
+example: TIMESTAMP
