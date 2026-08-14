@@ -10,13 +10,13 @@ $page = 0;
 $pageSize = 0;
 
 // HMAC authentication is also supported instead of Basic
-$url = $apiHost . '/v1/reporting/links/summary?key=' . $key . '&value=' . $value . '&url=' . $url . '&recipient=' . $recipient . '&page=' . $page . '&pageSize=' . $pageSize;
+$requestUrl = $apiHost . '/v1/reporting/links/summary?key=' . $key . '&value=' . $value . '&url=' . $url . '&recipient=' . $recipient . '&page=' . $page . '&pageSize=' . $pageSize;
 $headers = [
     'Authorization: Basic ' . base64_encode($apiKey . ':' . $apiSecret),
     'Accept: application/json',
 ];
 
-$ch = curl_init($url);
+$ch = curl_init($requestUrl);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

@@ -14,13 +14,13 @@ page_size = 0
 
 # HMAC authentication is also supported instead of Basic
 auth = base64.b64encode(f'{api_key}:{api_secret}'.encode()).decode()
-url = f'{api_host}/v1/reporting/links/summary?key={key}&value={value}&url={url}&recipient={recipient}&page={page}&pageSize={page_size}'
+request_url = f'{api_host}/v1/reporting/links/summary?key={key}&value={value}&url={url}&recipient={recipient}&page={page}&pageSize={page_size}'
 headers = {
     'Authorization': f'Basic {auth}',
     'Accept': 'application/json',
 }
 
-request = urllib.request.Request(url, headers=headers, method='GET')
+request = urllib.request.Request(request_url, headers=headers, method='GET')
 
 with urllib.request.urlopen(request) as response:
     print(response.status)

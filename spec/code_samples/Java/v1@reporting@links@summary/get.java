@@ -19,10 +19,10 @@ public class Sample {
 
         // HMAC authentication is also supported instead of Basic
         String auth = Base64.getEncoder().encodeToString((apiKey + ":" + apiSecret).getBytes(StandardCharsets.UTF_8));
-        String url = apiHost + "/v1/reporting/links/summary" + "?" + "key=" + key + "&" + "value=" + value + "&" + "url=" + url + "&" + "recipient=" + recipient + "&" + "page=" + page + "&" + "pageSize=" + pageSize;
+        String requestUrl = apiHost + "/v1/reporting/links/summary" + "?" + "key=" + key + "&" + "value=" + value + "&" + "url=" + url + "&" + "recipient=" + recipient + "&" + "page=" + page + "&" + "pageSize=" + pageSize;
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest.Builder builder = HttpRequest.newBuilder()
-            .uri(URI.create(url))
+            .uri(URI.create(requestUrl))
             .header("Authorization", "Basic " + auth)
             .header("Accept", "application/json");
         builder.method("GET", HttpRequest.BodyPublishers.noBody());

@@ -24,8 +24,8 @@ class Program
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        var url = $"{apiHost}/v1/reporting/links/summary?key={key}&value={value}&url={url}&recipient={recipient}&page={page}&pageSize={pageSize}";
-        using var response = await client.GetAsync(url);
+        var requestUrl = $"{apiHost}/v1/reporting/links/summary?key={key}&value={value}&url={url}&recipient={recipient}&page={page}&pageSize={pageSize}";
+        using var response = await client.GetAsync(requestUrl);
         Console.WriteLine((int)response.StatusCode);
         Console.WriteLine(await response.Content.ReadAsStringAsync());
     }
