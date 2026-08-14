@@ -68,15 +68,16 @@ Draft follow-up tickets for the Sinch Engage API documentation. Create them in J
 | **Suggested type** | Story |
 | **Suggested title** | Fill missing Engage code samples (~409 gaps across 73 operations) |
 | **Contract change** | No — docs-only |
+| **Status** | Done via [MAPI-2472](https://messagemedia.atlassian.net/browse/MAPI-2472) — pure-language samples for curl / C# / Java / JavaScript / PHP / Python / Ruby across all GA operations; `spec/code_samples/TODO.md` removed |
 
-**Problem:** Empty/wrong-language sample stubs were removed; the coverage matrix in `spec/code_samples/TODO.md` shows large gaps (Contacts, Messaging Reports, Source Address, and others).
+**Problem:** Empty/wrong-language sample stubs were removed; the coverage matrix previously tracked large gaps (Contacts, Messaging Reports, Source Address, and others).
 
-**Scope:** Author real samples for C# / curl / Java / Node / PHP / Python per operation; keep the inject script rejecting empty files.
+**Scope:** Author real samples for C# / curl / Java / Node / PHP / Python / Ruby per operation; keep the inject script rejecting empty files. Do not use MessageMedia/Sinch SDKs.
 
 **AC:**
-- `TODO.md` coverage matrix updated toward full 6-lang coverage for GA ops
+- Full 7-lang coverage for GA ops (no gap tracker file)
 - No blank or wrong-extension samples published
-- Priority order: Messages → DRs/Replies → Webhooks → remaining tags
+- Priority order historically: Messages → DRs/Replies → Webhooks → remaining tags
 
 ---
 

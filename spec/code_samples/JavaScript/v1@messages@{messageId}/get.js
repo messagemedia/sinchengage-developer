@@ -1,10 +1,18 @@
-let messageId = 'messageId2';
+const apiKey = 'YOUR_API_KEY';
+const apiSecret = 'YOUR_API_SECRET';
+const apiHost = 'YOUR_API_HOST'; // Set YOUR_API_HOST to the regional host from the servers section in the docs
+const messageId = 'YOUR_MESSAGE_ID';
 
-const promise = controller.getMessageStatus(messageId);
-promise.then((response) => {
-    // this block will be executed on successful endpoint call
-    // `response` will be of type 'GetMessageStatusResponse'
-}, (err) => {
-    // this block will be executed on endpoint call failure
-    // `err` is an 'object' containing more information about the error
+// HMAC authentication is also supported instead of Basic
+const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
+
+const response = await fetch(`${apiHost}/v1/messages/${messageId}`, {
+  method: 'GET',
+  headers: {
+    Authorization: `Basic ${auth}`,
+    Accept: 'application/json',
+  },
 });
+
+console.log(response.status);
+console.log(await response.text());

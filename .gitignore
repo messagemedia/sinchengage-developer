@@ -1,6 +1,9 @@
 node_modules/
 web_deploy/
 .tmp/
+local/sample-smoke/.env
+local/sample-smoke/evidence/
+local/sample-smoke/.work/
 .DS_Store
 .idea/
 *.swp

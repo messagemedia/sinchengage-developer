@@ -64,17 +64,22 @@ spec/
 
 Samples follow the folder convention `<lang>/<path>/<HTTP verb>.<extension>` under `/spec/code_samples/`, where:
 
-- `<lang>` — language folder name (for example `JavaScript`, `Python`, `C#`)
+- `<lang>` — one of `curl`, `C#`, `Java`, `JavaScript`, `PHP`, `Python`, `Ruby`
 - `<path>` — API path with `/` replaced by `@`
-- `<HTTP verb>` — HTTP method of the target operation (extension is ignored)
+- `<HTTP verb>` — HTTP method of the target operation (extension must match the language)
 
 e.g.:
+- `/spec/code_samples/curl/v1@messages/post.sh` → `POST /v1/messages`
 - `/spec/code_samples/JavaScript/v1@messages@{messageId}/get.js` → `GET /v1/messages/{messageId}`
 - `/spec/code_samples/Python/v1@messages/post.py` → `POST /v1/messages`
 
 At build time the pipeline first **bundles** the multi-file spec, then `scripts/inject-code-samples.mjs` walks the samples tree and attaches each file as an `x-codeSamples` entry on the matching operation. Source files under `/spec` are never mutated; intermediates are written under `/.tmp`.
 
+Samples are pure-language HTTP (no MessageMedia/Sinch SDKs). After bundling, regenerate with `node scripts/generate-code-samples.mjs`.
+
 See [`/spec/code_samples/README.md`](spec/code_samples/README.md) for the full convention.
+
+To smoke-test that samples execute against a real host (matrix or all ops), see [`/local/sample-smoke/README.md`](local/sample-smoke/README.md).
 
 ### `/web`
 Static assets and the Handlebars HTML template used by `redocly build-docs`.
@@ -132,6 +137,7 @@ Build helpers used by npm scripts.
 | Path | Purpose |
 |------|---------|
 | `/scripts/inject-code-samples.mjs` | Injects `/spec/code_samples/` into `x-codeSamples` on the bundled spec. |
+| `/scripts/generate-code-samples.mjs` | Regenerates pure-language samples for all operations × languages from the bundled OpenAPI. |
 | `/scripts/copy-assets.mjs` | Copies `/web` assets into `/web_deploy` and publishes `openapi.yaml` + `openapi.json` for ReDoc downloads. |
 | `/scripts/copy-docs.mjs` | Mirrors `/docs/**/*.md` into `/web_deploy/docs/` and copies `web/llm-actions.js`, so the site can serve raw Markdown and the page-actions widget. |
 
