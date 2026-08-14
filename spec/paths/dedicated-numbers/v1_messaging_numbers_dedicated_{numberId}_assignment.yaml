@@ -119,7 +119,7 @@ post:
             $ref: ../../components/schemas/dedicated-numbers/Assignment.yaml
           example:
             label: cillum irure
-            number_id: et pariatur
+            number_id: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
     "401":
       $ref: ../../components/responses/Unauthorized.yaml
     "403":

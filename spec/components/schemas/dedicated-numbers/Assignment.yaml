@@ -1,19 +1,39 @@
 title: Assignment
 type: object
+description: Assignment metadata for a dedicated number on an account
 properties:
   id:
     type: string
+    format: uuid
+    description: Unique identifier of the assignment
+    example: be3cb602-7c00-4c87-ae4b-b8defc04f179
+  number_id:
+    type: string
+    format: uuid
+    description: Unique identifier of the assigned dedicated number
+    example: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
+  label:
+    type: string
+    description: Optional label for the assignment
+    example: LabelTest0
   metadata:
     type: object
     additionalProperties:
       type: string
-  number_id:
+    description: Optional key/value metadata (max 5 entries)
+  account_id:
     type: string
-  label:
+    description: Account that owns the assignment
+    example: my_account
+  vendor_id:
     type: string
+    description: Vendor that owns the assignment
+    example: MessageMedia
 example:
   metadata:
     key1: value1
   label: LabelTest0
   id: be3cb602-7c00-4c87-ae4b-b8defc04f179
   number_id: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
+  account_id: my_account
+  vendor_id: MessageMedia

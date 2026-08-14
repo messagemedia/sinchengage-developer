@@ -10,21 +10,14 @@ get:
   parameters:
     - name: id
       in: path
-      description: unique identifier
+      description: Unique identifier of the dedicated number
       required: true
       style: simple
       explode: true
       schema:
         type: string
+        format: uuid
         example: 7ca628a8-08b0-4e42-aeb8-960b37049c31
-    - name: Accept
-      in: header
-      description: Requested response media type.
-      required: true
-      style: simple
-      schema:
-        type: string
-        example: application/json;charset=UTF-8
   responses:
     "200":
       description: OK
@@ -43,6 +36,7 @@ get:
             capabilities:
               - SMS
               - MMS
+            status: UNVERIFIED
     "401":
       $ref: ../../components/responses/Unauthorized.yaml
     "403":

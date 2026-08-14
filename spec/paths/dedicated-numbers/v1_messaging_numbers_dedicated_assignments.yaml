@@ -20,22 +20,14 @@ get:
     - name: token
       in: query
       description: >-
-        In paginated data the original request will return with a "next_token"
-        attribute. This token must be entered into subsequent call in the
-        "token" query parameter to obtain the next set of records.
+        Pagination token from a previous response `pagination.next_token`.
+        Pass it as `token` to fetch the next page.
       style: form
       explode: true
       schema:
         type: string
-        example: eyJwYWdlIjoyfQ
-    - name: number_id
-      in: query
-      description: Unique identifier of a specific number
-      style: form
-      explode: true
-      schema:
-        type: string
-        example: examples
+        format: uuid
+        example: 0428d673-0f75-4063-9493-e89d75f13438
     - name: matching
       in: query
       description: Filters results by a pattern of digits contained within the number
@@ -54,36 +46,6 @@ get:
       schema:
         type: string
         example: AU
-    - name: type
-      in: query
-      description: >-
-        Filter results by Number type. When both `type` and `types` are
-        provided, `types` will take precedence, and `type` will be ignored.
-      style: form
-      explode: true
-      schema:
-        $ref: ../../components/schemas/dedicated-numbers/Type.yaml
-    - name: types
-      in: query
-      description: Filter results by Number Types
-      style: form
-      explode: true
-      schema:
-        $ref: ../../components/schemas/dedicated-numbers/Types.yaml
-    - name: classification
-      in: query
-      description: Filter results by Number Classification
-      style: form
-      explode: true
-      schema:
-        $ref: ../../components/schemas/dedicated-numbers/Classification.yaml
-    - name: service_types
-      in: query
-      description: Filter results by capabilities
-      style: form
-      explode: true
-      schema:
-        $ref: ../../components/schemas/dedicated-numbers/service_types.yaml
     - name: label
       in: query
       description: Filter results by a matching label
@@ -91,31 +53,46 @@ get:
       explode: true
       schema:
         type: string
-        example: examples
-    - name: sort_by
+        example: LabelTest0
+    - name: service_types
       in: query
-      description: Sort results by property
+      description: Filter results by capabilities
       style: form
       explode: true
       schema:
-        $ref: ../../components/schemas/dedicated-numbers/sort_by.yaml
-      example: TIMESTAMP
-    - name: sort_direction
+        $ref: ../../components/schemas/dedicated-numbers/service_types.yaml
+    - name: classification
       in: query
-      description: Sort direction
+      description: Filter results by Number Classification
       style: form
       explode: true
       schema:
-        $ref: ../../components/schemas/dedicated-numbers/sort_direction.yaml
-      example: ASCENDING
-    - name: Accept
-      in: header
-      description: Requested response media type.
-      required: true
-      style: simple
+        $ref: ../../components/schemas/dedicated-numbers/Classification.yaml
+    - name: status
+      in: query
+      description: Filter results by number status
+      style: form
+      explode: true
       schema:
-        type: string
-        example: application/json;charset=UTF-8
+        $ref: ../../components/schemas/dedicated-numbers/Status.yaml
+    - name: type
+      in: query
+      description: >-
+        Filter results by a single number type. When both `type` and `types`
+        are provided, `types` takes precedence.
+      style: form
+      explode: true
+      schema:
+        $ref: ../../components/schemas/dedicated-numbers/Type.yaml
+    - name: types
+      in: query
+      description: >
+        Filter results by one or more number types. Pass repeated query parameters
+        or a comma-separated list (for example `types=MOBILE,LANDLINE,TOLL_FREE`).
+      style: form
+      explode: true
+      schema:
+        $ref: ../../components/schemas/dedicated-numbers/Types.yaml
   responses:
     "200":
       description: OK
@@ -136,6 +113,8 @@ get:
                   label: LabelTest0
                   id: be3cb602-7c00-4c87-ae4b-b8defc04f179
                   number_id: b9ee3fe8-2c20-47b1-96e9-c5d12d7ed985
+                  account_id: my_account
+                  vendor_id: MessageMedia
                 number:
                   id: 03cf54ad-a4a3-4cd1-afd5-e0ca2cf158a3
                   phone_number: "61436489205"
@@ -145,6 +124,7 @@ get:
                   available_after: "2019-08-06T23:56:15.633Z"
                   capabilities:
                     - SMS
+                  status: ASSIGNED
     "401":
       description: Unauthorized
       content:

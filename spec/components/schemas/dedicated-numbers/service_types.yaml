@@ -1,7 +1,9 @@
 title: service_types
+type: string
+description: Filter or capability value for dedicated number service types
 enum:
   - SMS
   - TTS
   - MMS
-type: string
+  - CALL
 example: SMS
