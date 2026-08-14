@@ -1,0 +1,29 @@
+{
+  "languages": [
+    { "id": "curl", "folder": "curl", "ext": ".sh", "image": "sample-smoke-curl" },
+    { "id": "csharp", "folder": "C#", "ext": ".cs", "image": "sample-smoke-csharp" },
+    { "id": "java", "folder": "Java", "ext": ".java", "image": "sample-smoke-java" },
+    { "id": "javascript", "folder": "JavaScript", "ext": ".js", "image": "sample-smoke-javascript" },
+    { "id": "php", "folder": "PHP", "ext": ".php", "image": "sample-smoke-php" },
+    { "id": "python", "folder": "Python", "ext": ".py", "image": "sample-smoke-python" },
+    { "id": "ruby", "folder": "Ruby", "ext": ".rb", "image": "sample-smoke-ruby" }
+  ],
+  "methods": [
+    {
+      "id": "GET",
+      "rel": "v1@webhooks@messages/get"
+    },
+    {
+      "id": "POST",
+      "rel": "v1@messages/post"
+    },
+    {
+      "id": "PATCH",
+      "rel": "v1@iam@signature_keys@enabled/patch"
+    },
+    {
+      "id": "DELETE",
+      "rel": "v1@iam@signature_keys@enabled/delete"
+    }
+  ]
+}

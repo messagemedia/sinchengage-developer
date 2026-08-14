@@ -79,6 +79,8 @@ Samples are pure-language HTTP (no MessageMedia/Sinch SDKs). After bundling, reg
 
 See [`/spec/code_samples/README.md`](spec/code_samples/README.md) for the full convention.
 
+To smoke-test that samples execute against a real host (matrix or all ops), see [`/local/sample-smoke/README.md`](local/sample-smoke/README.md).
+
 ### `/web`
 Static assets and the Handlebars HTML template used by `redocly build-docs`.
 
