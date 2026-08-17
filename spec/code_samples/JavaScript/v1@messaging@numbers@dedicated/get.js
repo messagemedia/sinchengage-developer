@@ -11,7 +11,7 @@ const token = 'YOUR_TOKEN';
 // HMAC authentication is also supported instead of Basic
 const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
 
-const response = await fetch(`${apiHost}/v1/messaging/numbers/dedicated/?country=${country}&matching=${matching}&page_size=${pageSize}&service_types=${serviceTypes}&types=${types}&token=${token}`, {
+const response = await fetch(`${apiHost}/v1/messaging/numbers/dedicated?country=${country}&matching=${matching}&page_size=${pageSize}&service_types=${serviceTypes}&types=${types}&token=${token}`, {
   method: 'GET',
   headers: {
     Authorization: `Basic ${auth}`,

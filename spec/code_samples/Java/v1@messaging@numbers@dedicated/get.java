@@ -10,17 +10,16 @@ public class Sample {
         String apiKey = "YOUR_API_KEY";
         String apiSecret = "YOUR_API_SECRET";
         String apiHost = "YOUR_API_HOST"; // Set YOUR_API_HOST to the regional host from the servers section in the docs
-        String senderAddress = "EXAMPLE";
-        String senderAddressType = "ALPHANUMERIC";
-        String usageType = "ALPHANUMERIC";
-        boolean includeRelatedAccounts = true;
-        String expiryStatus = "EXPIRED";
+        String country = "YOUR_COUNTRY";
+        String matching = "YOUR_MATCHING";
         int pageSize = 0;
+        String serviceTypes = "YOUR_SERVICE_TYPES";
+        String types = "YOUR_TYPES";
         String token = "YOUR_TOKEN";
 
         // HMAC authentication is also supported instead of Basic
         String auth = Base64.getEncoder().encodeToString((apiKey + ":" + apiSecret).getBytes(StandardCharsets.UTF_8));
-        String url = apiHost + "/v1/messaging/numbers/sender_address/addresses/" + "?" + "sender_address=" + senderAddress + "&" + "sender_address_type=" + senderAddressType + "&" + "usage_type=" + usageType + "&" + "include_related_accounts=" + includeRelatedAccounts + "&" + "expiry_status=" + expiryStatus + "&" + "page_size=" + pageSize + "&" + "token=" + token;
+        String url = apiHost + "/v1/messaging/numbers/dedicated" + "?" + "country=" + country + "&" + "matching=" + matching + "&" + "page_size=" + pageSize + "&" + "service_types=" + serviceTypes + "&" + "types=" + types + "&" + "token=" + token;
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest.Builder builder = HttpRequest.newBuilder()
             .uri(URI.create(url))

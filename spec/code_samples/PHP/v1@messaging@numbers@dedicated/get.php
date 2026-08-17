@@ -10,7 +10,7 @@ $types = "YOUR_TYPES";
 $token = "YOUR_TOKEN";
 
 // HMAC authentication is also supported instead of Basic
-$url = $apiHost . '/v1/messaging/numbers/dedicated/?country=' . $country . '&matching=' . $matching . '&page_size=' . $pageSize . '&service_types=' . $serviceTypes . '&types=' . $types . '&token=' . $token;
+$url = $apiHost . '/v1/messaging/numbers/dedicated?country=' . $country . '&matching=' . $matching . '&page_size=' . $pageSize . '&service_types=' . $serviceTypes . '&types=' . $types . '&token=' . $token;
 $headers = [
     'Authorization: Basic ' . base64_encode($apiKey . ':' . $apiSecret),
     'Accept: application/json',

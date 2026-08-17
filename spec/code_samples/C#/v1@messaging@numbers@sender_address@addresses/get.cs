@@ -25,7 +25,7 @@ class Program
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        var url = $"{apiHost}/v1/messaging/numbers/sender_address/addresses/?sender_address={senderAddress}&sender_address_type={senderAddressType}&usage_type={usageType}&include_related_accounts={includeRelatedAccounts}&expiry_status={expiryStatus}&page_size={pageSize}&token={token}";
+        var url = $"{apiHost}/v1/messaging/numbers/sender_address/addresses?sender_address={senderAddress}&sender_address_type={senderAddressType}&usage_type={usageType}&include_related_accounts={includeRelatedAccounts}&expiry_status={expiryStatus}&page_size={pageSize}&token={token}";
         using var response = await client.GetAsync(url);
         Console.WriteLine((int)response.StatusCode);
         Console.WriteLine(await response.Content.ReadAsStringAsync());

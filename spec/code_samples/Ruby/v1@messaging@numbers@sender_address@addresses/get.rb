@@ -15,7 +15,7 @@ page_size = 0
 token = "YOUR_TOKEN"
 
 # HMAC authentication is also supported instead of Basic
-uri = URI.parse("#{api_host}/v1/messaging/numbers/sender_address/addresses/?sender_address=#{sender_address}&sender_address_type=#{sender_address_type}&usage_type=#{usage_type}&include_related_accounts=#{include_related_accounts}&expiry_status=#{expiry_status}&page_size=#{page_size}&token=#{token}")
+uri = URI.parse("#{api_host}/v1/messaging/numbers/sender_address/addresses?sender_address=#{sender_address}&sender_address_type=#{sender_address_type}&usage_type=#{usage_type}&include_related_accounts=#{include_related_accounts}&expiry_status=#{expiry_status}&page_size=#{page_size}&token=#{token}")
 http = Net::HTTP.new(uri.host, uri.port)
 http.use_ssl = uri.scheme == 'https'
 

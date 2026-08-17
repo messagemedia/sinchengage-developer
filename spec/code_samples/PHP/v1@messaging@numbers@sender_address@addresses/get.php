@@ -11,7 +11,7 @@ $pageSize = 0;
 $token = "YOUR_TOKEN";
 
 // HMAC authentication is also supported instead of Basic
-$url = $apiHost . '/v1/messaging/numbers/sender_address/addresses/?sender_address=' . $senderAddress . '&sender_address_type=' . $senderAddressType . '&usage_type=' . $usageType . '&include_related_accounts=' . $includeRelatedAccounts . '&expiry_status=' . $expiryStatus . '&page_size=' . $pageSize . '&token=' . $token;
+$url = $apiHost . '/v1/messaging/numbers/sender_address/addresses?sender_address=' . $senderAddress . '&sender_address_type=' . $senderAddressType . '&usage_type=' . $usageType . '&include_related_accounts=' . $includeRelatedAccounts . '&expiry_status=' . $expiryStatus . '&page_size=' . $pageSize . '&token=' . $token;
 $headers = [
     'Authorization: Basic ' . base64_encode($apiKey . ':' . $apiSecret),
     'Accept: application/json',

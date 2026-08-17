@@ -14,7 +14,7 @@ types = "YOUR_TYPES"
 token = "YOUR_TOKEN"
 
 # HMAC authentication is also supported instead of Basic
-uri = URI.parse("#{api_host}/v1/messaging/numbers/dedicated/?country=#{country}&matching=#{matching}&page_size=#{page_size}&service_types=#{service_types}&types=#{types}&token=#{token}")
+uri = URI.parse("#{api_host}/v1/messaging/numbers/dedicated?country=#{country}&matching=#{matching}&page_size=#{page_size}&service_types=#{service_types}&types=#{types}&token=#{token}")
 http = Net::HTTP.new(uri.host, uri.port)
 http.use_ssl = uri.scheme == 'https'
 

@@ -24,7 +24,7 @@ class Program
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        var url = $"{apiHost}/v1/messaging/numbers/dedicated/?country={country}&matching={matching}&page_size={pageSize}&service_types={serviceTypes}&types={types}&token={token}";
+        var url = $"{apiHost}/v1/messaging/numbers/dedicated?country={country}&matching={matching}&page_size={pageSize}&service_types={serviceTypes}&types={types}&token={token}";
         using var response = await client.GetAsync(url);
         Console.WriteLine((int)response.StatusCode);
         Console.WriteLine(await response.Content.ReadAsStringAsync());

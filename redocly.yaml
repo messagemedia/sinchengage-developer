@@ -9,8 +9,6 @@ extends:
   - recommended
 
 # CI (`npm run lint`) fails the build on any rule at severity `error`.
-# Trailing-slash rules stay at `warn` until path/server URLs are changed as a
-# deliberate API contract decision (see docs/MAPI-2253-ax-dx-assessment.md).
 rules:
   # --- Merge blockers (hygiene + vocabulary) ---
   operation-4xx-response: error
@@ -25,10 +23,8 @@ rules:
   no-invalid-media-type-examples: error
   no-invalid-schema-examples: error
   no-invalid-parameter-examples: error
-
-  # --- Deferred contract (do not block merges) ---
-  no-server-trailing-slash: warn
-  no-path-trailing-slash: warn
+  no-server-trailing-slash: error
+  no-path-trailing-slash: error
 
 openapi:
   # ReDoc download controls — both files are published next to index.html on Pages.

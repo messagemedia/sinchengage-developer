@@ -27,7 +27,7 @@ Typical lifecycle: search → inspect → assign → manage → release.
 
 | Endpoint | Method | Path | Description |
 |----------|--------|------|-------------|
-| [Get numbers](get-numbers.md) | `GET` | `/v1/messaging/numbers/dedicated/` | Get numbers |
+| [Get numbers](get-numbers.md) | `GET` | `/v1/messaging/numbers/dedicated` | Get numbers |
 | [Get number by ID](get-number-by-id.md) | `GET` | `/v1/messaging/numbers/dedicated/{id}` | Get number by ID |
 | [Get assignment](get-assignment.md) | `GET` | `/v1/messaging/numbers/dedicated/{numberId}/assignment` | Get assignment |
 | [Create assignment](create-assignment.md) | `POST` | `/v1/messaging/numbers/dedicated/{numberId}/assignment` | Create assignment |
