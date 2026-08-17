@@ -1,0 +1,62 @@
+title: SmsReceivedWebhookPayload
+type: object
+description: >-
+  Default/example payload for an inbound SMS reply webhook (`RECEIVED_SMS`
+  only — `OPT_OUT_SMS` is dispatched through a separate code path with its
+  own shape, see `OptOutWebhookPayload`), built from the sample `template`
+  shown on the Create webhook operation. The actual JSON structure sent to
+  your `url` is fully controlled by the `template` you configure — this
+  describes the payload produced by that sample template, not a fixed
+  contract.
+properties:
+  account_id:
+    type: string
+    description: >-
+      The account that received the reply. Template variable `$accountId`.
+    example: DeveloperPortal7000
+  reply_id:
+    type: string
+    description: Unique ID of this reply. Template variable `$replyId`.
+    format: uuid
+    example: a175e797-2b54-468b-9850-41a3eab32f74
+  destination_number:
+    maxLength: 15
+    minLength: 1
+    type: string
+    description: >-
+      Address from which this reply was sent to. Template variable
+      `$destinationAddress`.
+    example: '+61491593156'
+  source_number:
+    maxLength: 15
+    minLength: 1
+    type: string
+    description: >-
+      Address from which this reply was received from. Template variable
+      `$sourceAddress`.
+    example: '+61491570156'
+  date_received:
+    type: string
+    description: >-
+      Date time when the reply was received. Template variable
+      `$receivedTimestamp`.
+    format: date-time
+    example: '2016-12-07T08:44:00.850Z'
+  message_id:
+    type: string
+    description: Unique ID of the original message. Template variable `$messageId`.
+    format: uuid
+    example: 877c19ef-fa2e-4cec-827a-e1df9b5509f7
+  content:
+    maxLength: 5000
+    minLength: 1
+    type: string
+    description: Content of the reply. Template variable `$moContent`.
+    example: Hello back
+  metadata:
+    type: object
+    additionalProperties:
+      type: string
+    description: >-
+      Any metadata that was included in the original submit message request.
+      Template variable `$metadata`. Keys and values are both strings.

@@ -1,0 +1,72 @@
+post:
+  security: []
+  tags:
+    - Webhook Payloads
+  summary: Opt-out webhook
+  description: >-
+    Sent to the `url` configured on a webhook subscribed to `OPT_OUT_SMS`
+    (see the Create webhook operation under Webhooks Management). No sample
+    `template` exists in current prose for this event, so the body shown
+    here is a suggested shape built from the template variables available
+    to opt-out notifications, rather than a transcribed default.
+
+
+    This event is dispatched as a notification with its own
+    `$notificationId`, not as a reply. The `$replyId` / `$moId` variables
+    used by the `RECEIVED_SMS` and `RECEIVED_MMS` templates are **not
+    available** here — a template referencing them renders the literal text
+    `$replyId` instead of an ID. Use `$notificationId` instead.
+
+
+    The actual JSON structure sent to your `url` is fully controlled by the
+    `template` you configure.
+
+
+    If your account has `API_SECURE_CALLBACKS` enabled with an active
+    signature key (see Signature Key Management), this request is signed so
+    you can verify it came from Sinch. The signature is carried in these
+    headers:
+
+
+    - `X-MessageMedia-Signature` — the signed digest, base64-encoded.
+
+    - `X-MessageMedia-Digest-Type` — digest algorithm used, for example
+    `SHA-512`.
+
+    - `X-MessageMedia-Cipher-Type` — signing algorithm used, for example
+    `RSA`.
+
+    - `X-MessageMedia-Key-Id` — UUID of the signing key, so you can select
+    the right public key from Signature Key Management.
+
+
+    The signed value is the request line, followed by the `Date` header sent
+    on the request, followed by the request body.
+  operationId: OptOutWebhook
+  requestBody:
+    description: Opt-out webhook payload.
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/webhooks/payloads/OptOutWebhookPayload.yaml
+        example:
+          notification_id: 3e6e6b1a-6c1d-4b1a-9c1e-6f1a6b1a6c1d
+          account_id: DeveloperPortal7000
+          destination_number: '+61491593156'
+          source_number: '+61491570156'
+          date_received: '2016-12-07T08:44:00.850Z'
+          message_id: 877c19ef-fa2e-4cec-827a-e1df9b5509f7
+          content: STOP
+          metadata:
+            myKey: myValue
+  responses:
+    "200":
+      description: >-
+        Your endpoint acknowledged the opt-out notification. Any 2xx
+        response is treated as successful delivery.
+    "400":
+      description: >-
+        Your endpoint returned an error response. Delivery is retried
+        according to the `retries` / `retry_delay` configured on the
+        webhook (see Create webhook).

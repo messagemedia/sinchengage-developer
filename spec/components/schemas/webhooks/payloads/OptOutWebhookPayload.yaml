@@ -1,0 +1,77 @@
+title: OptOutWebhookPayload
+type: object
+description: >-
+  Suggested payload for an opt-out webhook (`OPT_OUT_SMS`). Unlike the
+  delivery report and reply webhooks, no sample `template` exists in current
+  prose for this event, so this is *not* a transcribed default — it is a
+  suggested shape built from the template variables the platform makes
+  available to opt-out notifications.
+
+
+  **Important:** `OPT_OUT_SMS` is dispatched as a notification with its own
+  `$notificationId`, not as a reply. The `$replyId` / `$moId` variables used
+  by the `RECEIVED_SMS` and `RECEIVED_MMS` templates are **not available**
+  for this event — a template referencing them will render the literal text
+  `$replyId` rather than an ID. Use `$notificationId` instead.
+
+
+  The actual JSON structure sent to your `url` is fully controlled by the
+  `template` you configure.
+properties:
+  notification_id:
+    type: string
+    description: >-
+      Unique ID of this opt-out notification. Template variable
+      `$notificationId`.
+    format: uuid
+    example: 3e6e6b1a-6c1d-4b1a-9c1e-6f1a6b1a6c1d
+  account_id:
+    type: string
+    description: >-
+      The account that received the opt-out. Template variable `$accountId`.
+    example: DeveloperPortal7000
+  destination_number:
+    maxLength: 15
+    minLength: 1
+    type: string
+    description: >-
+      Address from which this opt-out was sent to. Template variable
+      `$destinationAddress`.
+    example: '+61491593156'
+  source_number:
+    maxLength: 15
+    minLength: 1
+    type: string
+    description: >-
+      Address from which this opt-out was received from. Template variable
+      `$sourceAddress`.
+    example: '+61491570156'
+  date_received:
+    type: string
+    description: >-
+      Date time when the opt-out was received. Template variable
+      `$receivedTimestamp`.
+    format: date-time
+    example: '2016-12-07T08:44:00.850Z'
+  message_id:
+    type: string
+    description: >-
+      Unique ID of the original message. Template variable `$messageId`. May
+      be absent when the opt-out is unsolicited — that is, when the recipient
+      sends a stop keyword with no preceding message to correlate against —
+      so treat this as optional rather than guaranteed.
+    format: uuid
+    example: 877c19ef-fa2e-4cec-827a-e1df9b5509f7
+  content:
+    maxLength: 5000
+    minLength: 1
+    type: string
+    description: Content of the opt-out message. Template variable `$moContent`.
+    example: STOP
+  metadata:
+    type: object
+    additionalProperties:
+      type: string
+    description: >-
+      Any metadata that was included in the original submit message request.
+      Template variable `$metadata`. Keys and values are both strings.

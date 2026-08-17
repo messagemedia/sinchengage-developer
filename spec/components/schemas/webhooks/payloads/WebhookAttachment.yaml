@@ -1,0 +1,22 @@
+title: WebhookAttachment
+type: object
+description: >-
+  A media attachment included in an MMS reply webhook payload, rendered from
+  the `$attachments` template variable.
+properties:
+  content_type:
+    type: string
+    description: MIME type of the attachment. Template variable `$entry.contentType`.
+    example: image/png
+  content:
+    type: string
+    description: >-
+      Base64-encoded content of the attachment. Template variable
+      `$entry.base64`.
+    format: byte
+  original_name:
+    type: string
+    description: >-
+      Original file name of the attachment. Template variable
+      `$entry.originalName`.
+    example: file.png

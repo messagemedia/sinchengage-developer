@@ -1,0 +1,81 @@
+title: DeliveryReportWebhookPayload
+type: object
+description: >-
+  Default/example payload for a delivery report webhook (`ENROUTE_DR`,
+  `SUBMITTED_DR`, `DELIVERED_DR`, `EXPIRED_DR`, `REJECTED_DR`, `FAILED_DR`),
+  built from the sample `template` shown on the Create webhook operation. The
+  actual JSON structure sent to your `url` is fully controlled by the
+  `template` you configure — this describes the payload produced by that
+  sample template, not a fixed contract.
+
+
+  Additional template variables are available to delivery report templates
+  but are *not* part of this default shape — add them to your own `template`
+  if you want them: `$billingUnits` (billing units for the report, which also
+  requires the "Enable billing units in Delivery Reports and Callbacks"
+  switch in your account's API settings), `$retryCount` (webhook delivery
+  retry count), and `$format` (service type; the older `$type` alias is
+  deprecated). See the Template Parameters table on the Create webhook
+  operation for the full list.
+properties:
+  delivery_report_id:
+    type: string
+    description: Unique ID for this delivery report
+    format: uuid
+    example: 01e1fa0a-6e27-4945-9cdb-18644b4de043
+  source_number:
+    maxLength: 15
+    minLength: 1
+    type: string
+    description: >-
+      Address from which this delivery report was received. Template variable
+      `$sourceAddress`.
+    example: '+61491570156'
+  date_received:
+    type: string
+    description: >-
+      The date and time at which this delivery report was generated in UTC.
+      Template variable `$receivedTimestamp`.
+    format: date-time
+    example: '2016-11-03T11:49:02.807Z'
+  status:
+    $ref: ../../Status.yaml
+  delay:
+    type: string
+    deprecated: true
+    description: >-
+      Deprecated, no longer in use. In the sample `template` this is the
+      hardcoded literal `"0"` rather than a template variable — there is no
+      `$delay` parameter — so it always renders as `"0"`. Retained only for
+      backward compatibility with existing integrations.
+    example: '0'
+  submitted_date:
+    type: string
+    description: >-
+      The date and time when the message status changed in UTC. For a
+      delivered DR this may indicate the time at which the message was
+      received on the handset. Template variable `$submittedTimestamp`.
+    format: date-time
+    example: '2016-11-03T11:49:02.807Z'
+  message_id:
+    type: string
+    description: Unique ID of the original message. Template variable `$messageId`.
+    format: uuid
+    example: 877c19ef-fa2e-4cec-827a-e1df9b5509f7
+  original_text:
+    type: string
+    description: Text of the original message. Template variable `$mtContent`.
+    example: Hello back
+  vendor_account_id:
+    $ref: ../../VendorAccountId.yaml
+  error_code:
+    type: string
+    description: Status code for this delivery report. Template variable `$statusCode`.
+    example: '220'
+  metadata:
+    type: object
+    additionalProperties:
+      type: string
+    description: >-
+      Any metadata that was included in the original submit message request.
+      Template variable `$metadata`. Keys and values are both strings.
