@@ -127,6 +127,9 @@ by `web/index.html`; its styles stay inline in the template):
 `web_deploy/docs/**` during `npm run build` (and copies `web/llm-actions.js` into
 `web_deploy/`), so the published site serves, for example,
 `https://docs.app.api.sinch.com/docs/api/webhooks-management/create-webhook.md`.
+Images a page references with a relative path (such as `./message-flow.png`, which ReDoc
+resolves at the site root) are copied next to the published Markdown, so the same link
+works in both places.
 
 To add coverage for more sections, add the Markdown under `docs/api/…` and register the
 `operationId` (or tag slug) in the `OP_TO_MD` / `TAG_TO_MD` maps in `web/llm-actions.js`.
@@ -139,7 +142,7 @@ Build helpers used by npm scripts.
 | `/scripts/inject-code-samples.mjs` | Injects `/spec/code_samples/` into `x-codeSamples` on the bundled spec. |
 | `/scripts/generate-code-samples.mjs` | Regenerates pure-language samples for all operations × languages from the bundled OpenAPI. |
 | `/scripts/copy-assets.mjs` | Copies `/web` assets into `/web_deploy` and publishes `openapi.yaml` + `openapi.json` for ReDoc downloads. |
-| `/scripts/copy-docs.mjs` | Mirrors `/docs/**/*.md` into `/web_deploy/docs/` and copies `web/llm-actions.js`, so the site can serve raw Markdown and the page-actions widget. |
+| `/scripts/copy-docs.mjs` | Mirrors `/docs/**/*.md` (plus images each page references) into `/web_deploy/docs/` and copies `web/llm-actions.js`, so the site can serve raw Markdown and the page-actions widget. |
 
 ### `/changelog`
 Changelog entries for documentation or API updates.

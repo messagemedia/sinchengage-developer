@@ -16,6 +16,9 @@ const OUT_DIR = path.join(root, 'web_deploy');
 // copy-assets.mjs list. Published alongside index.html.
 const WIDGET_ASSETS = ['llm-actions.js'];
 
+// Markdown image syntax, capturing the target of ![alt](target "optional title").
+const IMAGE_REF = /!\[[^\]]*\]\(\s*<?([^)\s>]+)>?(?:\s+"[^"]*")?\s*\)/g;
+
 function walkMarkdown(dir) {
   const results = [];
   if (!fs.existsSync(dir)) {
@@ -30,6 +33,51 @@ function walkMarkdown(dir) {
     }
   }
   return results;
+}
+
+function localImageRefs(markdown) {
+  const refs = new Set();
+  for (const [, target] of markdown.matchAll(IMAGE_REF)) {
+    const isRemote = /^[a-z][a-z0-9+.-]*:/i.test(target) || target.startsWith('//');
+    if (isRemote || target.startsWith('#') || target.startsWith('/')) {
+      continue;
+    }
+    refs.add(target.split(/[?#]/)[0]);
+  }
+  return refs;
+}
+
+// A diagram referenced from a page description (e.g. ./message-flow.png) is
+// resolved by ReDoc against the site root, where copy-assets.mjs publishes it
+// from web/. The same relative target has to resolve next to the published
+// Markdown too, so copy each referenced image into the page's output folder.
+function copyReferencedImages(mdSource, mdDest) {
+  let copied = 0;
+  for (const ref of localImageRefs(fs.readFileSync(mdSource, 'utf8'))) {
+    const dest = path.resolve(path.dirname(mdDest), ref);
+    if (path.relative(OUT_DIR, dest).startsWith('..')) {
+      console.warn(`Image target escapes web_deploy/, skipping: ${ref}`);
+      continue;
+    }
+    const candidates = [
+      path.resolve(path.dirname(mdSource), ref),
+      path.join(WEB_DIR, path.basename(ref))
+    ];
+    const src = candidates.find((candidate) => fs.existsSync(candidate));
+    if (!src) {
+      console.warn(`Image not found for ${path.relative(root, mdSource)}, skipping: ${ref}`);
+      continue;
+    }
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.copyFileSync(src, dest);
+    console.log(`Copied ${toPosix(path.relative(root, src))} -> web_deploy/${toPosix(path.relative(OUT_DIR, dest))}`);
+    copied += 1;
+  }
+  return copied;
+}
+
+function toPosix(relativePath) {
+  return relativePath.split(path.sep).join('/');
 }
 
 function copyWidgetAssets() {
@@ -57,17 +105,19 @@ function main() {
   }
 
   let copied = 0;
+  let images = 0;
   for (const src of files) {
     const rel = path.relative(root, src); // e.g. docs/api/webhooks-management/create-webhook.md
     const dest = path.join(OUT_DIR, rel);
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.copyFileSync(src, dest);
     // Normalise to forward slashes for readable log output on Windows.
-    console.log(`Copied ${rel.split(path.sep).join('/')} -> web_deploy/${rel.split(path.sep).join('/')}`);
+    console.log(`Copied ${toPosix(rel)} -> web_deploy/${toPosix(rel)}`);
     copied += 1;
+    images += copyReferencedImages(src, dest);
   }
 
-  console.log(`Published ${copied} Markdown file(s) into web_deploy/.`);
+  console.log(`Published ${copied} Markdown file(s) and ${images} referenced image(s) into web_deploy/.`);
 
   copyWidgetAssets();
 }
