@@ -8,8 +8,8 @@ Polling via the endpoints below is an alternative to push. Prefer webhooks when 
 
 | Environment | URL |
 |-------------|-----|
-| EU instance | `https://eu.app.api.sinch.com/` |
-| APAC instance | `https://au.app.api.sinch.com/` |
+| EU instance | `https://eu.app.api.sinch.com` |
+| APAC instance | `https://au.app.api.sinch.com` |
 
 ## Choose an endpoint
 

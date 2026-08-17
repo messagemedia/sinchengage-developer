@@ -8,8 +8,8 @@ Polling returns unconfirmed replies (max 100). Prefer [Webhooks](../webhooks-man
 
 | Environment | URL |
 |-------------|-----|
-| EU instance | `https://eu.app.api.sinch.com/` |
-| APAC instance | `https://au.app.api.sinch.com/` |
+| EU instance | `https://eu.app.api.sinch.com` |
+| APAC instance | `https://au.app.api.sinch.com` |
 
 ## Choose an endpoint
 

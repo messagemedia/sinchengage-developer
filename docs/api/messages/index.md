@@ -14,8 +14,8 @@ The Sinch Messages API provides a number of endpoints for building powerful two-
 
 | Environment | URL |
 |-------------|-----|
-| EU instance | `https://eu.app.api.sinch.com/` |
-| APAC instance | `https://au.app.api.sinch.com/` |
+| EU instance | `https://eu.app.api.sinch.com` |
+| APAC instance | `https://au.app.api.sinch.com` |
 
 ## Choose an endpoint
 

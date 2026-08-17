@@ -10,8 +10,8 @@ The API provides access to two main resources:
 
 | Environment | URL |
 |-------------|-----|
-| EU instance | `https://eu.app.api.sinch.com/` |
-| APAC instance | `https://au.app.api.sinch.com/` |
+| EU instance | `https://eu.app.api.sinch.com` |
+| APAC instance | `https://au.app.api.sinch.com` |
 
 ## Choose an endpoint
 
