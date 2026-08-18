@@ -102,7 +102,7 @@ None.
 | `delivered_timestamp` | string | No | Time that this message was delivered |  |
 | `last_status_update` | string | No | Last time this message's status was updated |  |
 | `direction` | string | No | The type of messages to include in the report. | Enum: `inbound`, `outbound`, `all` |
-| `status` | string | No | The status of the message | Enum: `enroute`, `submitted`, `delivered`, `expired`, `rejected`, `undeliverable`, `queued`, `processed`, `cancelled`, `scheduled`, `failed` |
+| `status` | string | No | The status of the message | Enum: `undefined`, `queued`, `processing`, `processed`, `failed`, `scheduled`, `cancelled`, `delivered`, `expired`, `enroute`, `held`, `submitted`, `rejected`, `read` |
 | `status_code` | number | No | The response code of the status |  |
 | `status_description` | string | No | The status of the message |  |
 | `source_address` | string | No |  |  |

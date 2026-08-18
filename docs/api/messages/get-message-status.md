@@ -84,7 +84,7 @@ None.
 | `source_number` | string | No | |
 | `source_number_type` | string | No | Type of source address specified, this can be INTERNATIONAL, ALPHANUMERIC or SHORTCODE. Enum: `INTERNATIONAL`, `ALPHANUMERIC`, `SHORTCODE` |
 | `message_id` | string (uuid) | No | Unique ID of this message |
-| `status` | string | No | The status of the message. Enum: `enroute`, `submitted`, `delivered`, `expired`, `rejected`, `undeliverable`, `queued`, `processed`, `cancelled`, `scheduled`, `failed` |
+| `status` | string | No | The status of the message. Enum: `undefined`, `queued`, `processing`, `processed`, `failed`, `scheduled`, `cancelled`, `delivered`, `expired`, `enroute`, `held`, `submitted`, `rejected`, `read` |
 
 Notes for implementers:
 

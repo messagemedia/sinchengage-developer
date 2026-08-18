@@ -99,7 +99,7 @@ None.
 | `metadata` | object | No | Any metadata that was included in the original submit message request |
 | `original_text` | string | No | Text of the original message. |
 | `source_number` | string | No | Address from which this delivery report was received. Min length: 1. Max length: 15. |
-| `status` | string | No | The status of the message. Enum: `enroute`, `submitted`, `delivered`, `expired`, `rejected`, `undeliverable`, `queued`, `processed`, `cancelled`, `scheduled`, `failed` |
+| `status` | string | No | The status of the message. Enum: `undefined`, `queued`, `processing`, `processed`, `failed`, `scheduled`, `cancelled`, `delivered`, `expired`, `enroute`, `held`, `submitted`, `rejected`, `read` |
 | `submitted_date` | string (date-time) | No | The date and time when the message status changed in UTC. For a delivered DR this may indicate the time at which the message was received on the handset. |
 | `vendor_account_id` | object | No | |
 
