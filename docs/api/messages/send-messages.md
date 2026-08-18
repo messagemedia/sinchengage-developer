@@ -70,7 +70,7 @@ None.
 | `source_number` | string | No | |
 | `source_number_type` | string | No | Type of source address specified, this can be INTERNATIONAL, ALPHANUMERIC or SHORTCODE. Enum: `INTERNATIONAL`, `ALPHANUMERIC`, `SHORTCODE` |
 | `message_id` | string (uuid) | No | Unique ID of this message |
-| `status` | string | No | The status of the message. Enum: `enroute`, `submitted`, `delivered`, `expired`, `rejected`, `undeliverable`, `queued`, `processed`, `cancelled`, `scheduled`, `failed` |
+| `status` | string | No | The status of the message. Enum: `undefined`, `queued`, `processing`, `processed`, `failed`, `scheduled`, `cancelled`, `delivered`, `expired`, `enroute`, `held`, `submitted`, `rejected`, `read` |
 | `media` | array of strings | No | The media is used to specify a list of URLs of the media file(s) that you are trying to send. Supported file formats include png, jpeg and gif. format parameter must be set to MMS for this to work. |
 | `subject` | string | No | The subject field is used to denote subject of the MMS message and has a maximum size of 64 characters long |
 
