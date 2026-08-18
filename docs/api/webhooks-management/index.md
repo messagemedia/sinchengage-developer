@@ -6,8 +6,8 @@ Webhooks Management API allows you to manage your webhooks configuration. You ca
 
 | Environment | URL |
 |-------------|-----|
-| EU instance | `https://eu.app.api.sinch.com/` |
-| APAC instance | `https://au.app.api.sinch.com/` |
+| EU instance | `https://eu.app.api.sinch.com` |
+| APAC instance | `https://au.app.api.sinch.com` |
 
 ## Endpoints
 
