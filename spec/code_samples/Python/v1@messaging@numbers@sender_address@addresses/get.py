@@ -15,7 +15,7 @@ token = "YOUR_TOKEN"
 
 # HMAC authentication is also supported instead of Basic
 auth = base64.b64encode(f'{api_key}:{api_secret}'.encode()).decode()
-url = f'{api_host}/v1/messaging/numbers/sender_address/addresses/?sender_address={sender_address}&sender_address_type={sender_address_type}&usage_type={usage_type}&include_related_accounts={include_related_accounts}&expiry_status={expiry_status}&page_size={page_size}&token={token}'
+url = f'{api_host}/v1/messaging/numbers/sender_address/addresses?sender_address={sender_address}&sender_address_type={sender_address_type}&usage_type={usage_type}&include_related_accounts={include_related_accounts}&expiry_status={expiry_status}&page_size={page_size}&token={token}'
 headers = {
     'Authorization': f'Basic {auth}',
     'Accept': 'application/json',

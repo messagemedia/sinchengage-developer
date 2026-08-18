@@ -29,7 +29,7 @@ Request UUIDs identify applications; approved sender address UUIDs identify send
 | [Submitting a verification code](submitting-verification-code-post.md) | `POST` | `/v1/messaging/numbers/sender_address/requests/{id}/verify` | Submitting a verification code |
 | [Re-verify Sender Address](re-verify-sender-address-using-post.md) | `POST` | `/v1/messaging/numbers/sender_address/addresses/{id}/reverify` | Re-verify Sender Address |
 | [Get status of a sender address request](get-status-of-sender-address-request.md) | `GET` | `/v1/messaging/numbers/sender_address/requests/{id}` | Get status of a sender address request |
-| [Get all approved sender addresses](get-all-approved-sender-addresses.md) | `GET` | `/v1/messaging/numbers/sender_address/addresses/` | Get all approved sender addresses |
+| [Get all approved sender addresses](get-all-approved-sender-addresses.md) | `GET` | `/v1/messaging/numbers/sender_address/addresses` | Get all approved sender addresses |
 | [Get sender address by id](get-sender-address-by-id.md) | `GET` | `/v1/messaging/numbers/sender_address/addresses/{id}` | Get sender address by id |
 | [Update My Own Number Label](update-sender-address-using-patch.md) | `PATCH` | `/v1/messaging/numbers/sender_address/addresses/{id}` | Update My Own Number Label |
 | [Delete Sender Address](delete-sender-address-using-delete.md) | `DELETE` | `/v1/messaging/numbers/sender_address/addresses/{id}` | Delete Sender Address |
@@ -46,7 +46,7 @@ This API uses two different resources, each with its own UUID:
 |---|----------------------------|-----------------------------|
 | What it is | Your registration / verification application | The approved sender ID on your account |
 | Path | `/v1/messaging/numbers/sender_address/requests` | `/v1/messaging/numbers/sender_address/addresses` |
-| `id` returned by | **Request a Sender Address** (`POST .../requests`) | **Get all approved sender addresses** (`GET .../addresses/`) |
+| `id` returned by | **Request a Sender Address** (`POST .../requests`) | **Get all approved sender addresses** (`GET .../addresses`) |
 | Use that `id` for | Get request status, submit a verification code | Get, update, re-verify, or **delete** the sender |
 
 The request `id` and the address `id` are **not the same**. After a sender is approved, call **Get all approved sender addresses** to obtain the address `id` before deleting or managing it. Using the request `id` on address endpoints (for example delete) returns `404 Not found`.

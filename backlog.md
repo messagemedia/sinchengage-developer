@@ -107,6 +107,7 @@ Draft follow-up tickets for the Sinch Engage API documentation. Create them in J
 | **Suggested type** | Task |
 | **Suggested title** | Decide and apply Engage trailing-slash URL contract for OpenAPI lint |
 | **Contract change** | **Potentially** — changing URLs is a contract change; coordinate with the owning API team before deciding |
+| **Status** | Done via [MAPI-2473](https://messagemedia.atlassian.net/browse/MAPI-2473) — server and collection path trailing slashes removed after live verification; `no-server-trailing-slash` / `no-path-trailing-slash` elevated to `error` |
 
 **Problem:** Four Redocly warnings remain (`no-server-trailing-slash`, `no-path-trailing-slash`) kept at `warn` so CI does not block. Path files use trailing `_` for slash URLs (see `spec/README.md`).
 

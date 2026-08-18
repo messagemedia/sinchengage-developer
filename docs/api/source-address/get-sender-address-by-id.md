@@ -44,7 +44,7 @@ Retrieve one approved sender address using its sender address UUID.
 
 | Name | Type | Required | Description | Constraints |
 |------|------|----------|-------------|-------------|
-| `id` | string (uuid) | Yes | Sender address UUID (from GET .../addresses/), not the request UUID |  |
+| `id` | string (uuid) | Yes | Sender address UUID (from GET .../addresses), not the request UUID |  |
 
 ### Query parameters
 

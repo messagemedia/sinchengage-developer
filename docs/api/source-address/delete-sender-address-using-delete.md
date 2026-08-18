@@ -23,7 +23,7 @@ Remove an approved sender address from the account.
 
 | Name | Type | Required | Description | Constraints |
 |------|------|----------|-------------|-------------|
-| `id` | string (uuid) | Yes | Sender address UUID (from GET .../addresses/), not the request UUID |  |
+| `id` | string (uuid) | Yes | Sender address UUID (from GET .../addresses), not the request UUID |  |
 
 ### Query parameters
 

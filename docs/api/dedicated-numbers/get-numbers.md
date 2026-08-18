@@ -6,7 +6,7 @@ Search the available dedicated-number inventory using country, digit pattern, ca
 |---|---|
 | **Service** | [Dedicated Numbers](index.md) |
 | **Method** | `GET` |
-| **URL** | `https://eu.app.api.sinch.com/v1/messaging/numbers/dedicated/` |
+| **URL** | `https://eu.app.api.sinch.com/v1/messaging/numbers/dedicated` |
 | **Operation ID** | `GetNumbers` |
 | **Authentication** | Basic Auth, HMAC Auth |
 | **Success** | `200` — OK |
@@ -109,7 +109,7 @@ None.
 ### cURL
 
 ```bash
-curl -X GET "https://eu.app.api.sinch.com/v1/messaging/numbers/dedicated/?country=AU&types=MOBILE%2CLANDLINE&page_size=20" \
+curl -X GET "https://eu.app.api.sinch.com/v1/messaging/numbers/dedicated?country=AU&types=MOBILE%2CLANDLINE&page_size=20" \
   -H "Authorization: Basic BASE64_ENCODED_CREDENTIALS" \
   -H "Accept: application/json"
 ```
@@ -117,7 +117,7 @@ curl -X GET "https://eu.app.api.sinch.com/v1/messaging/numbers/dedicated/?countr
 ### JavaScript (fetch)
 
 ```javascript
-const url = new URL("https://eu.app.api.sinch.com/v1/messaging/numbers/dedicated/");
+const url = new URL("https://eu.app.api.sinch.com/v1/messaging/numbers/dedicated");
 url.searchParams.set("country", "AU");
 url.searchParams.set("types", "MOBILE,LANDLINE");
 url.searchParams.set("page_size", "20");

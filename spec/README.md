@@ -10,11 +10,11 @@ For the full layout, edit rules, and build pipeline (`bundle` → inject code sa
 
 Path files live under `paths/<tag>/` and are named after the URL path with `/` replaced by `_`.
 
-A trailing underscore in a path filename maps to a **trailing slash** in the OpenAPI path key. That is intentional for the current API surface (and still triggers Redocly `no-path-trailing-slash` warnings, kept at `warn` until the URLs change as a contract decision):
+Examples:
 
 | Path file | OpenAPI path |
 |-----------|--------------|
-| `paths/source-address/v1_messaging_numbers_sender_address_addresses_.yaml` | `/v1/messaging/numbers/sender_address/addresses/` |
-| `paths/dedicated-numbers/v1_messaging_numbers_dedicated_.yaml` | `/v1/messaging/numbers/dedicated/` |
+| `paths/source-address/v1_messaging_numbers_sender_address_addresses.yaml` | `/v1/messaging/numbers/sender_address/addresses` |
+| `paths/dedicated-numbers/v1_messaging_numbers_dedicated.yaml` | `/v1/messaging/numbers/dedicated` |
 
-Do not rename these files to drop the trailing `_` without also changing the path keys (and confirming the live API).
+A trailing underscore in a path filename would map to a trailing slash in the OpenAPI path key. Do not introduce trailing-slash path keys (Redocly `no-path-trailing-slash` is an error).

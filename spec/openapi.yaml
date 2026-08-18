@@ -342,7 +342,7 @@ tags:
 
       | Path | `/v1/messaging/numbers/sender_address/requests` | `/v1/messaging/numbers/sender_address/addresses` |
 
-      | `id` returned by | **Request a Sender Address** (`POST .../requests`) | **Get all approved sender addresses** (`GET .../addresses/`) |
+      | `id` returned by | **Request a Sender Address** (`POST .../requests`) | **Get all approved sender addresses** (`GET .../addresses`) |
 
       | Use that `id` for | Get request status, submit a verification code | Get, update, re-verify, or **delete** the sender |
 
@@ -745,10 +745,10 @@ x-tagGroups:
     tags:
       - Contacts
 servers:
-  - url: https://eu.app.api.sinch.com/
+  - url: https://eu.app.api.sinch.com
     description: EU instance
     name: EU
-  - url: https://au.app.api.sinch.com/
+  - url: https://au.app.api.sinch.com
     description: APAC instance
     name: APAC
 paths:
@@ -795,8 +795,8 @@ paths:
     $ref: paths/source-address/v1_messaging_numbers_sender_address_addresses_{id}_reverify.yaml
   /v1/messaging/numbers/sender_address/requests/{id}:
     $ref: paths/source-address/v1_messaging_numbers_sender_address_requests_{id}.yaml
-  /v1/messaging/numbers/sender_address/addresses/:
-    $ref: paths/source-address/v1_messaging_numbers_sender_address_addresses_.yaml
+  /v1/messaging/numbers/sender_address/addresses:
+    $ref: paths/source-address/v1_messaging_numbers_sender_address_addresses.yaml
   /v1/messaging/numbers/sender_address/addresses/{id}:
     $ref: paths/source-address/v1_messaging_numbers_sender_address_addresses_{id}.yaml
   /v1/delivery_reports:
@@ -813,8 +813,8 @@ paths:
     $ref: paths/number-authorisation/v1_number_authorisation_mt_blacklist_{number}.yaml
   /v1/number_authorisation/is_authorised/{numbers}:
     $ref: paths/number-authorisation/v1_number_authorisation_is_authorised_{numbers}.yaml
-  /v1/messaging/numbers/dedicated/:
-    $ref: paths/dedicated-numbers/v1_messaging_numbers_dedicated_.yaml
+  /v1/messaging/numbers/dedicated:
+    $ref: paths/dedicated-numbers/v1_messaging_numbers_dedicated.yaml
   /v1/messaging/numbers/dedicated/{id}:
     $ref: paths/dedicated-numbers/v1_messaging_numbers_dedicated_{id}.yaml
   /v1/messaging/numbers/dedicated/{numberId}/assignment:

@@ -6,7 +6,7 @@ List approved sender addresses, optionally filtering and paginating the results.
 |---|---|
 | **Service** | [Source Address](index.md) |
 | **Method** | `GET` |
-| **URL** | `https://eu.app.api.sinch.com/v1/messaging/numbers/sender_address/addresses/` |
+| **URL** | `https://eu.app.api.sinch.com/v1/messaging/numbers/sender_address/addresses` |
 | **Operation ID** | `GetAllApprovedSenderAddresses` |
 | **Authentication** | Basic Auth, HMAC Auth |
 | **Success** | `200` — A list of approved sender addresses for your account only |
@@ -232,7 +232,7 @@ None.
 ### cURL
 
 ```bash
-curl -X GET "https://eu.app.api.sinch.com/v1/messaging/numbers/sender_address/addresses/?sender_address=EXAMPLE&sender_address_type=ALPHANUMERIC&usage_type=ALPHANUMERIC&include_related_accounts=true&expiry_status=EXPIRED&page_size=20&token=eyJwYWdlIjoyfQ" \
+curl -X GET "https://eu.app.api.sinch.com/v1/messaging/numbers/sender_address/addresses?sender_address=EXAMPLE&sender_address_type=ALPHANUMERIC&usage_type=ALPHANUMERIC&include_related_accounts=true&expiry_status=EXPIRED&page_size=20&token=eyJwYWdlIjoyfQ" \
   -H "Authorization: Basic BASE64_ENCODED_CREDENTIALS" \
   -H "Accept: application/json"
 ```
@@ -240,7 +240,7 @@ curl -X GET "https://eu.app.api.sinch.com/v1/messaging/numbers/sender_address/ad
 ### JavaScript (fetch)
 
 ```javascript
-const response = await fetch("https://eu.app.api.sinch.com/v1/messaging/numbers/sender_address/addresses/?sender_address=EXAMPLE&sender_address_type=ALPHANUMERIC&usage_type=ALPHANUMERIC&include_related_accounts=true&expiry_status=EXPIRED&page_size=20&token=eyJwYWdlIjoyfQ", {
+const response = await fetch("https://eu.app.api.sinch.com/v1/messaging/numbers/sender_address/addresses?sender_address=EXAMPLE&sender_address_type=ALPHANUMERIC&usage_type=ALPHANUMERIC&include_related_accounts=true&expiry_status=EXPIRED&page_size=20&token=eyJwYWdlIjoyfQ", {
   method: "GET",
   headers: {
     "Authorization": "Basic " + btoa("API_KEY:API_SECRET"),

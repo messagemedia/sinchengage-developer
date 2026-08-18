@@ -31,7 +31,7 @@ Change the label assigned to an approved own-number sender address.
 
 | Name | Type | Required | Description | Constraints |
 |------|------|----------|-------------|-------------|
-| `id` | string (uuid) | Yes | Sender address UUID (from GET .../addresses/), not the request UUID |  |
+| `id` | string (uuid) | Yes | Sender address UUID (from GET .../addresses), not the request UUID |  |
 
 ### Query parameters
 

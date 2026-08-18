@@ -11,6 +11,6 @@ TOKEN="YOUR_TOKEN"
 
 # HMAC authentication is also supported instead of Basic
 BASIC_AUTH=$(printf '%s' "${API_KEY}:${API_SECRET}" | base64 | tr -d '\n')
-curl -sS -X GET "${API_HOST}/v1/messaging/numbers/dedicated/?country=${COUNTRY}&matching=${MATCHING}&page_size=${PAGE_SIZE}&service_types=${SERVICE_TYPES}&types=${TYPES}&token=${TOKEN}" \
+curl -sS -X GET "${API_HOST}/v1/messaging/numbers/dedicated?country=${COUNTRY}&matching=${MATCHING}&page_size=${PAGE_SIZE}&service_types=${SERVICE_TYPES}&types=${TYPES}&token=${TOKEN}" \
   -H "Authorization: Basic ${BASIC_AUTH}" \
   -H "Accept: application/json"

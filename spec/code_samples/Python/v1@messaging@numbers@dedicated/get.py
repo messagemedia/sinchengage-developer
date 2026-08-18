@@ -14,7 +14,7 @@ token = "YOUR_TOKEN"
 
 # HMAC authentication is also supported instead of Basic
 auth = base64.b64encode(f'{api_key}:{api_secret}'.encode()).decode()
-url = f'{api_host}/v1/messaging/numbers/dedicated/?country={country}&matching={matching}&page_size={page_size}&service_types={service_types}&types={types}&token={token}'
+url = f'{api_host}/v1/messaging/numbers/dedicated?country={country}&matching={matching}&page_size={page_size}&service_types={service_types}&types={types}&token={token}'
 headers = {
     'Authorization': f'Basic {auth}',
     'Accept': 'application/json',
