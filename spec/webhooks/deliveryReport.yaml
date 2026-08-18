@@ -1,0 +1,69 @@
+post:
+  security: []
+  tags:
+    - Webhook Payloads
+  summary: Delivery report webhook
+  description: >-
+    Sent to the `url` configured on a webhook subscribed to one or more
+    delivery report events (`ENROUTE_DR`, `SUBMITTED_DR`, `DELIVERED_DR`,
+    `EXPIRED_DR`, `REJECTED_DR`, `FAILED_DR` — see the Create webhook
+    operation under Webhooks Management). The body shown here is the
+    default/example shape produced by the sample `template` on that
+    operation; the actual JSON structure is fully controlled by the
+    `template` you configure, so treat this as a suggested default rather
+    than a fixed contract.
+
+
+    If your account has `API_SECURE_CALLBACKS` enabled with an active
+    signature key (see Signature Key Management), this request is signed so
+    you can verify it came from Sinch. The signature is carried in these
+    headers:
+
+
+    - `X-MessageMedia-Signature` — the signed digest, base64-encoded.
+
+    - `X-MessageMedia-Digest-Type` — digest algorithm used, for example
+    `SHA-512`.
+
+    - `X-MessageMedia-Cipher-Type` — signing algorithm used, for example
+    `RSA`.
+
+    - `X-MessageMedia-Key-Id` — UUID of the signing key, so you can select
+    the right public key from Signature Key Management.
+
+
+    The signed value is the request line, followed by the `Date` header sent
+    on the request, followed by the request body.
+  operationId: DeliveryReportWebhook
+  requestBody:
+    description: Delivery report webhook payload.
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/webhooks/payloads/DeliveryReportWebhookPayload.yaml
+        example:
+          delivery_report_id: 01e1fa0a-6e27-4945-9cdb-18644b4de043
+          source_number: '+61491570156'
+          date_received: '2016-11-03T11:49:02.807Z'
+          status: delivered
+          delay: '0'
+          submitted_date: '2016-11-03T11:49:02.807Z'
+          message_id: 877c19ef-fa2e-4cec-827a-e1df9b5509f7
+          original_text: Hello back
+          vendor_account_id:
+            vendor_id: SinchEU
+            account_id: MyAccount001
+          error_code: '220'
+          metadata:
+            myKey: myValue
+  responses:
+    "200":
+      description: >-
+        Your endpoint acknowledged the delivery report. Any 2xx response is
+        treated as successful delivery.
+    "400":
+      description: >-
+        Your endpoint returned an error response. Delivery is retried
+        according to the `retries` / `retry_delay` configured on the
+        webhook (see Create webhook).

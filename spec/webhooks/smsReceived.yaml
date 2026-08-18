@@ -1,0 +1,64 @@
+post:
+  security: []
+  tags:
+    - Webhook Payloads
+  summary: SMS received webhook
+  description: >-
+    Sent to the `url` configured on a webhook subscribed to `RECEIVED_SMS`
+    (see the Create webhook operation under Webhooks Management).
+    `OPT_OUT_SMS` is dispatched through a separate code path with its own
+    shape — see the Opt-out webhook. The body shown here is the
+    default/example shape produced by the sample `template` on that
+    operation; the actual JSON structure is fully controlled by the
+    `template` you configure, so treat this as a suggested default rather
+    than a fixed contract.
+
+
+    If your account has `API_SECURE_CALLBACKS` enabled with an active
+    signature key (see Signature Key Management), this request is signed so
+    you can verify it came from Sinch. The signature is carried in these
+    headers:
+
+
+    - `X-MessageMedia-Signature` — the signed digest, base64-encoded.
+
+    - `X-MessageMedia-Digest-Type` — digest algorithm used, for example
+    `SHA-512`.
+
+    - `X-MessageMedia-Cipher-Type` — signing algorithm used, for example
+    `RSA`.
+
+    - `X-MessageMedia-Key-Id` — UUID of the signing key, so you can select
+    the right public key from Signature Key Management.
+
+
+    The signed value is the request line, followed by the `Date` header sent
+    on the request, followed by the request body.
+  operationId: SmsReceivedWebhook
+  requestBody:
+    description: SMS received webhook payload.
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/webhooks/payloads/SmsReceivedWebhookPayload.yaml
+        example:
+          account_id: DeveloperPortal7000
+          reply_id: a175e797-2b54-468b-9850-41a3eab32f74
+          destination_number: '+61491593156'
+          source_number: '+61491570156'
+          date_received: '2016-12-07T08:44:00.850Z'
+          message_id: 877c19ef-fa2e-4cec-827a-e1df9b5509f7
+          content: Hello Derpina
+          metadata:
+            myKey: myValue
+  responses:
+    "200":
+      description: >-
+        Your endpoint acknowledged the reply. Any 2xx response is treated
+        as successful delivery.
+    "400":
+      description: >-
+        Your endpoint returned an error response. Delivery is retried
+        according to the `retries` / `retry_delay` configured on the
+        webhook (see Create webhook).

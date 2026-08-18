@@ -667,6 +667,14 @@ tags:
       Webhooks Management API allows you to manage your webhooks configuration.
       You can subscribe to one or several events, retrieve the webhooks, update
       them or even delete them if needed.
+  - name: Webhook Payloads
+    description: >-
+      Machine-readable request bodies for the webhook events you can
+      subscribe to via Webhooks Management. These describe the default
+      payload produced by the sample `template` shown on the Create webhook
+      operation — the actual JSON structure sent to your `url` is fully
+      controlled by the `template` you configure, so treat these as
+      suggested defaults rather than a fixed contract.
   - name: Signature Key Management
     description: >
       As a Sinch customer, you want to be able to ensure that webhooks are
@@ -736,6 +744,7 @@ x-tagGroups:
   - name: Webhooks and security
     tags:
       - Webhooks Management
+      - Webhook Payloads
       - Signature Key Management
   - name: Reporting
     tags:
@@ -751,6 +760,15 @@ servers:
   - url: https://au.app.api.sinch.com
     description: APAC instance
     name: APAC
+webhooks:
+  deliveryReport:
+    $ref: webhooks/deliveryReport.yaml
+  smsReceived:
+    $ref: webhooks/smsReceived.yaml
+  mmsReceived:
+    $ref: webhooks/mmsReceived.yaml
+  optOut:
+    $ref: webhooks/optOut.yaml
 paths:
   /v2-preview/reporting/messages/metakeys:
     $ref: paths/messaging-reports/v2-preview_reporting_messages_metakeys.yaml
