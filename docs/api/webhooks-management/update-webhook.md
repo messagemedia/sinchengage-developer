@@ -24,6 +24,10 @@ A successful request will return a response body as follows:
 }
 ```
 
+*Note: Only pre-created webhooks can be updated. If an invalid or non existent webhook ID parameter is specified in the request, then a HTTP 404 Not Found response will be returned.*
+
+*Note: A 400 response will be returned if the request body cannot be parsed, the `url` is invalid (for example, malformed hostname or DNS syntax, unsupported scheme such as `ftp`, or path containing whitespace or control characters — e.g. `https://-invalid.com`, `https://invalid_.com`, `https:///path`, `https://:/path`, `http://.example.com`, `http://example..com`), an `events` value is not recognised (e.g. `RECEIVED_123`), the `events`, `encoding` or `method` is null, or the `headers` has a Content-Type attribute.*
+
 | | |
 |---|---|
 | **Service** | [Webhooks Management](index.md) |
@@ -66,7 +70,7 @@ All fields are optional, but at least one must be provided. Empty body (all fiel
 
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
-| `url` | string | No | HTTP(S) URL for the webhook endpoint. Max length: 1000. |
+| `url` | string | No | HTTP(S) URL for the webhook endpoint. Must use the `http` or `https` scheme. Hostnames must conform to RFC 1123 DNS name syntax. Paths must not contain whitespace or control characters. Invalid URLs are rejected with HTTP 400. Max length: 1000. |
 | `method` | string | No | HTTP method used when invoking the webhook. Enum: `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
 | `encoding` | string | No | Content encoding for the webhook request body. Enum: `JSON`, `FORM_ENCODED`, `XML` |
 | `headers` | object | No | Optional map of custom headers. Content-Type header is not allowed. Key max length is 200 characters, value max length is 1000 characters. |
@@ -119,7 +123,43 @@ Webhook response object. No fields are strictly required in the schema; however,
 
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
-| `message` | string | Yes | — |
+| `message` | string | Yes | |
+| `details` | array of strings | No | Additional error detail messages. |
+
+#### Example 400 responses
+
+**Invalid URL**
+
+```json
+{
+  "message": "Bad Request",
+  "details": [
+    "/url: Not a valid http url"
+  ]
+}
+```
+
+**Unrecognised event type**
+
+```json
+{
+  "message": "Bad Request",
+  "details": [
+    "/events/0: [RECEIVED_123] is invalid"
+  ]
+}
+```
+
+**Unparseable request body**
+
+```json
+{
+  "message": "Bad Request",
+  "details": [
+    "Failed to parse message body."
+  ]
+}
+```
 
 ## Examples
 
@@ -158,9 +198,12 @@ console.log(webhook);
 
 ## Error handling
 
-- **400 Bad Request**: Unexpected error in API call. See HTTP response body for details. Typical causes include an empty body, all-null fields, or `events: []`.
+- **400 Bad Request**: Unexpected error in API call. See HTTP response body for details. Returned when the request body cannot be parsed, the `url` is invalid (malformed hostname or DNS syntax, unsupported scheme, or invalid path), an `events` value is not recognised, the `events`, `encoding` or `method` is null, the `headers` has a Content-Type attribute, the body is empty, all fields are null, or `events: []` is supplied (per operation note). Example responses:
+  - Invalid URL: `"details": ["/url: Not a valid http url"]`
+  - Unrecognised event: `"details": ["/events/0: [RECEIVED_123] is invalid"]`
+  - Unparseable body: `"details": ["Failed to parse message body."]`
 - **401 Unauthorized**: No valid authentication details were provided. Verify Basic or HMAC credentials on the request.
-- **404 Not Found**: Not found. The `webhookId` is invalid, does not exist, or is not associated with your account.
+- **404 Not Found**: Not found. Returned when an invalid or non existent `webhookId` is specified in the request (per operation note).
 
 ## Related endpoints
 
