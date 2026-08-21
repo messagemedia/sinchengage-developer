@@ -9,7 +9,11 @@ properties:
   url:
     type: string
     maxLength: 1000
-    description: HTTP(S) URL for the webhook endpoint.
+    description: |
+      HTTP(S) URL for the webhook endpoint. Must use the `http` or `https` scheme.
+      Hostnames must conform to RFC 1123 DNS name syntax.
+      Paths must not contain whitespace or control characters.
+      Invalid URLs are rejected with HTTP 400.
   method:
     type: string
     enum:

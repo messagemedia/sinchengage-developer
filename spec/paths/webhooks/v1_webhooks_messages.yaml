@@ -375,9 +375,14 @@ post:
     * `405`: Message cancelled or deleted by provider.
 
 
-    *Note: A 400 response will be returned if the `url` is invalid, the
-    `events`, `encoding` or `method` is null or the `headers` has a
-    Content-Type attribute.*
+    *Note: A 400 response will be returned if the request body cannot be parsed,
+    the `url` is invalid (for example, malformed hostname or DNS syntax,
+    unsupported scheme such as `ftp`, or path containing whitespace or control
+    characters — e.g. `https://-invalid.com`, `https://invalid_.com`,
+    `https:///path`, `https://:/path`, `http://.example.com`,
+    `http://example..com`), an `events` value is not recognised (e.g.
+    `RECEIVED_123`), the `events`, `encoding` or `method` is null, or the
+    `headers` has a Content-Type attribute.*
   operationId: CreateWebhook
   parameters: []
   requestBody:
@@ -426,8 +431,25 @@ post:
         application/json:
           schema:
             $ref: ../../components/schemas/webhooks/UpdateWebhook400response.yaml
-          example:
-            message: Something went wrong. Please try again later.
+          examples:
+            invalidUrl:
+              summary: Invalid URL
+              value:
+                message: Bad Request
+                details:
+                  - "/url: Not a valid http url"
+            invalidEvents:
+              summary: Unrecognised event type
+              value:
+                message: Bad Request
+                details:
+                  - "/events/0: [RECEIVED_123] is invalid"
+            unparseableBody:
+              summary: Unparseable request body
+              value:
+                message: Bad Request
+                details:
+                  - Failed to parse message body.
     "401":
       $ref: ../../components/responses/Unauthorized.yaml
     "409":
