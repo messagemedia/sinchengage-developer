@@ -124,7 +124,7 @@ Status codes provide more granular insight into a message's status. A message ca
 * `400`: Message failed; undeliverable.
 * `405`: Message cancelled or deleted by provider.
 
-*Note: A 400 response will be returned if the `url` is invalid, the `events`, `encoding` or `method` is null or the `headers` has a Content-Type attribute.*
+*Note: A 400 response will be returned if the request body cannot be parsed, the `url` is invalid (for example, malformed hostname or DNS syntax, unsupported scheme such as `ftp`, or path containing whitespace or control characters — e.g. `https://-invalid.com`, `https://invalid_.com`, `https:///path`, `https://:/path`, `http://.example.com`, `http://example..com`), an `events` value is not recognised (e.g. `RECEIVED_123`), the `events`, `encoding` or `method` is null, or the `headers` has a Content-Type attribute.*
 
 | | |
 |---|---|
@@ -162,7 +162,7 @@ None.
 
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
-| `url` | string | Yes | HTTP(S) URL for the webhook endpoint. Max length: 1000. |
+| `url` | string | Yes | HTTP(S) URL for the webhook endpoint. Must use the `http` or `https` scheme. Hostnames must conform to RFC 1123 DNS name syntax. Paths must not contain whitespace or control characters. Invalid URLs are rejected with HTTP 400. Max length: 1000. |
 | `method` | string | Yes | HTTP method used when invoking the webhook. Enum: `GET`, `POST`, `PATCH`, `PUT`, `DELETE` |
 | `encoding` | string | Yes | Content encoding for the webhook request body. Enum: `JSON`, `FORM_ENCODED`, `XML` |
 | `events` | array of strings | Yes | Non-empty set of webhook event types to subscribe to. Minimum items: 1. |
@@ -217,11 +217,54 @@ Webhook response object. No fields are strictly required in the schema; however,
 | `retries` | integer | The number of retry attempts. Always present (defaults to 0). |
 | `retry_delay` | integer | The delay between retries in seconds. Only present when retries are configured. |
 
-### 400 and 409 response schema
+### 400 response schema
 
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
-| `message` | string | Yes | — |
+| `message` | string | Yes | |
+| `details` | array of strings | No | Additional error detail messages. |
+
+#### Example 400 responses
+
+**Invalid URL**
+
+```json
+{
+  "message": "Bad Request",
+  "details": [
+    "/url: Not a valid http url"
+  ]
+}
+```
+
+**Unrecognised event type**
+
+```json
+{
+  "message": "Bad Request",
+  "details": [
+    "/events/0: [RECEIVED_123] is invalid"
+  ]
+}
+```
+
+**Unparseable request body**
+
+```json
+{
+  "message": "Bad Request",
+  "details": [
+    "Failed to parse message body."
+  ]
+}
+```
+
+### 409 response schema
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `message` | string | Yes | |
+| `details` | array of strings | No | Additional error detail messages. |
 
 ## Examples
 
@@ -272,7 +315,10 @@ console.log(webhook);
 
 ## Error handling
 
-- **400 Bad Request**: Unexpected error in API call. See HTTP response body for details. Also returned if the `url` is invalid, the `events`, `encoding` or `method` is null or the `headers` has a Content-Type attribute (per operation note).
+- **400 Bad Request**: Unexpected error in API call. See HTTP response body for details. Returned when the request body cannot be parsed, the `url` is invalid (malformed hostname or DNS syntax, unsupported scheme, or invalid path), an `events` value is not recognised, the `events`, `encoding` or `method` is null, or the `headers` has a Content-Type attribute (per operation note). Example responses:
+  - Invalid URL: `"details": ["/url: Not a valid http url"]`
+  - Unrecognised event: `"details": ["/events/0: [RECEIVED_123] is invalid"]`
+  - Unparseable body: `"details": ["Failed to parse message body."]`
 - **401 Unauthorized**: No valid authentication details were provided. Verify Basic or HMAC credentials on the request.
 - **409 Conflict**: Unexpected error in API call. See HTTP response body for details. Example message: `A webhook with the given url and method already exists.`
 

@@ -5,5 +5,12 @@ type: object
 properties:
   message:
     type: string
+  details:
+    type: array
+    items:
+      type: string
+    description: Additional error detail messages.
 example:
-  message: Something went wrong. Please try again later.
+  message: Bad Request
+  details:
+    - "/url: Not a valid http url"
