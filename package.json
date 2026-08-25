@@ -9,11 +9,13 @@
     "preview-docs": "npm run build && npx --yes serve web_deploy -l 8080",
     "build-docs": "npm run inject && redocly build-docs .tmp/openapi.injected.yaml -t web/index.html -o web_deploy/index.html",
     "copy-docs": "node scripts/copy-docs.mjs",
-    "build": "npm run build-docs && node scripts/copy-assets.mjs && npm run copy-docs",
+    "llms": "node scripts/generate-llms-txt.mjs",
+    "build": "npm run build-docs && node scripts/copy-assets.mjs && npm run copy-docs && npm run llms",
     "test": "npm run lint"
   },
   "devDependencies": {
     "@redocly/cli": "^2.0.0",
+    "gpt-tokenizer": "^4.0.0",
     "js-yaml": "^4.1.0"
   }
 }

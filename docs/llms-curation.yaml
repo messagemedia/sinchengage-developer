@@ -1,0 +1,109 @@
+# Hand-maintained curation overlay for llms.txt / llms-full.txt generation
+# (scripts/generate-llms-txt.mjs). Edit this file directly to add, remove, or
+# reorder what appears in the curated llms.txt index -- no script changes
+# needed.
+#
+# `sections` drives the H2 structure of llms.txt, in order. Each section has
+# either a `links` list (curated links, repo-relative paths to published .md
+# files, or absolute https:// URLs, each with a one-line `description`) and/or
+# a short prose `note` (for sections that don't need a link list, e.g. Code
+# Samples).
+#
+# `deny` is a list of glob patterns (relative to the repo root) excluded from
+# the llms-full.txt full-content walk of docs/api/** and docs/guides/**.
+# Everything else under those two trees is inlined into llms-full.txt.
+
+sections:
+  - title: Authentication
+    note: >-
+      All requests must include an Authorization header using either Basic
+      Authentication or an HMAC-SHA256 request signature (which additionally
+      requires a Date header, and a Content-MD5 header on requests with a
+      body). Use the EU base URL https://eu.app.api.sinch.com or the APAC
+      base URL https://au.app.api.sinch.com depending on your account's
+      region. Parent-account credentials can act on behalf of a sub-account
+      via the Account header (see Guides). A 401 response means the
+      Authorization header was missing, malformed, or does not match your
+      account's API key/secret; an API key and secret are issued when you
+      sign up for a developer account (see the support portal under Guides).
+    links:
+      - title: Basic Authentication
+        path: docs/guides/basic-authentication.md
+        description: Authenticate with a Base64-encoded API key/secret in the Authorization header.
+      - title: HMAC Authentication
+        path: docs/guides/hmac-authentication.md
+        description: Sign requests with an HMAC-SHA256 signature for extra request integrity.
+
+  - title: Endpoints
+    note: >-
+      Most endpoints are versioned under /v1/ and exchange JSON; Messaging
+      Reports' async report endpoints instead use /v2-preview/ and
+      additionally accept a Bearer JWT (see that service below). Endpoints
+      are grouped below by service; each linked page documents parameters,
+      request/response schemas, and inline code samples for that service.
+      Successful responses return a 2xx status: 200/202 for most send/poll/
+      report operations, 201 for many create operations, and 204 (no body)
+      for some updates/deletes. 4xx responses return a JSON error body
+      describing what was invalid (the exact error schema varies by service
+      -- see each endpoint's response table for specifics), and 401
+      responses indicate invalid, missing, or mismatched credentials for
+      that endpoint's supported auth scheme(s).
+    links:
+      - title: Messages
+        path: docs/api/messages/index.md
+        description: Send SMS, MMS, and TTS messages (up to 100 per request, content up to 5,000 characters, destination in E.164 format); poll status or cancel a scheduled message by ID.
+      - title: Delivery Reports
+        path: docs/api/delivery-reports/index.md
+        description: Poll or receive webhooks for message delivery status changes as a message is processed toward a handset.
+      - title: Replies
+        path: docs/api/replies/index.md
+        description: Check and confirm inbound (MO) replies sent from a handset back to a previously sent message.
+      - title: Source Address
+        path: docs/api/source-address/index.md
+        description: Request an SMS sender ID (alphanumeric, international number, or short code) and track its registration/approval status.
+      - title: Number Authorisation
+        path: docs/api/number-authorisation/index.md
+        description: Manage your account's opt-out blacklist; Sinch adds numbers automatically when recipients reply with an opt-out keyword (e.g. STOP).
+      - title: Dedicated Numbers
+        path: docs/api/dedicated-numbers/index.md
+        description: Search available numbers, assign them to your account, and configure or release assignments (paid feature; must be enabled on your account).
+      - title: Webhooks Management
+        path: docs/api/webhooks-management/index.md
+        description: Subscribe to, retrieve, update, and delete webhook configurations that push delivery reports and replies to your callback URL.
+      - title: Signature Key Management
+        path: docs/api/signature-key-management/index.md
+        description: Manage signature keys used to verify that inbound webhooks genuinely came from Sinch and not a third party.
+      - title: Messaging Reports
+        path: docs/api/messaging-reports/index.md
+        description: Run synchronous and async summary/detail reports on messages sent and received through your account.
+      - title: Short Trackable Links Reports
+        path: docs/api/short-trackable-links-reports/index.md
+        description: Query click logs for the short, trackable links Sinch automatically generates from URLs in your message content.
+      - title: Contacts
+        path: docs/api/contacts/index.md
+        description: Manage Contacts, Contact Lists, and Custom Fields used to organize and target message recipients.
+
+  - title: Code Samples
+    note: >-
+      Most endpoint Markdown pages (see Endpoints above) include inline cURL
+      and JavaScript request examples showing the required Authorization
+      header and a JSON request body for that operation. No separate SDKs
+      are published; samples are plain HTTP so they work with any client
+      without a dependency on a Sinch/MessageMedia SDK.
+
+  - title: Guides
+    note: >-
+      Guides cover behaviour that spans multiple endpoints rather than a
+      single operation, and are not tied to any one service tag below. See
+      the support portal below for broader Sinch Engage onboarding and
+      troubleshooting content that sits outside the API reference itself.
+    links:
+      - title: Sub-accounts
+        path: docs/guides/sub-accounts.md
+        description: Perform actions on behalf of a sub-account using the parent account's credentials and an Account header, supported on Messages, Replies, Delivery Reports, Webhooks, and Source Address.
+      - title: Full developer guide hub (support portal)
+        path: https://support.app.sinch.com/hc/en-us/categories/10516535548943-Sinch-Engage-Developer-Guides
+        description: Additional Sinch Engage developer guides, onboarding articles, and support content beyond the API reference.
+
+deny:
+  - docs/superpowers/**

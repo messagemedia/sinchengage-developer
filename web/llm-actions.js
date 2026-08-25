@@ -90,6 +90,9 @@
   };
   // Map ReDoc tag slug (spaces -> hyphens, lowercased) -> section index.
   var TAG_TO_MD = {
+    'basic-authentication': 'docs/guides/basic-authentication.md',
+    'hmac-authentication': 'docs/guides/hmac-authentication.md',
+    'sub-accounts': 'docs/guides/sub-accounts.md',
     messages: 'docs/api/messages/index.md',
     'delivery-reports': 'docs/api/delivery-reports/index.md',
     replies: 'docs/api/replies/index.md',
