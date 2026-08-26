@@ -252,7 +252,8 @@ post:
                   Request failed to parse correctly. Please ensure input is valid
                   and try again.
                 details:
-                  - /messages/0/callbackUrl: Invalid callback url
+                  - >-
+                    /messages/0/callbackUrl: Invalid callback url
     "401":
       description: Unauthorized
       content:
