@@ -11,3 +11,7 @@ local/sample-smoke/.work/
 *~
 dist/
 build/
+
+# Internal design specs — not for the published developer portal.
+# scripts/copy-docs.mjs publishes every .md under docs/ into web_deploy/.
+docs/superpowers/

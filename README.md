@@ -102,6 +102,17 @@ serve raw Markdown.
 | `/docs/api/index.md` | Top-level "all services" index. |
 | `/docs/api/webhooks-management/index.md` | Webhooks Management service overview. |
 | `/docs/api/webhooks-management/*.md` | One page per operation (create / retrieve / update / delete). |
+| `/docs/guides/*.md` | Cross-cutting guides (Basic Authentication, HMAC Authentication, Sub-accounts) that aren't tied to a single endpoint. |
+| `/docs/llms-curation.yaml` | Hand-maintained allow list (curated `llms.txt` links) and deny list (globs excluded from `llms-full.txt`) — see below. |
+
+#### `llms.txt` / `llms-full.txt` generation
+
+`scripts/generate-llms-txt.mjs` runs at the end of `npm run build` and writes two files straight into `web_deploy/`:
+
+- **`llms.txt`** — a curated, token-budgeted (1k–3k) index: H1 (API title) → blockquote summary (from `spec/openapi.yaml` `info.description`) → H2 sections (Authentication, Endpoints, Code Samples, Guides) driven entirely by `docs/llms-curation.yaml`.
+- **`llms-full.txt`** — every page under `/docs/api` and `/docs/guides` (minus `docs/llms-curation.yaml`'s `deny` globs, e.g. `docs/superpowers/**`) inlined in full, each behind a stable `<a id="...">` anchor.
+
+The script fails the build (non-zero exit) if a curated link points at a missing file, a required section is missing, or `llms.txt` falls outside the token budget — so a bad edit to the curation file or the docs tree can't silently ship. There's currently only one *supported* (non-preview) API major version — almost everything is `/v1/...`, aside from a handful of `/v2-preview/...` Messaging Reports endpoints that don't warrant their own variant while still pre-release — so only the root files are published; a `/v2/` variant is a small addition to the script once a version is promoted out of preview.
 
 #### "Copy for LLM / View as Markdown" page actions
 
@@ -126,7 +137,7 @@ by `web/index.html`; its styles stay inline in the template):
 **Where Markdown is served from:** `scripts/copy-docs.mjs` mirrors `/docs/**/*.md` into
 `web_deploy/docs/**` during `npm run build` (and copies `web/llm-actions.js` into
 `web_deploy/`), so the published site serves, for example,
-`https://docs.app.api.sinch.com/docs/api/webhooks-management/create-webhook.md`.
+`https://developers.app.sinch.com/docs/api/webhooks-management/create-webhook.md`.
 Images a page references with a relative path (such as `./message-flow.png`, which ReDoc
 resolves at the site root) are copied next to the published Markdown, so the same link
 works in both places.
@@ -143,6 +154,7 @@ Build helpers used by npm scripts.
 | `/scripts/generate-code-samples.mjs` | Regenerates pure-language samples for all operations × languages from the bundled OpenAPI. |
 | `/scripts/copy-assets.mjs` | Copies `/web` assets into `/web_deploy` and publishes `openapi.yaml` + `openapi.json` for ReDoc downloads. |
 | `/scripts/copy-docs.mjs` | Mirrors `/docs/**/*.md` (plus images each page references) into `/web_deploy/docs/` and copies `web/llm-actions.js`, so the site can serve raw Markdown and the page-actions widget. |
+| `/scripts/generate-llms-txt.mjs` | Generates `/web_deploy/llms.txt` and `/web_deploy/llms-full.txt` from `spec/openapi.yaml` + `docs/llms-curation.yaml` + `/docs/api`, `/docs/guides`. |
 
 ### `/changelog`
 Changelog entries for documentation or API updates.
@@ -165,7 +177,7 @@ CI workflows. The main workflow installs dependencies, lints the OpenAPI entry (
 
 | Path | Purpose |
 |------|---------|
-| `/web_deploy` | Static site output: `index.html` plus copied assets. Deployed by CI. |
+| `/web_deploy` | Static site output: `index.html`, `llms.txt`, `llms-full.txt`, plus copied assets. Deployed by CI. |
 | `/.tmp` | Intermediate files: `openapi.bundled.yaml` (resolved `$ref`s) and `openapi.injected.yaml` (bundle + code samples). |
 
 ## Working on specification
@@ -184,7 +196,10 @@ Validates the OpenAPI spec with Redocly lint rules (follows `$ref`s across the s
 Builds the static docs (bundle → inject code samples → ReDoc) and serves `web_deploy` at http://localhost:8080 so you can preview the same output CI deploys.
 
 #### `npm run build`
-Bundles the multi-file spec, injects code samples, builds static ReDoc HTML into `web_deploy`, copies web assets (logo, favicon, etc.), and mirrors the `/docs` Markdown into `web_deploy/docs/` (via `scripts/copy-docs.mjs`) for the page-actions widget.
+Bundles the multi-file spec, injects code samples, builds static ReDoc HTML into `web_deploy`, copies web assets (logo, favicon, etc.), mirrors the `/docs` Markdown into `web_deploy/docs/` (via `scripts/copy-docs.mjs`) for the page-actions widget, and generates `web_deploy/llms.txt` + `web_deploy/llms-full.txt` (via `scripts/generate-llms-txt.mjs`).
+
+#### `npm run llms`
+Regenerates just `web_deploy/llms.txt` and `web_deploy/llms-full.txt` from the current `spec/openapi.yaml`, `docs/llms-curation.yaml`, `/docs/api`, and `/docs/guides` — useful when iterating on curation without a full rebuild.
 
 #### `npm run bundle`
 Bundles the OpenAPI spec to `web_deploy/openapi.yaml`.
@@ -194,4 +209,4 @@ Alias for `npm run lint`.
 
 ### Manual preview check
 
-After changing the spec layout or build pipeline, open the local preview (`npm run preview-docs`) or the Pages preview for the PR and confirm ReDoc looks the same as the published docs at https://docs.app.api.sinch.com/ (sidebar tags, operations, and code samples).
+After changing the spec layout or build pipeline, open the local preview (`npm run preview-docs`) or the Pages preview for the PR and confirm ReDoc looks the same as the published docs at https://developers.app.sinch.com/ (sidebar tags, operations, and code samples).
