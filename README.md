@@ -137,7 +137,7 @@ by `web/index.html`; its styles stay inline in the template):
 **Where Markdown is served from:** `scripts/copy-docs.mjs` mirrors `/docs/**/*.md` into
 `web_deploy/docs/**` during `npm run build` (and copies `web/llm-actions.js` into
 `web_deploy/`), so the published site serves, for example,
-`https://docs.app.api.sinch.com/docs/api/webhooks-management/create-webhook.md`.
+`https://developers.app.sinch.com/docs/api/webhooks-management/create-webhook.md`.
 Images a page references with a relative path (such as `./message-flow.png`, which ReDoc
 resolves at the site root) are copied next to the published Markdown, so the same link
 works in both places.
@@ -209,4 +209,4 @@ Alias for `npm run lint`.
 
 ### Manual preview check
 
-After changing the spec layout or build pipeline, open the local preview (`npm run preview-docs`) or the Pages preview for the PR and confirm ReDoc looks the same as the published docs at https://docs.app.api.sinch.com/ (sidebar tags, operations, and code samples).
+After changing the spec layout or build pipeline, open the local preview (`npm run preview-docs`) or the Pages preview for the PR and confirm ReDoc looks the same as the published docs at https://developers.app.sinch.com/ (sidebar tags, operations, and code samples).

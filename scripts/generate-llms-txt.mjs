@@ -31,7 +31,7 @@ const root = path.resolve(__dirname, '..');
 // be fetched or copy-pasted standalone -- a relative path is meaningless once
 // it leaves the page that gave it a base URL (e.g. via the "Copy for LLM"
 // button, or an agent that ingests the raw text without HTTP context).
-const DOCS_DOMAIN = 'https://docs.app.api.sinch.com';
+const DOCS_DOMAIN = 'https://developers.app.sinch.com';
 
 const SPEC_PATH = path.join(root, 'spec', 'openapi.yaml');
 const CURATION_PATH = path.join(root, 'docs', 'llms-curation.yaml');
