@@ -40,7 +40,15 @@ post:
     Webhooks will be pushed to via a HTTP POST request. Webhooks will be sent if
     and when the status of the message changes as it is processed (if the
     delivery report property of the request is set to ```true```) and when
-    replies are received. Specifying a callback URL is optional.
+    replies are received. Specifying a callback URL is optional. When provided,
+    the URL must use the ```http``` or ```https``` scheme, the hostname must
+    conform to RFC 1123 DNS name syntax, and the path must not contain
+    whitespace or control characters. Malformed values (for example
+    ```https://-invalid.com```, ```https://invalid_.com```, ```https:///path```,
+    ```https://:/path```, ```http://.example.com```, ```http://example..com```,
+    or a path containing spaces) are rejected with HTTP 400. If any message in
+    a multi-message request has an invalid ```callback_url```, no messages are
+    sent.
 
 
     - ```content``` The content of the message. This can be a Unicode string, up
@@ -214,20 +222,37 @@ post:
           schema:
             $ref: ../../components/schemas/messages/Sendmessagesresponse.yaml
     "400":
-      description: Unexpected error in API call. See HTTP response body for details.
+      description: >
+        Unexpected error in API call. See HTTP response body for details.
+        Returned when the request fails to parse or message fields are invalid,
+        including a malformed per-message `callback_url` (unsupported scheme,
+        malformed hostname or DNS syntax, or path containing whitespace or
+        control characters). If any message in a multi-message request is
+        invalid, no messages are sent.
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/400response.yaml
-          example:
-            message: >-
-              Request failed to parse correctly. Please ensure input is valid and
-              try again.
-            details:
-              - >-
-                /messages/0/destination_number: International address must be
-                between 8 and 15 characters excluding the first '+', International
-                address contains invalid characters.
+          examples:
+            invalidDestinationNumber:
+              summary: Invalid destination number
+              value:
+                message: >-
+                  Request failed to parse correctly. Please ensure input is valid
+                  and try again.
+                details:
+                  - >-
+                    /messages/0/destination_number: International address must be
+                    between 8 and 15 characters excluding the first '+',
+                    International address contains invalid characters.
+            invalidCallbackUrl:
+              summary: Invalid callback URL
+              value:
+                message: >-
+                  Request failed to parse correctly. Please ensure input is valid
+                  and try again.
+                details:
+                  - /messages/0/callbackUrl: Invalid callback url
     "401":
       description: Unauthorized
       content:

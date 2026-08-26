@@ -61,7 +61,7 @@ None.
 |----------|------|----------|-------------|
 | `content` | string | Yes | Content of the message. Min length: 1. Max length: 5000. |
 | `destination_number` | string | Yes | Destination number of the message. Min length: 1. Max length: 15. |
-| `callback_url` | string | No | URL replies and delivery reports to this message will be pushed to |
+| `callback_url` | string | No | URL replies and delivery reports to this message will be pushed to. Must use the `http` or `https` scheme. Hostnames must conform to RFC 1123 DNS name syntax. Paths must not contain whitespace or control characters. Invalid URLs are rejected with HTTP 400. |
 | `delivery_report` | boolean | No | Request a delivery report for this message |
 | `format` | string | No | Filter results by message format, using enumerable MessageType. Enum: `SMS`, `TTS`, `MMS` |
 | `message_expiry_timestamp` | string (date-time) | No | Date time after which the message expires and will not be sent |
@@ -146,13 +146,26 @@ Each item uses the same `Message` schema as the request. On success the API popu
 | `message` | string | Yes | |
 | `details` | array of strings | Yes | Additional error detail messages. |
 
-### Example 400 response
+### Example 400 responses
+
+**Invalid destination number**
 
 ```json
 {
   "message": "Request failed to parse correctly. Please ensure input is valid and try again.",
   "details": [
     "/messages/0/destination_number: International address must be between 8 and 15 characters excluding the first '+', International address contains invalid characters."
+  ]
+}
+```
+
+**Invalid callback URL**
+
+```json
+{
+  "message": "Request failed to parse correctly. Please ensure input is valid and try again.",
+  "details": [
+    "/messages/0/callbackUrl: Invalid callback url"
   ]
 }
 ```
@@ -263,7 +276,7 @@ console.log(result.messages);
 
 ## Error handling
 
-- **400 Bad Request**: Unexpected error in API call. See HTTP response body for details. Returned when the request fails to parse or message fields are invalid. If any message in a multi-message request is invalid, no messages are sent.
+- **400 Bad Request**: Unexpected error in API call. See HTTP response body for details. Returned when the request fails to parse or message fields are invalid, including a malformed per-message `callback_url` (unsupported scheme, malformed hostname or DNS syntax, or path containing whitespace or control characters — e.g. `https://-invalid.com`, `https://invalid_.com`, `https:///path`, `https://:/path`, `http://.example.com`, `http://example..com`). If any message in a multi-message request is invalid, no messages are sent. Example detail: `"/messages/0/callbackUrl: Invalid callback url"`.
 - **401 Unauthorized**: Unauthorized. Verify Basic or HMAC credentials on the request.
 - The operation description also notes HTTP **422** for Singapore (+65) destinations when the client does not use TLS 1.3 or higher (IMDA). That status is not declared on this operation’s `responses` map.
 
@@ -291,7 +304,7 @@ The most basic message has the following structure:
 
 More advanced delivery features can be specified by setting the following properties in a message:
 
-- `callback_url` A URL can be included with each message to which Webhooks will be pushed to via a HTTP POST request. Webhooks will be sent if and when the status of the message changes as it is processed (if the delivery report property of the request is set to `true`) and when replies are received. Specifying a callback URL is optional.
+- `callback_url` A URL can be included with each message to which Webhooks will be pushed to via a HTTP POST request. Webhooks will be sent if and when the status of the message changes as it is processed (if the delivery report property of the request is set to `true`) and when replies are received. Specifying a callback URL is optional. When provided, the URL must use the `http` or `https` scheme, the hostname must conform to RFC 1123 DNS name syntax, and the path must not contain whitespace or control characters. Malformed values are rejected with HTTP 400. If any message in a multi-message request has an invalid `callback_url`, no messages are sent.
 
 - `content` The content of the message. This can be a Unicode string, up to 5,000 characters long. Message content is required.
 
