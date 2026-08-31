@@ -12,12 +12,15 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   x-logo:
     url: ./logo.png
+  externalDocs:
+    description: Agent-readable curated docs index (llms.txt)
+    url: https://developers.app.sinch.com/llms.txt
   description: >
     # Introduction
 
     The Sinch APIs provide powerful business messaging capabilities across
     sending, receiving, and processing SMS, MMS, and rich messaging. 
-
+    
 
     All requests to the Sinch REST API must be authenticated, this can either be
     done using Basic Authentication or by signing with a HMAC signature.
@@ -101,6 +104,15 @@ info:
 
     changes to your application, just an account configuration change by Sinch's
     support team.
+
+
+    # For AI Agents
+
+    Agent-readable documentation is published at
+    [llms.txt](https://developers.app.sinch.com/llms.txt) (curated index) and
+    [llms-full.txt](https://developers.app.sinch.com/llms-full.txt) (full
+    inlined docs). Each endpoint also has a Markdown sibling via View as
+    Markdown / Copy for LLM.
 tags:
   - name: Basic Authentication
     kind: nav
