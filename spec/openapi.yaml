@@ -12,9 +12,6 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   x-logo:
     url: ./logo.png
-  externalDocs:
-    description: Agent-readable curated docs index (llms.txt)
-    url: https://developers.app.sinch.com/llms.txt
   description: >
     # Introduction
 
@@ -113,6 +110,9 @@ info:
     [llms-full.txt](https://developers.app.sinch.com/llms-full.txt) (full
     inlined docs). Each endpoint also has a Markdown sibling via View as
     Markdown / Copy for LLM.
+externalDocs:
+  description: Agent-readable curated docs index (llms.txt)
+  url: https://developers.app.sinch.com/llms.txt
 tags:
   - name: Basic Authentication
     kind: nav
