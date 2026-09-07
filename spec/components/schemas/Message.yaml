@@ -6,7 +6,11 @@ type: object
 properties:
   callback_url:
     type: string
-    description: URL replies and delivery reports to this message will be pushed to
+    description: |
+      URL replies and delivery reports to this message will be pushed to.
+      Must use the `http` or `https` scheme. Hostnames must conform to RFC 1123
+      DNS name syntax. Paths must not contain whitespace or control characters.
+      Invalid URLs are rejected with HTTP 400.
     example: https://my.url.com
   content:
     maxLength: 5000
