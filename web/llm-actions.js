@@ -93,6 +93,7 @@
     'basic-authentication': 'docs/guides/basic-authentication.md',
     'hmac-authentication': 'docs/guides/hmac-authentication.md',
     'sub-accounts': 'docs/guides/sub-accounts.md',
+    'ai-integration': 'docs/guides/ai-integration.md',
     messages: 'docs/api/messages/index.md',
     'delivery-reports': 'docs/api/delivery-reports/index.md',
     replies: 'docs/api/replies/index.md',
