@@ -102,7 +102,7 @@ serve raw Markdown.
 | `/docs/api/index.md` | Top-level "all services" index. |
 | `/docs/api/webhooks-management/index.md` | Webhooks Management service overview. |
 | `/docs/api/webhooks-management/*.md` | One page per operation (create / retrieve / update / delete). |
-| `/docs/guides/*.md` | Cross-cutting guides (Basic Authentication, HMAC Authentication, Sub-accounts) that aren't tied to a single endpoint. |
+| `/docs/guides/*.md` | Cross-cutting guides (Basic Authentication, HMAC Authentication, Sub-accounts, AI Integration) that aren't tied to a single endpoint. |
 | `/docs/llms-curation.yaml` | Hand-maintained allow list (curated `llms.txt` links) and deny list (globs excluded from `llms-full.txt`) — see below. |
 
 #### `llms.txt` / `llms-full.txt` generation
