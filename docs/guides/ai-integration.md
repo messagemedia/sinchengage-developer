@@ -1,4 +1,4 @@
-# For AI Agents
+# AI Integration
 
 How to point an AI assistant, coding agent, or crawler at the Sinch Engage API documentation
 so it gets accurate, current answers instead of guessing.

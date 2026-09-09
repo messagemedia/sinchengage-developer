@@ -111,7 +111,7 @@
   // Markdown page belong here -- the rest (Introduction, Base URI, ...) have
   // no .md sibling and are left without page actions.
   var SECTION_TO_MD = {
-    'for-ai-agents': 'docs/guides/for-ai-agents.md'
+    'ai-integration': 'docs/guides/ai-integration.md'
   };
 
   var COPY_ICON =

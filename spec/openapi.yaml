@@ -103,7 +103,7 @@ info:
     support team.
 
 
-    # For AI Agents
+    # AI Integration
 
     Agent-readable copies of this reference are published on every docs build,
     so they never drift from the documentation you are reading. Nothing here
@@ -137,8 +137,8 @@ info:
 
 
     Setup instructions for Claude Code, Cursor, ChatGPT, and Perplexity, plus
-    the versioning conventions, are in the [For AI Agents
-    guide](https://developers.app.sinch.com/docs/guides/for-ai-agents.md).
+    the versioning conventions, are in the [AI Integration
+    guide](https://developers.app.sinch.com/docs/guides/ai-integration.md).
 externalDocs:
   description: Agent-readable curated docs index (llms.txt)
   url: https://developers.app.sinch.com/llms.txt

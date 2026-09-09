@@ -102,7 +102,7 @@ serve raw Markdown.
 | `/docs/api/index.md` | Top-level "all services" index. |
 | `/docs/api/webhooks-management/index.md` | Webhooks Management service overview. |
 | `/docs/api/webhooks-management/*.md` | One page per operation (create / retrieve / update / delete). |
-| `/docs/guides/*.md` | Cross-cutting guides (Basic Authentication, HMAC Authentication, Sub-accounts, For AI Agents) that aren't tied to a single endpoint. |
+| `/docs/guides/*.md` | Cross-cutting guides (Basic Authentication, HMAC Authentication, Sub-accounts, AI Integration) that aren't tied to a single endpoint. |
 | `/docs/llms-curation.yaml` | Hand-maintained allow list (curated `llms.txt` links) and deny list (globs excluded from `llms-full.txt`) — see below. |
 
 #### `llms.txt` / `llms-full.txt` generation
@@ -146,7 +146,7 @@ To add coverage for more sections, add the Markdown under `docs/api/…` and reg
 `operationId` (or tag slug) in the `OP_TO_MD` / `TAG_TO_MD` maps in `web/llm-actions.js`.
 Headings in the spec's `info.description` render as `section/<Heading>` rows and are mapped
 the same way via `SECTION_TO_MD` — only for headings whose content has a canonical Markdown
-page (currently just For AI Agents); the rest are intentionally left without page actions.
+page (currently just AI Integration); the rest are intentionally left without page actions.
 
 ### `/scripts`
 Build helpers used by npm scripts.
