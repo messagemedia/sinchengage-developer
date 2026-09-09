@@ -105,13 +105,40 @@ info:
 
     # For AI Agents
 
-    Agent-readable documentation is published at
-    [llms.txt](https://developers.app.sinch.com/llms.txt) (curated index) and
-    [llms-full.txt](https://developers.app.sinch.com/llms-full.txt) (full
-    inlined docs). Each endpoint also has a Markdown sibling via View as
-    Markdown / Copy for LLM. See the [AI Integration
-    guide](https://developers.app.sinch.com/docs/guides/ai-integration.md) for
-    the artifact URLs, the discovery tags, per-tool setup, and versioning.
+    Agent-readable copies of this reference are published on every docs build,
+    so they never drift from the documentation you are reading. Nothing here
+    needs an API key.
+
+
+    * [llms.txt](https://developers.app.sinch.com/llms.txt) — a curated,
+    token-budgeted index of the whole API. Point your tool here first.
+
+
+    * [llms-full.txt](https://developers.app.sinch.com/llms-full.txt) — every
+    reference and guide page inlined in one file, for when you want the whole
+    corpus in context.
+
+
+    * Per-page Markdown — one clean `.md` per operation, for example
+    `https://developers.app.sinch.com/docs/api/messages/send-messages.md`. Use
+    View as Markdown / Copy for LLM beside any section heading to grab just
+    that page.
+
+
+    * [openapi.yaml](https://developers.app.sinch.com/openapi.yaml) and
+    [openapi.json](https://developers.app.sinch.com/openapi.json) — the
+    machine-readable contract, authoritative for schemas and limits.
+
+
+    Every page declares these artifacts in its `<head>` using
+    `rel="describedby"` (the llms.txt v2 discovery relation) and
+    `rel="alternate"`, and this specification's root `externalDocs` points at
+    the curated index, so a crawler does not need to hard-code the paths.
+
+
+    Setup instructions for Claude Code, Cursor, ChatGPT, and Perplexity, plus
+    the versioning conventions, are in the [For AI Agents
+    guide](https://developers.app.sinch.com/docs/guides/for-ai-agents.md).
 externalDocs:
   description: Agent-readable curated docs index (llms.txt)
   url: https://developers.app.sinch.com/llms.txt
@@ -320,43 +347,6 @@ tags:
           ]
         } 
         ```
-  - name: AI Integration
-    kind: nav
-    description: >
-      ## Point your AI tools at these docs
-
-
-      Agent-readable copies of this reference are published on every docs
-      build:
-
-
-      * [llms.txt](https://developers.app.sinch.com/llms.txt) — a curated,
-      token-budgeted index of the whole API. Start here.
-
-
-      * [llms-full.txt](https://developers.app.sinch.com/llms-full.txt) —
-      every reference and guide page inlined in one file.
-
-
-      * Per-page Markdown — one clean `.md` per operation, for example
-      `https://developers.app.sinch.com/docs/api/messages/send-messages.md`.
-
-
-      * [openapi.yaml](https://developers.app.sinch.com/openapi.yaml) and
-      [openapi.json](https://developers.app.sinch.com/openapi.json) — the
-      machine-readable contract, authoritative for schemas and limits.
-
-
-      Every page of this reference declares those artifacts in its `<head>`
-      using `rel="describedby"` (llms.txt v2) and `rel="alternate"`, and this
-      specification's root `externalDocs` points at the curated index, so a
-      crawler does not need to hard-code the paths.
-
-
-      Setup recipes for Claude Code, Cursor, ChatGPT, and Perplexity, the
-      on-page Copy for LLM / View as Markdown actions, and the versioning
-      conventions are in the full [AI Integration
-      guide](https://developers.app.sinch.com/docs/guides/ai-integration.md).
   - name: Messages
     description: >-
       The Sinch Messages API provides a number of endpoints for building
@@ -782,7 +772,6 @@ x-tagGroups:
       - Basic Authentication
       - HMAC Authentication
       - Sub-accounts
-      - AI Integration
   - name: Messaging
     tags:
       - Messages

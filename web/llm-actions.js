@@ -93,7 +93,6 @@
     'basic-authentication': 'docs/guides/basic-authentication.md',
     'hmac-authentication': 'docs/guides/hmac-authentication.md',
     'sub-accounts': 'docs/guides/sub-accounts.md',
-    'ai-integration': 'docs/guides/ai-integration.md',
     messages: 'docs/api/messages/index.md',
     'delivery-reports': 'docs/api/delivery-reports/index.md',
     replies: 'docs/api/replies/index.md',
@@ -105,6 +104,14 @@
     'messaging-reports': 'docs/api/messaging-reports/index.md',
     'short-trackable-links-reports': 'docs/api/short-trackable-links-reports/index.md',
     contacts: 'docs/api/contacts/index.md'
+  };
+
+  // Headings in the spec's info.description render as ReDoc
+  // "section/<Heading>" rows. Only headings whose content has a canonical
+  // Markdown page belong here -- the rest (Introduction, Base URI, ...) have
+  // no .md sibling and are left without page actions.
+  var SECTION_TO_MD = {
+    'for-ai-agents': 'docs/guides/for-ai-agents.md'
   };
 
   var COPY_ICON =
@@ -133,6 +140,13 @@
       var slug = decodeURIComponent(tagMatch[1]).replace(/\s+/g, '-').toLowerCase();
       if (TAG_TO_MD[slug]) {
         return TAG_TO_MD[slug];
+      }
+    }
+    var sectionMatch = sectionId.match(/^section\/([^\/?#]+)$/i);
+    if (sectionMatch) {
+      var sectionSlug = decodeURIComponent(sectionMatch[1]).replace(/\s+/g, '-').toLowerCase();
+      if (SECTION_TO_MD[sectionSlug]) {
+        return SECTION_TO_MD[sectionSlug];
       }
     }
     return null;
