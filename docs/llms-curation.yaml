@@ -101,6 +101,9 @@ sections:
       - title: Sub-accounts
         path: docs/guides/sub-accounts.md
         description: Perform actions on behalf of a sub-account using the parent account's credentials and an Account header, supported on Messages, Replies, Delivery Reports, Webhooks, and Source Address.
+      - title: AI Integration
+        path: docs/guides/ai-integration.md
+        description: The agent-readable artifacts published with these docs (llms.txt, llms-full.txt, per-page Markdown, openapi.yaml/json), their discovery tags, per-tool setup for Claude Code/Cursor/ChatGPT/Perplexity, and the versioning conventions.
       - title: Full developer guide hub (support portal)
         path: https://support.app.sinch.com/hc/en-us/categories/10516535548943-Sinch-Engage-Developer-Guides
         description: Additional Sinch Engage developer guides, onboarding articles, and support content beyond the API reference.

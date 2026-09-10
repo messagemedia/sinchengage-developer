@@ -106,6 +106,14 @@
     contacts: 'docs/api/contacts/index.md'
   };
 
+  // Headings in the spec's info.description render as ReDoc
+  // "section/<Heading>" rows. Only headings whose content has a canonical
+  // Markdown page belong here -- the rest (Introduction, Base URI, ...) have
+  // no .md sibling and are left without page actions.
+  var SECTION_TO_MD = {
+    'ai-integration': 'docs/guides/ai-integration.md'
+  };
+
   var COPY_ICON =
     '<svg class="llm-actions__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' +
     '<rect x="9" y="9" width="13" height="13" rx="2"></rect>' +
@@ -132,6 +140,13 @@
       var slug = decodeURIComponent(tagMatch[1]).replace(/\s+/g, '-').toLowerCase();
       if (TAG_TO_MD[slug]) {
         return TAG_TO_MD[slug];
+      }
+    }
+    var sectionMatch = sectionId.match(/^section\/([^\/?#]+)$/i);
+    if (sectionMatch) {
+      var sectionSlug = decodeURIComponent(sectionMatch[1]).replace(/\s+/g, '-').toLowerCase();
+      if (SECTION_TO_MD[sectionSlug]) {
+        return SECTION_TO_MD[sectionSlug];
       }
     }
     return null;
