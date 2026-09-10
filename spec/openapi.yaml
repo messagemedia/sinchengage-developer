@@ -766,6 +766,27 @@ tags:
         * **Contacts**: Data associated with the individuals you need to contact.
         * **Lists**: Groups of contacts created for specific purposes.
         * **Custom Fields**: Additional fields that can be tailored to complement the basic contact fields.
+  - name: Account Management
+    description: >
+      The Account Management API allows reseller (parent) accounts to add and
+      remove sub-accounts on their primary Sinch Engage account, and to manage
+      Hub web portal users for those accounts.
+
+
+      This is distinct from sending messages *on behalf of* an existing
+      sub-account, which uses the `Account` header described in the
+      Sub-accounts guide.
+
+
+      The Account Management API provides three main endpoints:
+
+
+      - ```Create customer subaccount``` Create a new sub-account with an
+      initial admin user.
+
+      - ```Create users for account``` Add a Hub user to an existing account.
+
+      - ```Delete customer account``` Delete the specified account.
 x-tagGroups:
   - name: Guides
     tags:
@@ -794,6 +815,9 @@ x-tagGroups:
   - name: Contacts
     tags:
       - Contacts
+  - name: Accounts
+    tags:
+      - Account Management
 servers:
   - url: https://eu.app.api.sinch.com
     description: EU instance
@@ -888,6 +912,12 @@ paths:
     $ref: paths/webhooks/v1_webhooks_messages.yaml
   /v1/webhooks/messages/{webhookId}:
     $ref: paths/webhooks/v1_webhooks_messages_{webhookId}.yaml
+  /v1/iam/reseller_customers:
+    $ref: paths/account-management/v1_iam_reseller_customers.yaml
+  /v1/iam/accounts/{id}/users:
+    $ref: paths/account-management/v1_iam_accounts_{id}_users.yaml
+  /v1/iam/accounts/{id}:
+    $ref: paths/account-management/v1_iam_accounts_{id}.yaml
   /v1/iam/signature_keys:
     $ref: paths/signature-keys/v1_iam_signature_keys.yaml
   /v1/iam/signature_keys/{key_id}:

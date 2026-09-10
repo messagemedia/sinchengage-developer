@@ -1,0 +1,13 @@
+type: object
+properties:
+  message:
+    type: string
+    description: The error message.
+    example: Description of what went wrong.
+  details:
+    type: array
+    description: Extra detail to explain why the request failed.
+    items:
+      type: string
+    example:
+      - More details to understand why it went wrong.

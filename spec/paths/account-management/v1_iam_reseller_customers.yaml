@@ -1,0 +1,115 @@
+post:
+  security:
+    - basic_auth: []
+    - hmac_auth: []
+  tags:
+    - Account Management
+  summary: Create customer subaccount
+  description: >-
+    Create a new sub-account with a user attached so the sub-account can start
+    sending messages from the Hub.
+
+
+    Each of the following account properties is required to successfully create
+    an account:
+
+
+    - `company_name`: A human-readable name for the sub-account that appears as
+    the account name in the Hub web portal.
+
+    - `timezone`: Timezone for the account. Timezones are used to present
+    datetime in local time in the Hub web portal and in any reports. For
+    example `Australia/Melbourne`, `Pacific/Auckland`.
+
+    - `operating_country`: The primary operating country which the account will
+    send messages to. This should be one of: `AU`, `NZ`, `UK`, `US`.
+
+    - `billing_type`: This should always be set to `POSTPAID`.
+
+    - `user`: Details of the initial admin user on the sub-account. If the user
+    already exists on the platform they will be added to the account and sent
+    an invitation email to accept access to the new account. If they do not
+    exist the user will receive a welcome email, where they must follow the
+    activation link to activate their account and set their password.
+
+      - `first_name`: The user's first name.
+
+      - `last_name`: The user's last name.
+
+      - `email`: The user's email address — this receives the email invite and
+      is used to log into the platform.
+
+      - `phone`: The user's phone number. This must be in full E.164 format
+      (for example `+61412345678`, `+12015556789`).
+
+
+    This API is intended primarily for reseller (parent) accounts. To perform
+    messaging and related API calls *on behalf of* an existing sub-account,
+    use the `Account` header described in the Sub-accounts guide instead.
+  operationId: CreateCustomerSubaccount
+  parameters:
+    - name: Account
+      in: header
+      description: >-
+        Parent account identifier. When present, the new sub-account is created
+        under this account.
+      schema:
+        type: string
+        example: TestAccount_ABC_0001
+      example: TestAccount_ABC_0001
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../../components/schemas/account-management/CreateCustomerSubaccountRequest.yaml
+        example:
+          company_name: Subaccount Name
+          timezone: Australia/Melbourne
+          operating_country: AU
+          billing_type: POSTPAID
+          user:
+            first_name: First
+            last_name: Last
+            email: first.last@email.com
+            phone: '+61411111111'
+  responses:
+    "201":
+      description: Customer subaccount created.
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../../components/schemas/account-management/CreateCustomerSubaccountResponse.yaml
+          example:
+            parent_account: TestAccount_ABC_0001
+            account_id: TestAccount_ABC_0002
+    "400":
+      description: Request parameter is invalid.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/account-management/ValidationError.yaml
+          example:
+            message: Request parameter is invalid
+            details:
+              - Detailed error message
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "404":
+      description: Not found.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/account-management/SimpleError.yaml
+          example:
+            message: Not Found
+    "500":
+      description: Server error.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/account-management/SimpleError.yaml
+          example:
+            message: Something went wrong

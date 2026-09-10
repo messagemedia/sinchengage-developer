@@ -1,0 +1,18 @@
+type: object
+properties:
+  id:
+    type: string
+    description: UUID identifying the error.
+    example: 1fb233c2-5d13-4318-b8c8-8da91fcc0e38
+  timestamp:
+    type: string
+    description: UTC instant when the error happened.
+    example: "2020-05-29T01:39:30.887Z"
+  code:
+    type: string
+    description: Machine-readable code.
+    example: SERVER_ERROR
+  message:
+    type: string
+    description: The error message.
+    example: Description of what went wrong.

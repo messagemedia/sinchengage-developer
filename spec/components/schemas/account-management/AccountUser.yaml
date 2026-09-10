@@ -1,0 +1,10 @@
+type: object
+required:
+  - email
+properties:
+  email:
+    type: string
+    description: Should be a valid email address.
+    example: first.last@email.com
+example:
+  email: first.last@email.com

@@ -1,0 +1,6 @@
+type: object
+properties:
+  message:
+    type: string
+    description: The error message.
+    example: Description of what went wrong.

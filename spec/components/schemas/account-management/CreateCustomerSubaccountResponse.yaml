@@ -1,0 +1,14 @@
+type: object
+required:
+  - parent_account
+  - account_id
+properties:
+  parent_account:
+    type: string
+    example: TestAccount_ABC_0001
+  account_id:
+    type: string
+    example: TestAccount_ABC_0002
+example:
+  parent_account: TestAccount_ABC_0001
+  account_id: TestAccount_ABC_0002

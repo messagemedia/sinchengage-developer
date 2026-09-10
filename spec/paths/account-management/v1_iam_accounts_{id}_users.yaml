@@ -1,0 +1,70 @@
+post:
+  security:
+    - basic_auth: []
+    - hmac_auth: []
+  tags:
+    - Account Management
+  summary: Create users for account
+  description: >-
+    Create additional users in the web portal. New users receive an activation
+    email to finish setting up their user profile (password, and so on). For
+    existing users (matched by email address) this adds the user to the
+    specified account and sends an invitation email the user must accept in
+    order to use the account in the Hub.
+  operationId: CreateUserForAccount
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: Account id to create a user for.
+      schema:
+        type: string
+        example: MyTestAccount_ZQR_0001
+      example: MyTestAccount_ZQR_0001
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas/account-management/AccountUser.yaml
+        example:
+          email: first.last@email.com
+  responses:
+    "201":
+      description: User created or added to the account.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/account-management/AccountUser.yaml
+          example:
+            email: first.last@email.com
+    "204":
+      description: No content.
+    "400":
+      description: Request parameter is invalid.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/account-management/ValidationError.yaml
+          example:
+            message: Request parameter is invalid
+            details:
+              - Detailed error message
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "404":
+      description: Not found.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/account-management/SimpleError.yaml
+          example:
+            message: Not Found
+    "500":
+      description: Server error.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/account-management/SimpleError.yaml
+          example:
+            message: Something went wrong

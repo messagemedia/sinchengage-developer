@@ -1,0 +1,51 @@
+type: object
+required:
+  - company_name
+  - timezone
+  - operating_country
+  - billing_type
+properties:
+  company_name:
+    type: string
+    description: >-
+      Company name can contain any character except the `./` substring. This is
+      used to generate an account unique identifier.
+    minLength: 2
+    maxLength: 200
+    pattern: ^((?!\./).){2,200}$
+    example: Subaccount Name
+  timezone:
+    type: string
+    description: IANA timezone name used for Hub and reports.
+    example: Australia/Melbourne
+  operating_country:
+    type: string
+    description: >-
+      ISO-3166 alpha-2 country code. The source documentation says this should
+      be one of AU, NZ, UK, or US.
+    minLength: 2
+    maxLength: 2
+    example: AU
+  billing_type:
+    type: string
+    enum:
+      - POSTPAID
+      - PREPAID
+      - PARENT_ALLOCATED
+      - PREPAID_MONEY
+    description: >-
+      Billing type of partner customer. The source documentation says this
+      should always be set to POSTPAID.
+    example: POSTPAID
+  user:
+    $ref: ./InitialAdminUser.yaml
+example:
+  company_name: Subaccount Name
+  timezone: Australia/Melbourne
+  operating_country: AU
+  billing_type: POSTPAID
+  user:
+    first_name: First
+    last_name: Last
+    email: first.last@email.com
+    phone: "+61411111111"
