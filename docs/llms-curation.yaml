@@ -19,8 +19,9 @@ sections:
       All requests must include an Authorization header using either Basic
       Authentication or an HMAC-SHA256 request signature (which additionally
       requires a Date header, and a Content-MD5 header on requests with a
-      body). Use the EU base URL https://eu.app.api.sinch.com or the APAC
-      base URL https://au.app.api.sinch.com depending on your account's
+      body). Use the EU base URL https://eu.app.api.sinch.com, the APAC
+      base URL https://au.app.api.sinch.com, or the US base URL
+      https://us.app.api.sinch.com depending on your account's
       region. Parent-account credentials can act on behalf of a sub-account
       via the Account header (see Guides). A 401 response means the
       Authorization header was missing, malformed, or does not match your

@@ -17,6 +17,14 @@ This endpoint supports two authentication methods:
 - **Basic Auth**: HTTP Basic authentication using your API key as the username and API secret as the password. See the Basic Authentication guide.
 - **HMAC Auth**: HMAC request signing. Place the full `hmac username=...` credential in the Authorization header. See the HMAC Authentication guide.
 
+## Base URLs
+
+| Environment | URL |
+|-------------|-----|
+| EU instance | `https://eu.app.api.sinch.com` |
+| APAC instance | `https://au.app.api.sinch.com` |
+| US instance | `https://us.app.api.sinch.com` |
+
 ## Parameters
 
 ### Path parameters
