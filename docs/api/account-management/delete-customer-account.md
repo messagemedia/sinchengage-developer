@@ -23,7 +23,6 @@ This endpoint supports two authentication methods:
 |-------------|-----|
 | EU instance | `https://eu.app.api.sinch.com` |
 | APAC instance | `https://au.app.api.sinch.com` |
-| US instance | `https://us.app.api.sinch.com` |
 
 ## Parameters
 
