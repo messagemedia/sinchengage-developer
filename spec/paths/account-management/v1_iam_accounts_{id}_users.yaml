@@ -6,16 +6,15 @@ post:
     - Account Management
   summary: Create users for account
   description: >-
-    Create additional users in the web portal. New users receive an activation
-    email to finish setting up their user profile (password, and so on). For
-    existing users (matched by email address) this adds the user to the
-    specified account and sends an invitation email the user must accept in
-    order to use the account in the Hub.
+    Create additional users in the web portal. New users receive an
+    activation email to finish setting up their user profile (password, and
+    so on). For existing users (matched by email address) this adds the user
+    to the specified account and sends an invitation email the user must
+    accept in order to use the account in the Hub.
 
 
-    Handle both success statuses: `201` when a user is created or newly
-    invited (response body includes `email`), and `204` when the email is
-    already a member of the account and no further change is made.
+    Treat both `201` and `204` as success. Use `201` if you need to know a
+    new invite was sent; use `204` if the person was already on the account.
   operationId: CreateUserForAccount
   parameters:
     - name: id
@@ -37,8 +36,8 @@ post:
   responses:
     "201":
       description: >-
-        User created or newly invited to the account. Response body echoes
-        the email.
+        A new user was invited. The response body includes the email that
+        was invited.
       content:
         application/json:
           schema:
@@ -47,8 +46,9 @@ post:
             email: first.last@email.com
     "204":
       description: >-
-        Success with no body. Returned when the email already belongs to a
-        user on this account, so no new user or invite is created.
+        That email already has access to this account (they are already a
+        member, or they already have an invite). Nothing new was created.
+        The body is empty.
     "400":
       description: Request parameter is invalid.
       content:
@@ -62,7 +62,7 @@ post:
     "401":
       $ref: ../../components/responses/Unauthorized.yaml
     "404":
-      description: Not found.
+      description: The account does not exist, or you cannot manage it.
       content:
         application/json:
           schema:
