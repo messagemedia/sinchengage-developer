@@ -30,22 +30,14 @@ delete:
       example: MyTestAccount_ZQR_0001
   responses:
     "204":
-      description: Sub-account deleted. Empty body.
+      description: The sub-account was deleted. Empty body.
     "401":
       $ref: ../../components/responses/Unauthorized.yaml
-    "403":
-      description: >-
-        Authenticated but not allowed to delete this account (for example,
-        it is not a sub-account you own). Distinct from `401`, which means
-        no valid credentials were provided.
-      content:
-        application/json:
-          schema:
-            $ref: ../../components/schemas/account-management/SimpleError.yaml
-          example:
-            message: Not allowed to delete this account
     "404":
-      description: The account does not exist, or you cannot manage it.
+      description: >-
+        The account in `id` does not exist, or you do not have permission
+        to delete it. Both cases return 404 so callers cannot tell them
+        apart.
       content:
         application/json:
           schema:

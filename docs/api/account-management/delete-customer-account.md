@@ -54,10 +54,9 @@ None.
 
 | Status | Description |
 |--------|-------------|
-| 204 | Sub-account deleted. Empty body. |
-| 401 | No valid authentication details were provided |
-| 403 | Authenticated but not allowed to delete this account |
-| 404 | The account does not exist, or you cannot manage it |
+| 204 | The sub-account was deleted. Empty body. |
+| 401 | The request was not authenticated. Check your API key (or username and password). |
+| 404 | The account in `{id}` does not exist, or you do not have permission to delete it. Both cases return 404 so callers cannot tell them apart. |
 | 500 | Server error |
 
 ### 204 response
