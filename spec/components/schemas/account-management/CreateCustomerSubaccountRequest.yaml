@@ -22,9 +22,8 @@ properties:
   operating_country:
     type: string
     description: >-
-      Primary country the account will send messages to. Use one of the AMS
-      country codes `AU`, `NZ`, `UK`, or `US`. `UK` is the United Kingdom
-      value this API accepts; it is not the ISO-3166 code `GB`.
+      Primary country the account will send messages to. Use one of `AU`,
+      `NZ`, `UK`, or `US`.
     enum:
       - AU
       - NZ

@@ -22,8 +22,7 @@ post:
     example `Australia/Melbourne`, `Pacific/Auckland`.
 
     - `operating_country`: The primary country the account will send messages
-    to. Use one of `AU`, `NZ`, `UK`, or `US`. `UK` is the AMS country code
-    for the United Kingdom (not ISO-3166 `GB`).
+    to. Use one of `AU`, `NZ`, `UK`, or `US`.
 
     - `billing_type`: Always set to `POSTPAID` for this API.
 
