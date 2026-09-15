@@ -48,7 +48,7 @@ None.
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `Account` | string | No | Parent account to nest the new sub-account under. Omit to create it under the authenticated parent. This is not the Sub-accounts `Account` header used to send messages on behalf of a sub-account. Example: `TestAccount_ABC_0001` |
+| `Account` | string | No | The account the new sub-account will be created under (its parent). Leave this out to create it directly under your own account (the account your API key belongs to). Set it to nest further down under any account you already manage; naming an account you do not manage is rejected. On this endpoint, `Account` chooses where the new sub-account sits in your hierarchy — it does not mean "send on behalf of" (that is a different use of the same header on the Sub-accounts endpoints). Example: `TestAccount_ABC_0001` |
 
 ## Request body
 

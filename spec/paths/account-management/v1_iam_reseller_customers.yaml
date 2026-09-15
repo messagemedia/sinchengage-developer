@@ -51,10 +51,15 @@ post:
     - name: Account
       in: header
       description: >-
-        Parent account to nest the new sub-account under. Omit this header to
-        create the sub-account directly under the authenticated parent. This
-        is not the Sub-accounts `Account` header used to send messages on
-        behalf of an existing sub-account.
+        The account that the new sub-account will be created under — its
+        parent. If you leave this header out, the sub-account is created
+        directly under your own account (the account your API key belongs
+        to). If you set it, you can nest the new sub-account further down,
+        under any account you already manage. Naming an account you do not
+        manage is rejected. On this endpoint, `Account` chooses where the
+        new sub-account sits in your account hierarchy. It does not mean
+        "send on behalf of"; that is a different use of the same header
+        name on the Sub-accounts endpoints.
       schema:
         type: string
         example: TestAccount_ABC_0001
