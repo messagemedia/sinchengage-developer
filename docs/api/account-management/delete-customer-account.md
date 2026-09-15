@@ -1,6 +1,12 @@
 # Delete customer account
 
-Permanently delete the sub-account identified by `id`. This does not delete the authenticated parent. Deletion is irreversible: Hub users lose access to that sub-account, and messaging for that account stops once it is removed. You can only delete a sub-account you are allowed to manage.
+Permanently deletes the sub-account named in `{id}`. This does **not** delete your own (parent) account. `{id}` must be a sub-account you manage. This cannot be undone.
+
+- Users on that sub-account will no longer be able to use it.
+- The sub-account can no longer send or receive messages.
+- Any sub-accounts nested under it are also deleted.
+
+A successful delete returns **204** with an empty body. If the account does not exist or you cannot manage it, the API returns **404**.
 
 | | |
 |---|---|
@@ -30,7 +36,7 @@ This endpoint supports two authentication methods:
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `id` | string | Yes | Account id to delete. Example: `MyTestAccount_ZQR_0001` |
+| `id` | string | Yes | The sub-account to delete. Must be a sub-account you manage. Example: `MyTestAccount_ZQR_0001` |
 
 ### Query parameters
 
@@ -48,10 +54,10 @@ None.
 
 | Status | Description |
 |--------|-------------|
-| 204 | Sub-account deleted successfully. No content |
+| 204 | Sub-account deleted. Empty body. |
 | 401 | No valid authentication details were provided |
 | 403 | Authenticated but not allowed to delete this account |
-| 404 | Account not found |
+| 404 | The account does not exist, or you cannot manage it |
 | 500 | Server error |
 
 ### 204 response

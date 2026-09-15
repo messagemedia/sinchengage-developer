@@ -6,23 +6,31 @@ delete:
     - Account Management
   summary: Delete customer account
   description: >-
-    Permanently delete the sub-account identified by `id`. This does not
-    delete the authenticated parent. Deletion is irreversible: Hub users lose
-    access to that sub-account, and messaging for that account stops once it
-    is removed. You can only delete a sub-account you are allowed to manage.
+    Permanently deletes the sub-account named in `id`. This does not delete
+    your own (parent) account. `id` must be a sub-account you manage. This
+    cannot be undone.
+
+
+    Users on that sub-account will no longer be able to use it. The
+    sub-account can no longer send or receive messages. Any sub-accounts
+    nested under it are also deleted.
+
+
+    A successful delete returns `204` with an empty body. If the account
+    does not exist or you cannot manage it, the API returns `404`.
   operationId: DeleteCustomerAccount
   parameters:
     - name: id
       in: path
       required: true
-      description: Account id to delete.
+      description: The sub-account to delete. Must be a sub-account you manage.
       schema:
         type: string
         example: MyTestAccount_ZQR_0001
       example: MyTestAccount_ZQR_0001
   responses:
     "204":
-      description: Account deleted successfully. No content.
+      description: Sub-account deleted. Empty body.
     "401":
       $ref: ../../components/responses/Unauthorized.yaml
     "403":
@@ -37,7 +45,7 @@ delete:
           example:
             message: Not allowed to delete this account
     "404":
-      description: Account not found.
+      description: The account does not exist, or you cannot manage it.
       content:
         application/json:
           schema:
