@@ -36,14 +36,7 @@ properties:
     type: string
     enum:
       - POSTPAID
-      - PREPAID
-      - PARENT_ALLOCATED
-      - PREPAID_MONEY
-    description: >-
-      Billing type of the partner customer. For this public reseller create
-      API, always send `POSTPAID`. `PREPAID`, `PARENT_ALLOCATED`, and
-      `PREPAID_MONEY` are other AMS billing types on the same field and are
-      not used for this create flow.
+    description: Billing type of the partner customer. Always set to `POSTPAID`.
     example: POSTPAID
   user:
     $ref: ./InitialAdminUser.yaml
