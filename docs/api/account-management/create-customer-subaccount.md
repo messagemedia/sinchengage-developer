@@ -6,11 +6,11 @@ Each of the following account properties is required:
 
 - `company_name`: A human-readable name for the sub-account that appears as the account name in the Hub web portal.
 - `timezone`: Timezone for the account. Timezones are used to present datetime in local time in the Hub web portal and in any reports. For example `Australia/Melbourne`, `Pacific/Auckland`.
-- `operating_country`: The primary operating country which the account will send messages to. This should be one of: `AU`, `NZ`, `UK`, `US`.
-- `billing_type`: This should always be set to `POSTPAID`.
-- `user`: Details of the initial admin user on the sub-account.
+- `operating_country`: The primary country the account will send messages to. Use one of `AU`, `NZ`, `UK`, or `US`. `UK` is the AMS country code for the United Kingdom (not ISO-3166 `GB`).
+- `billing_type`: Always set to `POSTPAID` for this API.
+- `user`: Required. Details of the initial admin user on the sub-account.
 
-If the user already exists on the platform they will be added to the account and sent an invitation email. If they do not exist the user will receive a welcome email with an activation link.
+If `user.email` matches an existing platform user, they are added to the account and sent an invitation email. If the email is new, they receive a welcome email with an activation link. If `user.email` is omitted, no Hub invite is sent.
 
 | | |
 |---|---|
@@ -48,7 +48,7 @@ None.
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `Account` | string | No | Parent account identifier. When present, the new sub-account is created under this account. Example: `TestAccount_ABC_0001` |
+| `Account` | string | No | Parent account to nest the new sub-account under. Omit to create it under the authenticated parent. This is not the Sub-accounts `Account` header used to send messages on behalf of a sub-account. Example: `TestAccount_ABC_0001` |
 
 ## Request body
 
@@ -58,12 +58,13 @@ JSON object describing the sub-account and initial admin user.
 |-------|------|----------|-------------|
 | `company_name` | string | Yes | Company name. Cannot contain the `./` substring. Length 2–200. Used to generate an account unique identifier. |
 | `timezone` | string | Yes | IANA timezone name, for example `Australia/Melbourne`. |
-| `operating_country` | string | Yes | ISO-3166 alpha-2 country code. Documentation says this should be one of `AU`, `NZ`, `UK`, or `US`. |
-| `billing_type` | string | Yes | Billing type. Should always be `POSTPAID`. Allowed values: `POSTPAID`, `PREPAID`, `PARENT_ALLOCATED`, `PREPAID_MONEY`. |
+| `operating_country` | string | Yes | AMS country code: `AU`, `NZ`, `UK`, or `US`. `UK` is not ISO-3166 `GB`. |
+| `billing_type` | string | Yes | Always send `POSTPAID` for this API. The schema also lists `PREPAID`, `PARENT_ALLOCATED`, and `PREPAID_MONEY` (other AMS billing types; do not use them here). |
+| `user` | object | Yes | Initial admin user. Required. |
 | `user.first_name` | string | Yes | First name. Length 1–40. Cannot have more than one sequential space. |
 | `user.last_name` | string | Yes | Last name. Length 1–80. Cannot have more than one sequential space. |
-| `user.email` | string | No | Email address that receives the invite and is used to log in. |
-| `user.phone` | string | Yes | Phone number in E.164 format. `+` is mandatory. |
+| `user.email` | string | No | Email used to match existing users and to send the invite / welcome email. Omit only if you do not need Hub login or matching. |
+| `user.phone` | string | Yes | Phone number starting with `+` and 7–250 digits (AMS limit). Prefer full E.164, for example `+61412345678`. |
 
 ## Responses
 

@@ -25,7 +25,7 @@ This is distinct from sending messages *on behalf of* an existing sub-account, w
 |----------|--------|------|-------------|
 | [Create customer subaccount](create-customer-subaccount.md) | `POST` | `/v1/iam/reseller_customers` | Create a new sub-account with an initial admin user |
 | [Create users for account](create-users-for-account.md) | `POST` | `/v1/iam/accounts/{id}/users` | Add a Hub user to an existing account |
-| [Delete customer account](delete-customer-account.md) | `DELETE` | `/v1/iam/accounts/{id}` | Delete the specified account |
+| [Delete customer account](delete-customer-account.md) | `DELETE` | `/v1/iam/accounts/{id}` | Permanently delete a sub-account |
 
 ## Specification details
 

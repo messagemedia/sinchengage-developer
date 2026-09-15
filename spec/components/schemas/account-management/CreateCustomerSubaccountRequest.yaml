@@ -4,6 +4,7 @@ required:
   - timezone
   - operating_country
   - billing_type
+  - user
 properties:
   company_name:
     type: string
@@ -21,8 +22,14 @@ properties:
   operating_country:
     type: string
     description: >-
-      ISO-3166 alpha-2 country code. The source documentation says this should
-      be one of AU, NZ, UK, or US.
+      Primary country the account will send messages to. Use one of the AMS
+      country codes `AU`, `NZ`, `UK`, or `US`. `UK` is the United Kingdom
+      value this API accepts; it is not the ISO-3166 code `GB`.
+    enum:
+      - AU
+      - NZ
+      - UK
+      - US
     minLength: 2
     maxLength: 2
     example: AU
@@ -34,8 +41,10 @@ properties:
       - PARENT_ALLOCATED
       - PREPAID_MONEY
     description: >-
-      Billing type of partner customer. The source documentation says this
-      should always be set to POSTPAID.
+      Billing type of the partner customer. For this public reseller create
+      API, always send `POSTPAID`. `PREPAID`, `PARENT_ALLOCATED`, and
+      `PREPAID_MONEY` are other AMS billing types on the same field and are
+      not used for this create flow.
     example: POSTPAID
   user:
     $ref: ./InitialAdminUser.yaml

@@ -5,7 +5,11 @@ delete:
   tags:
     - Account Management
   summary: Delete customer account
-  description: Use this endpoint to delete the specified account.
+  description: >-
+    Permanently delete the sub-account identified by `id`. This does not
+    delete the authenticated parent. Deletion is irreversible: Hub users lose
+    access to that sub-account, and messaging for that account stops once it
+    is removed. You can only delete a sub-account you are allowed to manage.
   operationId: DeleteCustomerAccount
   parameters:
     - name: id
@@ -22,13 +26,16 @@ delete:
     "401":
       $ref: ../../components/responses/Unauthorized.yaml
     "403":
-      description: Invalid credentials.
+      description: >-
+        Authenticated but not allowed to delete this account (for example,
+        it is not a sub-account you own). Distinct from `401`, which means
+        no valid credentials were provided.
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/account-management/SimpleError.yaml
           example:
-            message: Invalid authentication credentials
+            message: Not allowed to delete this account
     "404":
       description: Account not found.
       content:

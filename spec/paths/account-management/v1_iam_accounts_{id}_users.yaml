@@ -11,6 +11,11 @@ post:
     existing users (matched by email address) this adds the user to the
     specified account and sends an invitation email the user must accept in
     order to use the account in the Hub.
+
+
+    Handle both success statuses: `201` when a user is created or newly
+    invited (response body includes `email`), and `204` when the email is
+    already a member of the account and no further change is made.
   operationId: CreateUserForAccount
   parameters:
     - name: id
@@ -31,7 +36,9 @@ post:
           email: first.last@email.com
   responses:
     "201":
-      description: User created or added to the account.
+      description: >-
+        User created or newly invited to the account. Response body echoes
+        the email.
       content:
         application/json:
           schema:
@@ -39,7 +46,9 @@ post:
           example:
             email: first.last@email.com
     "204":
-      description: No content.
+      description: >-
+        Success with no body. Returned when the email already belongs to a
+        user on this account, so no new user or invite is created.
     "400":
       description: Request parameter is invalid.
       content:

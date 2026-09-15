@@ -1,6 +1,6 @@
 # Delete customer account
 
-Use this endpoint to delete the specified account.
+Permanently delete the sub-account identified by `id`. This does not delete the authenticated parent. Deletion is irreversible: Hub users lose access to that sub-account, and messaging for that account stops once it is removed. You can only delete a sub-account you are allowed to manage.
 
 | | |
 |---|---|
@@ -48,9 +48,9 @@ None.
 
 | Status | Description |
 |--------|-------------|
-| 204 | Account deleted successfully. No content |
+| 204 | Sub-account deleted successfully. No content |
 | 401 | No valid authentication details were provided |
-| 403 | Invalid credentials |
+| 403 | Authenticated but not allowed to delete this account |
 | 404 | Account not found |
 | 500 | Server error |
 

@@ -2,6 +2,8 @@
 
 Create additional users in the web portal. New users receive an activation email to finish setting up their user profile. For existing users (matched by email address) this adds the user to the specified account and sends an invitation email the user must accept in order to use the account in the Hub.
 
+A successful call returns **201** when a user is created or newly invited, or **204** when that email is already a member of the account.
+
 | | |
 |---|---|
 | **Service** | [Account Management](index.md) |
@@ -50,8 +52,8 @@ None.
 
 | Status | Description |
 |--------|-------------|
-| 201 | User created or added to the account |
-| 204 | No content |
+| 201 | User created or newly invited. Body includes `email`. |
+| 204 | Email is already a member of this account. No body. |
 | 400 | Request parameter is invalid |
 | 401 | No valid authentication details were provided |
 | 404 | Not found |

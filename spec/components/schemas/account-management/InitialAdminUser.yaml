@@ -18,13 +18,21 @@ properties:
     pattern: ^((?!\s{2}).)*$
   email:
     type: string
-    description: Should be a valid email address.
+    format: email
+    description: >-
+      Hub login address. Required to match an existing user or to send the
+      invitation / welcome email. If omitted, the sub-account is still created
+      with first name, last name, and phone, but no Hub invite is sent and
+      existing users cannot be matched by email.
     example: first.last@email.com
   phone:
     type: string
-    description: Phone number in E.164 format. '+' is mandatory.
+    description: >-
+      Phone number. Must start with `+` followed by 7–250 digits (AMS field
+      limit). Use full E.164 where possible (for example `+61412345678`).
     minLength: 7
     maxLength: 250
+    pattern: ^\+[0-9]{7,250}$
     example: "+61411111111"
 example:
   first_name: First

@@ -4,7 +4,8 @@ required:
 properties:
   email:
     type: string
-    description: Should be a valid email address.
+    format: email
+    description: Valid email address of the Hub user to create or add.
     example: first.last@email.com
 example:
   email: first.last@email.com

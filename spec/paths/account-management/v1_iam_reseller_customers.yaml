@@ -21,26 +21,27 @@ post:
     datetime in local time in the Hub web portal and in any reports. For
     example `Australia/Melbourne`, `Pacific/Auckland`.
 
-    - `operating_country`: The primary operating country which the account will
-    send messages to. This should be one of: `AU`, `NZ`, `UK`, `US`.
+    - `operating_country`: The primary country the account will send messages
+    to. Use one of `AU`, `NZ`, `UK`, or `US`. `UK` is the AMS country code
+    for the United Kingdom (not ISO-3166 `GB`).
 
-    - `billing_type`: This should always be set to `POSTPAID`.
+    - `billing_type`: Always set to `POSTPAID` for this API.
 
-    - `user`: Details of the initial admin user on the sub-account. If the user
-    already exists on the platform they will be added to the account and sent
-    an invitation email to accept access to the new account. If they do not
-    exist the user will receive a welcome email, where they must follow the
-    activation link to activate their account and set their password.
+    - `user`: Required. Details of the initial admin user on the sub-account.
+    If `user.email` matches an existing platform user, they are added to the
+    account and sent an invitation email. If the email is new, they receive a
+    welcome email and must follow the activation link to set a password. If
+    `user.email` is omitted, no invite is sent.
 
       - `first_name`: The user's first name.
 
       - `last_name`: The user's last name.
 
-      - `email`: The user's email address — this receives the email invite and
-      is used to log into the platform.
+      - `email`: Optional. Hub login address used to match existing users and
+      to send the invite or welcome email.
 
-      - `phone`: The user's phone number. This must be in full E.164 format
-      (for example `+61412345678`, `+12015556789`).
+      - `phone`: Required. Must start with `+` followed by 7–250 digits. Prefer
+      full E.164 (for example `+61412345678`).
 
 
     This API is intended primarily for reseller (parent) accounts. To perform
@@ -51,8 +52,10 @@ post:
     - name: Account
       in: header
       description: >-
-        Parent account identifier. When present, the new sub-account is created
-        under this account.
+        Parent account to nest the new sub-account under. Omit this header to
+        create the sub-account directly under the authenticated parent. This
+        is not the Sub-accounts `Account` header used to send messages on
+        behalf of an existing sub-account.
       schema:
         type: string
         example: TestAccount_ABC_0001
