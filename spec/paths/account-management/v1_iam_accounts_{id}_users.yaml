@@ -4,17 +4,19 @@ post:
     - hmac_auth: []
   tags:
     - Account Management
-  summary: Create users for account
+  summary: Create users for an account
   description: >-
     Create additional users in the web portal. New users receive an
     activation email to finish setting up their user profile (password, and
     so on). For existing users (matched by email address) this adds the user
     to the specified account and sends an invitation email the user must
-    accept in order to use the account in the Hub.
+    accept in order to use the account in Sinch Engage.
 
 
-    Treat both `201` and `204` as success. Use `201` if you need to know a
-    new invite was sent; use `204` if the person was already on the account.
+    This endpoint requires you to handle both success statuses: `201` when a
+    user is created or newly invited (response body includes `email`), and
+    `204` when that email already has access to the account (already a
+    member, or already invited).
   operationId: CreateUserForAccount
   parameters:
     - name: id

@@ -42,4 +42,4 @@ Sinch Engage API documentation generated from the OpenAPI specification.
 
 | Service | Description |
 |---------|-------------|
-| [Account Management](account-management/index.md) | Create and delete reseller sub-accounts, and add Hub users for those accounts. |
+| [Account Management](account-management/index.md) | Create and delete reseller sub-accounts, and add Sinch Engage users for those accounts. |

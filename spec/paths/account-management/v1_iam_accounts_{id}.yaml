@@ -4,15 +4,15 @@ delete:
     - hmac_auth: []
   tags:
     - Account Management
-  summary: Delete customer account
+  summary: Delete a sub-account
   description: >-
     Permanently deletes the sub-account named in `id`. This does not delete
     your own (parent) account. `id` must be a sub-account you manage. This
     cannot be undone.
 
 
-    Users on that sub-account will no longer be able to use it. The
-    sub-account can no longer send or receive messages. Any sub-accounts
+    Sinch Engage users on that sub-account will no longer be able to use it.
+    The sub-account can no longer send or receive messages. Any sub-accounts
     nested under it are also deleted.
 
 

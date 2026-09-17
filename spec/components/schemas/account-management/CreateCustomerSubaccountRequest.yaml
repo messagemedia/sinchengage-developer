@@ -17,7 +17,7 @@ properties:
     example: Subaccount Name
   timezone:
     type: string
-    description: IANA timezone name used for Hub and reports.
+    description: IANA time zone name used for Sinch Engage and reports.
     example: Australia/Melbourne
   operating_country:
     type: string

@@ -768,25 +768,26 @@ tags:
         * **Custom Fields**: Additional fields that can be tailored to complement the basic contact fields.
   - name: Account Management
     description: >
-      The Account Management API allows reseller (parent) accounts to add and
-      remove sub-accounts on their primary Sinch Engage account, and to manage
-      Hub web portal users for those accounts.
+      The Account Management API is for **reseller** accounts. It allows
+      resellers to add and remove sub-accounts on their primary Sinch Engage
+      account, and to manage Sinch Engage web portal users for those accounts.
 
 
       This is distinct from sending messages *on behalf of* an existing
       sub-account, which uses the `Account` header described in the
-      Sub-accounts guide.
+      [Sub-accounts](#tag/Sub-accounts) guide.
 
 
       The Account Management API provides three main endpoints:
 
 
-      - ```Create customer subaccount``` Create a new sub-account with an
-      initial admin user.
+      - ```Create a sub-account``` Create a new sub-account with an initial
+      admin user.
 
-      - ```Create users for account``` Add a Hub user to an existing account.
+      - ```Create users for an account``` Add a Sinch Engage user to an
+      existing account.
 
-      - ```Delete customer account``` Delete the specified account.
+      - ```Delete a sub-account``` Permanently delete a sub-account.
 x-tagGroups:
   - name: Guides
     tags:

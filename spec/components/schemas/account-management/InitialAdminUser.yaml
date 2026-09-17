@@ -20,19 +20,15 @@ properties:
     type: string
     format: email
     description: >-
-      Hub login address. Required to match an existing user or to send the
-      invitation / welcome email. If omitted, the sub-account is still created
-      with first name, last name, and phone, but no Hub invite is sent and
-      existing users cannot be matched by email.
+      Sinch Engage login address used to match existing users and to send the
+      invitation or welcome email. If omitted or empty, the sub-account is
+      still created with zero users. A user is not created without an email.
     example: first.last@email.com
   phone:
     type: string
     description: >-
-      Phone number. Must start with `+` followed by 7–250 digits (AMS field
-      limit). Use full E.164 where possible (for example `+61412345678`).
-    minLength: 7
-    maxLength: 250
-    pattern: ^\+[0-9]{7,250}$
+      The user's phone number. This must be in E.164 format (for example
+      `+61412345678`).
     example: "+61411111111"
 example:
   first_name: First

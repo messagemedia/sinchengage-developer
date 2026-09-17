@@ -1,8 +1,8 @@
-# Create users for account
+# Create users for an account
 
-Create additional users in the web portal. New users receive an activation email to finish setting up their user profile. For existing users (matched by email address) this adds the user to the specified account and sends an invitation email the user must accept in order to use the account in the Hub.
+Create additional users in the web portal. New users receive an activation email to finish setting up their user profile. For existing users (matched by email address) this adds the user to the specified account and sends an invitation email the user must accept in order to use the account in Sinch Engage.
 
-A successful call returns **201** when a new user invite was created, or **204** when that email already has access to the account. Treat both as success.
+This endpoint requires you to handle both success statuses: **201** when a user is created or newly invited (response body includes `email`), and **204** when that email already has access to the account (already a member, or already invited).
 
 | | |
 |---|---|

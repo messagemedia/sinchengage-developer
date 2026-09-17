@@ -34,7 +34,7 @@ Account: SubAccount
 ```
 
 This is different from **creating or deleting** sub-accounts. Reseller account
-lifecycle (create sub-account, add Hub users, delete account) is documented
+lifecycle (create sub-account, add Sinch Engage users, delete account) is documented
 under [Account Management](../api/account-management/index.md).
 
 ## Related

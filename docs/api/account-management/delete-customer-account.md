@@ -1,8 +1,8 @@
-# Delete customer account
+# Delete a sub-account
 
 Permanently deletes the sub-account named in `{id}`. This does **not** delete your own (parent) account. `{id}` must be a sub-account you manage. This cannot be undone.
 
-- Users on that sub-account will no longer be able to use it.
+- Sinch Engage users on that sub-account will no longer be able to use it.
 - The sub-account can no longer send or receive messages.
 - Any sub-accounts nested under it are also deleted.
 
@@ -43,10 +43,6 @@ This endpoint supports two authentication methods:
 None.
 
 ### Header parameters
-
-None.
-
-## Request body
 
 None.
 
