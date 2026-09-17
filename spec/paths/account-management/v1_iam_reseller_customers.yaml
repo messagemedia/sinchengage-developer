@@ -18,7 +18,7 @@ post:
     - `company_name`: A human-readable name for the sub-account that appears as
     the account name in the Sinch Engage web portal.
 
-    - `timezone`: Timezone for the account. Timezones are used to present
+    - `timezone`: Time zone for the account. Time zones are used to present
     datetime in local time in the Sinch Engage web portal and in any reports.
     Time zones must be in IANA format. For example `Australia/Melbourne`,
     `Pacific/Auckland`.

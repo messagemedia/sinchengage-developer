@@ -5,7 +5,7 @@ Create a new sub-account so it can start sending messages from Sinch Engage. Inc
 Each of the following account properties is required:
 
 - `company_name`: A human-readable name for the sub-account that appears as the account name in the Sinch Engage web portal.
-- `timezone`: Timezone for the account. Timezones are used to present datetime in local time in the Sinch Engage web portal and in any reports. Time zones must be in IANA format. For example `Australia/Melbourne`, `Pacific/Auckland`.
+- `timezone`: Time zone for the account. Time zones are used to present datetime in local time in the Sinch Engage web portal and in any reports. Time zones must be in IANA format. For example `Australia/Melbourne`, `Pacific/Auckland`.
 - `operating_country`: The primary country the account will send messages to. Use one of `AU`, `NZ`, `UK`, or `US`.
 - `billing_type`: Always set to `POSTPAID` for this API.
 - `user`: Details of the initial admin user on the sub-account. Include `user.email` to create that user.
