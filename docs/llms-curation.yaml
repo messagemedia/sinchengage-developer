@@ -82,6 +82,9 @@ sections:
       - title: Contacts
         path: docs/api/contacts/index.md
         description: Manage Contacts, Contact Lists, and Custom Fields used to organize and target message recipients.
+      - title: Account Management
+        path: docs/api/account-management/index.md
+        description: Create and delete reseller sub-accounts and add Sinch Engage users on a reseller account (POST /v1/iam/reseller_customers, POST /v1/iam/accounts/{id}/users, DELETE /v1/iam/accounts/{id}).
 
   - title: Code Samples
     note: >-

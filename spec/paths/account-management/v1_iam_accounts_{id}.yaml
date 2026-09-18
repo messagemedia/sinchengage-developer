@@ -1,0 +1,63 @@
+delete:
+  security:
+    - basic_auth: []
+    - hmac_auth: []
+  tags:
+    - Account Management
+  summary: Delete a sub-account
+  description: >-
+    Permanently deletes the sub-account named in `id`. This does not delete
+    your own (parent) account. `id` must be a sub-account you manage. This
+    cannot be undone.
+
+
+    Sinch Engage users on that sub-account will no longer be able to use it.
+    The sub-account can no longer send or receive messages. Any sub-accounts
+    nested under it are also deleted.
+
+
+    A successful delete returns `204` with an empty body. If the account
+    does not exist or you cannot manage it, the API returns `404`.
+  operationId: DeleteCustomerAccount
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: The sub-account to delete. Must be a sub-account you manage.
+      schema:
+        type: string
+        example: MyTestAccount_ZQR_0001
+      example: MyTestAccount_ZQR_0001
+  responses:
+    "204":
+      description: The sub-account was deleted. Empty body.
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "404":
+      description: >-
+        The account in `id` does not exist, or you do not have permission
+        to delete it. Both cases return 404 so callers cannot tell them
+        apart.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/account-management/EntityNotFoundError.yaml
+          example:
+            id: 1fb233c2-5d13-4318-b8c8-8da91fcc0e38
+            timestamp: "2020-05-29T01:39:30.887Z"
+            code: ENTITY_NOT_FOUND
+            context:
+              details: Description of what went wrong.
+              statusCode: 404
+            message: Description of what went wrong.
+    "500":
+      description: Server error.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/account-management/ServerError.yaml
+          example:
+            id: 1fb233c2-5d13-4318-b8c8-8da91fcc0e38
+            timestamp: "2020-05-29T01:39:30.887Z"
+            code: SERVER_ERROR
+            message: Description of what went wrong.

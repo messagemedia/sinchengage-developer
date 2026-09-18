@@ -1,0 +1,37 @@
+type: object
+required:
+  - first_name
+  - last_name
+  - phone
+properties:
+  first_name:
+    type: string
+    description: Name cannot have more than one sequential space.
+    minLength: 1
+    maxLength: 40
+    pattern: ^((?!\s{2}).)*$
+  last_name:
+    type: string
+    description: Name cannot have more than one sequential space.
+    minLength: 1
+    maxLength: 80
+    pattern: ^((?!\s{2}).)*$
+  email:
+    type: string
+    format: email
+    description: >-
+      Sinch Engage login address used to match existing users and to send the
+      invitation or welcome email. If omitted or empty, the sub-account is
+      still created with zero users. A user is not created without an email.
+    example: first.last@email.com
+  phone:
+    type: string
+    description: >-
+      The user's phone number. This must be in E.164 format (for example
+      `+61412345678`).
+    example: "+61411111111"
+example:
+  first_name: First
+  last_name: Last
+  email: first.last@email.com
+  phone: "+61411111111"

@@ -1,0 +1,11 @@
+type: object
+required:
+  - email
+properties:
+  email:
+    type: string
+    format: email
+    description: Valid email address of the Sinch Engage user to create or add.
+    example: first.last@email.com
+example:
+  email: first.last@email.com

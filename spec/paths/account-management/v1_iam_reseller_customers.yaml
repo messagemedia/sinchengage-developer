@@ -1,0 +1,118 @@
+post:
+  security:
+    - basic_auth: []
+    - hmac_auth: []
+  tags:
+    - Account Management
+  summary: Create a sub-account
+  description: >-
+    Create a new sub-account so it can start sending messages from Sinch
+    Engage. Include `user.email` to add an initial admin user. If `user.email`
+    is omitted or empty, the sub-account is still created with zero users.
+
+
+    Each of the following account properties is required to successfully create
+    an account:
+
+
+    - `company_name`: A human-readable name for the sub-account that appears as
+    the account name in the Sinch Engage web portal.
+
+    - `timezone`: Time zone for the account. Time zones are used to present
+    datetime in local time in the Sinch Engage web portal and in any reports.
+    Time zones must be in IANA format. For example `Australia/Melbourne`,
+    `Pacific/Auckland`.
+
+    - `operating_country`: The primary country the account will send messages
+    to. Use one of `AU`, `NZ`, `UK`, or `US`.
+
+    - `billing_type`: Always set to `POSTPAID` for this API.
+
+    - `user`: Details of the initial admin user on the sub-account. Include
+    `user.email` to create that user. If `user.email` is omitted or empty, the
+    sub-account is still created with zero users — a user is not created
+    without an email.
+
+      - `first_name`: The user's first name.
+
+      - `last_name`: The user's last name.
+
+      - `email`: Sinch Engage login address used to match existing users and
+      to send the invite or welcome email. If `email` matches an existing
+      platform user, they are added to the account and sent an invitation
+      email. If the email is new, they receive a welcome email and must follow
+      the activation link to set a password.
+
+      - `phone`: Required. The user's phone number. This must be in E.164
+      format (for example `+61412345678`).
+  operationId: CreateCustomerSubaccount
+  parameters:
+    - name: Account
+      in: header
+      description: >-
+        The account that the new sub-account will be created under — its
+        parent. If you leave this header out, the sub-account is created
+        directly under your own account (the account your API key belongs
+        to). If you set it, you can nest the new sub-account further down,
+        under any account you already manage. Naming an account you do not
+        manage is rejected.
+      schema:
+        type: string
+        example: TestAccount_ABC_0001
+      example: TestAccount_ABC_0001
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../../components/schemas/account-management/CreateCustomerSubaccountRequest.yaml
+        example:
+          company_name: Subaccount Name
+          timezone: Australia/Melbourne
+          operating_country: AU
+          billing_type: POSTPAID
+          user:
+            first_name: First
+            last_name: Last
+            email: first.last@email.com
+            phone: '+61411111111'
+  responses:
+    "201":
+      description: Customer subaccount created.
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../../components/schemas/account-management/CreateCustomerSubaccountResponse.yaml
+          example:
+            parent_account: TestAccount_ABC_0001
+            account_id: TestAccount_ABC_0002
+    "400":
+      description: Request parameter is invalid.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/account-management/ValidationError.yaml
+          example:
+            message: Request parameter is invalid
+            details:
+              - Detailed error message
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "404":
+      description: Not found.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/account-management/SimpleError.yaml
+          example:
+            message: Not Found
+    "500":
+      description: Server error.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/account-management/SimpleError.yaml
+          example:
+            message: Something went wrong
