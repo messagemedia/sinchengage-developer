@@ -8,6 +8,7 @@ Manage the numbers your account must not message, check authorisation before sen
 |-------------|-----|
 | EU instance | `https://eu.app.api.sinch.com` |
 | APAC instance | `https://au.app.api.sinch.com` |
+| US instance | `https://us.app.api.sinch.com` |
 
 ## Choose an endpoint
 

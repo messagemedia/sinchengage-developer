@@ -81,6 +81,8 @@ Date: Sat, 30 Jul 2016 05:18:52 GMT
 Authorization: hmac username="uCXUdoogNfCsehEClbO2", algorithm="hmac-sha256", headers="Date request-line", signature="NTUwMjUwNTVmZGYzZTIxODMyYjc1ZmM3M2EwZWQ1NzA3NzA4ZTZjNw=="
 ```
 
+The `Host` header must match your account's regional instance: `eu.app.api.sinch.com` (EU), `au.app.api.sinch.com` (APAC), or `us.app.api.sinch.com` (US).
+
 ## Related
 
 - [Basic Authentication](basic-authentication.md) — a simpler alternative using a Base64-encoded key/secret.

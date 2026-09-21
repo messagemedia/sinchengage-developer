@@ -8,6 +8,7 @@ Manage the keys Sinch uses to sign webhook requests so your application can veri
 |-------------|-----|
 | EU instance | `https://eu.app.api.sinch.com` |
 | APAC instance | `https://au.app.api.sinch.com` |
+| US instance | `https://us.app.api.sinch.com` |
 
 ## Choose an endpoint
 

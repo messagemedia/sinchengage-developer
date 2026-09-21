@@ -8,6 +8,7 @@ Run synchronous, asynchronous, and scheduled reports for messages sent and recei
 |-------------|-----|
 | EU instance | `https://eu.app.api.sinch.com` |
 | APAC instance | `https://au.app.api.sinch.com` |
+| US instance | `https://us.app.api.sinch.com` |
 
 ## Choose an endpoint
 
