@@ -30,6 +30,8 @@ Authorization: Basic dGhpc2lzYWtleTp0aGlzaXNhc2VjcmV0Zm9ybW1iYXNpY2F1dGhyZXN0YXB
 
 _Note: spaces are used as indentation in the body of the above request._
 
+The `Host` header must match your account's regional instance: `eu.app.api.sinch.com` (EU), `au.app.api.sinch.com` (APAC), or `us.app.api.sinch.com` (US).
+
 ## Related
 
 - [HMAC Authentication](hmac-authentication.md) — an alternative to Basic Auth using a request signature.

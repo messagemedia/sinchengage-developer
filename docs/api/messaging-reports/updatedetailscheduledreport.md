@@ -40,6 +40,7 @@ The operation declares these authentication alternatives (each item in the OpenA
 |--------|-----|
 | EU | `https://eu.app.api.sinch.com` |
 | APAC | `https://au.app.api.sinch.com` |
+| US | `https://us.app.api.sinch.com` |
 
 ## Parameters
 

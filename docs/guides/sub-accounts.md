@@ -33,6 +33,8 @@ Account: SubAccount
 }
 ```
 
+The `Host` header must match your account's regional instance: `eu.app.api.sinch.com` (EU), `au.app.api.sinch.com` (APAC), or `us.app.api.sinch.com` (US).
+
 This is different from **creating or deleting** sub-accounts. Reseller account
 lifecycle (create sub-account, add Sinch Engage users, delete account) is documented
 under [Account Management](../api/account-management/index.md).

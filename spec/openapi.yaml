@@ -36,6 +36,9 @@ info:
     For APAC instance, use https://au.app.api.sinch.com
 
 
+    For US instance, use https://us.app.api.sinch.com
+
+
     # Credentials
       
     To access the API, an API key and secret are required.
@@ -826,6 +829,9 @@ servers:
   - url: https://au.app.api.sinch.com
     description: APAC instance
     name: APAC
+  - url: https://us.app.api.sinch.com
+    description: US instance
+    name: US
 webhooks:
   deliveryReport:
     $ref: webhooks/deliveryReport.yaml

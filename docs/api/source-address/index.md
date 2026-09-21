@@ -8,6 +8,7 @@ The Source Address API lets you request SMS sender IDs and track their approval 
 |-------------|-----|
 | EU instance | `https://eu.app.api.sinch.com` |
 | APAC instance | `https://au.app.api.sinch.com` |
+| US instance | `https://us.app.api.sinch.com` |
 
 ## Choose an endpoint
 
