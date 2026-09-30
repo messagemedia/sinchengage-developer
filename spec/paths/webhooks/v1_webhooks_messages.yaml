@@ -380,8 +380,8 @@ post:
 
     An account can have at most 150 webhooks. `POST /v1/webhooks/messages`
     returns HTTP 400 when the account already has 150 or more webhooks. The
-    response `message` is `Maximum number of webhooks (150) reached`, and no
-    webhook is created.
+    response `details` includes `Maximum number of webhooks (150) reached`, and
+    no webhook is created.
 
 
     Existing webhooks are left in place. Retrieve, update, and delete still
@@ -469,7 +469,9 @@ post:
             webhookLimitReached:
               summary: Account webhook limit reached
               value:
-                message: Maximum number of webhooks (150) reached
+                message: Request failed to parse correctly. Please ensure input is valid and try again.
+                details:
+                  - Maximum number of webhooks (150) reached
     "401":
       $ref: ../../components/responses/Unauthorized.yaml
     "409":

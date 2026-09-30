@@ -126,7 +126,7 @@ Status codes provide more granular insight into a message's status. A message ca
 
 #### Account limit
 
-An account can have at most 150 webhooks. `POST /v1/webhooks/messages` returns HTTP 400 when the account already has 150 or more webhooks. The response `message` is `Maximum number of webhooks (150) reached`, and no webhook is created.
+An account can have at most 150 webhooks. `POST /v1/webhooks/messages` returns HTTP 400 when the account already has 150 or more webhooks. The response `details` includes `Maximum number of webhooks (150) reached`, and no webhook is created.
 
 Existing webhooks are left in place. Retrieve, update, and delete still succeed when the account is at or over 150. A create is accepted again only after the account has fewer than 150 webhooks. An account with exactly 150 webhooks is at the cap, so the next create is rejected.
 
@@ -269,7 +269,10 @@ Webhook response object. No fields are strictly required in the schema; however,
 
 ```json
 {
-  "message": "Maximum number of webhooks (150) reached"
+  "message": "Request failed to parse correctly. Please ensure input is valid and try again.",
+  "details": [
+    "Maximum number of webhooks (150) reached"
+  ]
 }
 ```
 
@@ -333,7 +336,7 @@ console.log(webhook);
   - Invalid URL: `"details": ["/url: Not a valid http url"]`
   - Unrecognised event: `"details": ["/events/0: [RECEIVED_123] is invalid"]`
   - Unparseable body: `"details": ["Failed to parse message body."]`
-  - Account webhook limit reached: `"message": "Maximum number of webhooks (150) reached"`
+  - Account webhook limit reached: `"message": "Request failed to parse correctly. Please ensure input is valid and try again."`, `"details": ["Maximum number of webhooks (150) reached"]`
 - **401 Unauthorized**: No valid authentication details were provided. Verify Basic or HMAC credentials on the request.
 - **409 Conflict**: Unexpected error in API call. See HTTP response body for details. Example message: `A webhook with the given url and method already exists.`
 
