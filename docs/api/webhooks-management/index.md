@@ -1,6 +1,6 @@
 # Webhooks Management
 
-Webhooks Management API allows you to manage your webhooks configuration. You can subscribe to one or several events, retrieve the webhooks, update them or even delete them if needed.
+Webhooks Management API allows you to manage your webhooks configuration. You can subscribe to one or several events, retrieve the webhooks, update them or even delete them if needed. An account can have at most 150 webhooks. Creating another webhook is rejected with HTTP 400 when the account already has 150 or more.
 
 ## Base URLs
 

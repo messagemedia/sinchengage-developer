@@ -375,14 +375,30 @@ post:
     * `405`: Message cancelled or deleted by provider.
 
 
+    #### Account limit
+
+
+    An account can have at most 150 webhooks. `POST /v1/webhooks/messages`
+    returns HTTP 400 when the account already has 150 or more webhooks. The
+    response `message` is `Maximum number of webhooks (150) reached`, and no
+    webhook is created.
+
+
+    Existing webhooks are left in place. Retrieve, update, and delete still
+    succeed when the account is at or over 150. A create is accepted again
+    only after the account has fewer than 150 webhooks. An account with
+    exactly 150 webhooks is at the cap, so the next create is rejected.
+
+
     *Note: A 400 response will be returned if the request body cannot be parsed,
     the `url` is invalid (for example, malformed hostname or DNS syntax,
     unsupported scheme such as `ftp`, or path containing whitespace or control
     characters — e.g. `https://-invalid.com`, `https://invalid_.com`,
     `https:///path`, `https://:/path`, `http://.example.com`,
     `http://example..com`), an `events` value is not recognised (e.g.
-    `RECEIVED_123`), the `events`, `encoding` or `method` is null, or the
-    `headers` has a Content-Type attribute.*
+    `RECEIVED_123`), the `events`, `encoding` or `method` is null, the
+    `headers` has a Content-Type attribute, or the account already has 150 or
+    more webhooks.*
   operationId: CreateWebhook
   parameters: []
   requestBody:
@@ -450,6 +466,10 @@ post:
                 message: Bad Request
                 details:
                   - Failed to parse message body.
+            webhookLimitReached:
+              summary: Account webhook limit reached
+              value:
+                message: Maximum number of webhooks (150) reached
     "401":
       $ref: ../../components/responses/Unauthorized.yaml
     "409":
