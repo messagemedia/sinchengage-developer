@@ -22,7 +22,7 @@ Sinch Engage API documentation generated from the OpenAPI specification.
 
 | Service | Description |
 |---------|-------------|
-| [Webhooks Management](webhooks-management/index.md) | Webhooks Management API allows you to manage your webhooks configuration. You can subscribe to one or several events, retrieve the webhooks, update them or even delete them if needed. |
+| [Webhooks Management](webhooks-management/index.md) | Webhooks Management API allows you to manage your webhooks configuration. You can subscribe to one or several events, retrieve the webhooks, update them or even delete them if needed. An account can have at most 150 webhooks. Creating another webhook is rejected with HTTP 400 when the account already has 150 or more. |
 | [Signature Key Management](signature-key-management/index.md) | As a Sinch customer, you want to be able to ensure that webhooks are coming from Sinch and not from a 3rd party. |
 
 ## Reporting

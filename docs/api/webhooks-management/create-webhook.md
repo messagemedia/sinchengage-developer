@@ -30,7 +30,7 @@ A valid webhook must consist of the following properties:
 - `events` Event or events that will trigger the webhook. At least one event should be present.
 - `template` The structure of the payload that will be returned. You can format this in JSON or XML.
 - `read_timeout` (Optional) The read timeout for the call to the Webhook in milliseconds. Set to 20000 by default, max 60000.
-- `retries` (Optional) The read timeout for the call to the Webhook in milliseconds. Set to 20000 by default, max 60000.
+- `retries` (Optional) The number of times to retry a failed webhook call. Defaults to 0, max 5.
 - `retry_delay` (Optional) The delay period between retries in seconds. Minimum of 5, max 60.
 
 #### Types of Events
@@ -124,7 +124,13 @@ Status codes provide more granular insight into a message's status. A message ca
 * `400`: Message failed; undeliverable.
 * `405`: Message cancelled or deleted by provider.
 
-*Note: A 400 response will be returned if the request body cannot be parsed, the `url` is invalid (for example, malformed hostname or DNS syntax, unsupported scheme such as `ftp`, or path containing whitespace or control characters — e.g. `https://-invalid.com`, `https://invalid_.com`, `https:///path`, `https://:/path`, `http://.example.com`, `http://example..com`), an `events` value is not recognised (e.g. `RECEIVED_123`), the `events`, `encoding` or `method` is null, or the `headers` has a Content-Type attribute.*
+#### Account limit
+
+An account can have at most 150 webhooks. `POST /v1/webhooks/messages` returns HTTP 400 when the account already has 150 or more webhooks. The response `details` includes `Maximum number of webhooks (150) reached`, and no webhook is created.
+
+Existing webhooks are left in place. Retrieve, update, and delete still succeed when the account is at or over 150. A create is accepted again only after the account has fewer than 150 webhooks. An account with exactly 150 webhooks is at the cap, so the next create is rejected.
+
+*Note: A 400 response will be returned if the request body cannot be parsed, the `url` is invalid (for example, malformed hostname or DNS syntax, unsupported scheme such as `ftp`, or path containing whitespace or control characters — e.g. `https://-invalid.com`, `https://invalid_.com`, `https:///path`, `https://:/path`, `http://.example.com`, `http://example..com`), an `events` value is not recognised (e.g. `RECEIVED_123`), the `events`, `encoding` or `method` is null, the `headers` has a Content-Type attribute, or the account already has 150 or more webhooks.*
 
 | | |
 |---|---|
@@ -259,6 +265,17 @@ Webhook response object. No fields are strictly required in the schema; however,
 }
 ```
 
+**Account webhook limit reached**
+
+```json
+{
+  "message": "Request failed to parse correctly. Please ensure input is valid and try again.",
+  "details": [
+    "Maximum number of webhooks (150) reached"
+  ]
+}
+```
+
 ### 409 response schema
 
 | Property | Type | Required | Description |
@@ -315,10 +332,11 @@ console.log(webhook);
 
 ## Error handling
 
-- **400 Bad Request**: Unexpected error in API call. See HTTP response body for details. Returned when the request body cannot be parsed, the `url` is invalid (malformed hostname or DNS syntax, unsupported scheme, or invalid path), an `events` value is not recognised, the `events`, `encoding` or `method` is null, or the `headers` has a Content-Type attribute (per operation note). Example responses:
+- **400 Bad Request**: Unexpected error in API call. See HTTP response body for details. Returned when the request body cannot be parsed, the `url` is invalid (malformed hostname or DNS syntax, unsupported scheme, or invalid path), an `events` value is not recognised, the `events`, `encoding` or `method` is null, the `headers` has a Content-Type attribute, or the account already has 150 or more webhooks (per operation note). Example responses:
   - Invalid URL: `"details": ["/url: Not a valid http url"]`
   - Unrecognised event: `"details": ["/events/0: [RECEIVED_123] is invalid"]`
   - Unparseable body: `"details": ["Failed to parse message body."]`
+  - Account webhook limit reached: `"message": "Request failed to parse correctly. Please ensure input is valid and try again."`, `"details": ["Maximum number of webhooks (150) reached"]`
 - **401 Unauthorized**: No valid authentication details were provided. Verify Basic or HMAC credentials on the request.
 - **409 Conflict**: Unexpected error in API call. See HTTP response body for details. Example message: `A webhook with the given url and method already exists.`
 

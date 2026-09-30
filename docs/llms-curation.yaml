@@ -70,7 +70,7 @@ sections:
         description: Search available numbers, assign them to your account, and configure or release assignments (paid feature; must be enabled on your account).
       - title: Webhooks Management
         path: docs/api/webhooks-management/index.md
-        description: Subscribe to, retrieve, update, and delete webhook configurations that push delivery reports and replies to your callback URL.
+        description: Subscribe to, retrieve, update, and delete webhook configurations that push delivery reports and replies to your callback URL. An account can have at most 150 webhooks; POST /v1/webhooks/messages returns HTTP 400 with details Maximum number of webhooks (150) reached when the account already has 150 or more.
       - title: Signature Key Management
         path: docs/api/signature-key-management/index.md
         description: Manage signature keys used to verify that inbound webhooks genuinely came from Sinch and not a third party.
