@@ -51,7 +51,7 @@ sections:
     links:
       - title: Messages
         path: docs/api/messages/index.md
-        description: Send SMS, MMS, and TTS messages (up to 100 per request, content up to 5,000 characters, destination in E.164 format); poll status or cancel a scheduled message by ID.
+        description: Send SMS, MMS, TTS, and plain RCS text messages (up to 100 per request), including explicit SMS fallback for RCS; poll status or cancel a scheduled message by ID.
       - title: Delivery Reports
         path: docs/api/delivery-reports/index.md
         description: Poll or receive webhooks for message delivery status changes as a message is processed toward a handset.

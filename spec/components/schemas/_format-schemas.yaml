@@ -38,6 +38,7 @@ Format:
     - SMS
     - TTS
     - MMS
+    - RCS
   type: string
-  description: Filter results by message format, using enumerable MessageType.
+  description: Outbound message format. Omit to send SMS.
   example: SMS

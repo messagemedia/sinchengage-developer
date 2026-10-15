@@ -182,36 +182,44 @@ post:
       application/json:
         schema:
           $ref: ../../components/schemas/messages/Sendmessagesrequest.yaml
-        example:
-          messages:
-            - callback_url: https://my.callback.url.com
-              content: My first message
-              destination_number: "+61491570156"
-              delivery_report: true
-              format: SMS
-              message_expiry_timestamp: "2016-11-03T11:49:02.807Z"
-              metadata:
-                key1: value1
-                key2: value2
-              scheduled: "2016-11-03T11:49:02.807Z"
-              source_number: "+61491570157"
-              source_number_type: INTERNATIONAL
-            - callback_url: https://my.callback.url.com
-              content: My second message
-              destination_number: "+61491570158"
-              delivery_report: true
-              format: MMS
-              subject: This is an MMS message
-              media:
-                - >-
-                  https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg
-              message_expiry_timestamp: "2016-11-03T11:49:02.807Z"
-              metadata:
-                key1: value1
-                key2: value2
-              scheduled: "2016-11-03T11:49:02.807Z"
-              source_number: "+61491570159"
-              source_number_type: INTERNATIONAL
+        examples:
+          standardMessages:
+            summary: SMS and MMS
+            value:
+              messages:
+                - callback_url: https://my.callback.url.com
+                  content: My first message
+                  destination_number: "+61491570156"
+                  delivery_report: true
+                  format: SMS
+                  source_number: "+61491570157"
+                  source_number_type: INTERNATIONAL
+                - content: My second message
+                  destination_number: "+61491570158"
+                  format: MMS
+                  subject: This is an MMS message
+                  media:
+                    - https://cdn.example.com/image.jpg
+          plainRcsText:
+            summary: Plain RCS text with an optional SMS fallback
+            value:
+              messages:
+                - content: Hello from our RCS channel!
+                  destination_number: "+61491570156"
+                  format: RCS
+                  fallback_message:
+                    content: Hello from us!
+                  source_number: MyBrand
+                  source_number_type: ALPHANUMERIC
+          legacyRcsBody:
+            summary: Existing legacy RCS body shape
+            value:
+              messages:
+                - destination_number: "+61491570156"
+                  format: RCS
+                  body:
+                    - type: text
+                      value: Hello from our RCS channel!
     required: true
   responses:
     "202":
@@ -260,3 +268,11 @@ post:
         application/json:
           schema:
             $ref: ../../components/schemas/403response.yaml
+    "402":
+      description: >-
+        The account is not enabled to send RCS. Contact your account manager
+        to have RCS enabled.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/400response.yaml

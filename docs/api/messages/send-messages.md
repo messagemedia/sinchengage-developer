@@ -1,6 +1,6 @@
 # Send messages
 
-Submit one or more (up to 100 per request) SMS, MMS, or text-to-speech messages for delivery.
+Submit one or more (up to 100 per request) SMS, MMS, text-to-speech, or RCS messages for delivery.
 
 | | |
 |---|---|
@@ -10,7 +10,7 @@ Submit one or more (up to 100 per request) SMS, MMS, or text-to-speech messages 
 | **Operation ID** | `SendMessages` |
 | **Authentication** | Basic Auth, HMAC Auth |
 | **Success** | `202` — Messages were accepted for processing |
-| **Required body** | `messages[]` with `content` and `destination_number` on each item |
+| **Required body** | `messages[]` with `destination_number` and either `content` or the legacy RCS `body` on each item |
 
 ### Minimal request
 
@@ -26,6 +26,54 @@ Submit one or more (up to 100 per request) SMS, MMS, or text-to-speech messages 
 ```
 
 On success, each returned message includes `message_id` (UUID) and `status` (`queued`). Use [Get message status](get-message-status.md) to poll later. If any message in the batch is invalid, **no** messages are sent.
+
+### Plain RCS text with SMS fallback
+
+Set `format` to `RCS` and provide `content`. `fallback_message` is optional:
+
+```json
+{
+  "messages": [
+    {
+      "content": "Hello from our RCS channel!",
+      "destination_number": "+61491570156",
+      "format": "RCS",
+      "fallback_message": {
+        "content": "Hello from us!"
+      },
+      "source_number": "MyBrand",
+      "source_number_type": "ALPHANUMERIC"
+    }
+  ]
+}
+```
+
+The account must be enabled for RCS. Otherwise the request returns `402 Payment Required`; contact your account manager to enable it.
+
+`fallback_message` never selects a channel. An explicit `format: "RCS"` send is attempted over RCS. If the recipient cannot receive RCS, the API sends `fallback_message.content` as SMS. `source_number` and `source_number_type` identify the SMS fallback sender only. If `fallback_message` is omitted, the send is RCS-or-nothing: no SMS is sent silently, and the outcome is reported asynchronously in the delivery report rather than as a request error.
+
+The existing legacy `body[]` RCS payload remains supported:
+
+```json
+{
+  "messages": [
+    {
+      "destination_number": "+61491570156",
+      "format": "RCS",
+      "body": [
+        {
+          "type": "text",
+          "value": "Hello from our RCS channel!"
+        }
+      ]
+    }
+  ]
+}
+```
+
+Do not combine legacy `body` with `content`, `fallback_message`, `source_number`, or `source_number_type`. `rich_link`, `suggestions`, and `rich_content` are not supported by the plain RCS text shape.
+
+RCS delivery reports and replies appear in the account's existing `GET /v1/delivery-reports` and `GET /v1/replies` polling responses. Polling is account-scoped: an existing poller can receive RCS events after any client on that account starts sending RCS, and polling cannot be targeted or filtered per client. A per-message `callback_url` does not change that polling scope.
 
 ## Authentication
 
@@ -59,15 +107,17 @@ None.
 
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
-| `content` | string | Yes | Content of the message. Min length: 1. Max length: 5000. |
+| `content` | string | Conditional | Required except on the legacy RCS `body` shape. Max length: 5000, or 2000 for new-shape RCS text. |
 | `destination_number` | string | Yes | Destination number of the message. Min length: 1. Max length: 15. |
 | `callback_url` | string | No | URL replies and delivery reports to this message will be pushed to. Must use the `http` or `https` scheme. Hostnames must conform to RFC 1123 DNS name syntax. Paths must not contain whitespace or control characters. Invalid URLs are rejected with HTTP 400. |
 | `delivery_report` | boolean | No | Request a delivery report for this message |
-| `format` | string | No | Filter results by message format, using enumerable MessageType. Enum: `SMS`, `TTS`, `MMS` |
+| `format` | string | No | Outbound message format. Enum: `SMS`, `TTS`, `MMS`, `RCS`. Defaults to SMS when omitted. |
+| `fallback_message` | object | No | SMS fallback for a new-shape RCS message. Requires non-blank `content`, max 5000 characters. It never selects the channel. |
+| `body` | array | Conditional | Existing legacy RCS shape. Required instead of `content` for a legacy `format: "RCS"` send. |
 | `message_expiry_timestamp` | string (date-time) | No | Date time after which the message expires and will not be sent |
 | `metadata` | object | No | Metadata for the message specified as a set of key value pairs, each key can be up to 100 characters long and each value can be up to 256 characters long |
 | `scheduled` | string (date-time) | No | Scheduled delivery date time of the message |
-| `source_number` | string | No | |
+| `source_number` | string | No | SMS sender. On a new-shape RCS message it applies only to SMS fallback, is unused without `fallback_message`, and is not supported with legacy `body`. |
 | `source_number_type` | string | No | Type of source address specified, this can be INTERNATIONAL, ALPHANUMERIC or SHORTCODE. Enum: `INTERNATIONAL`, `ALPHANUMERIC`, `SHORTCODE` |
 | `message_id` | string (uuid) | No | Unique ID of this message |
 | `status` | string | No | The status of the message. Enum: `undefined`, `queued`, `processing`, `processed`, `failed`, `scheduled`, `cancelled`, `delivered`, `expired`, `enroute`, `held`, `submitted`, `rejected`, `read` |
@@ -76,8 +126,8 @@ None.
 
 Notes for implementers (schema cells above stay verbatim from the shared OpenAPI components):
 
-- On **this** endpoint, `format` selects the outbound channel. Use `SMS` (default), `MMS`, or `TTS`. The shared component description also appears on reporting filters.
-- `source_number` has no schema description; behaviour is documented under **Specification details** → Source number (sender ID). From 1-Mar-2024 the number or sender ID must be registered to your account.
+- On **this** endpoint, `format` selects the outbound channel. Use `SMS` (default), `MMS`, `TTS`, or `RCS`.
+- From 1-Mar-2024, an SMS `source_number` or sender ID must be registered to your account.
 - `message_id` and `status` are response fields on the shared `Message` object. Do not send them on create; the API returns them.
 
 ### Example request body
@@ -130,6 +180,7 @@ Notes for implementers (schema cells above stay verbatim from the shared OpenAPI
 | 202 | Messages were accepted for processing | `Sendmessagesresponse` |
 | 400 | Unexpected error in API call. See HTTP response body for details. | `400response` |
 | 401 | Unauthorized | `403response` |
+| 402 | Account is not enabled to send RCS. Contact your account manager. | `400response` |
 
 ### 202 response schema
 
