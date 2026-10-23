@@ -86,6 +86,9 @@ sections:
       - title: Account Management
         path: docs/api/account-management/index.md
         description: Create and delete reseller sub-accounts and add Sinch Engage users on a reseller account (POST /v1/iam/reseller_customers, POST /v1/iam/accounts/{id}/users, DELETE /v1/iam/accounts/{id}).
+      - title: Credits
+        path: docs/api/credits/index.md
+        description: Get the credit balance for an account (GET /v1/credits_management/account), including remaining MT SMS and MT MMS credits and expiry.
 
   - title: Code Samples
     note: >-
