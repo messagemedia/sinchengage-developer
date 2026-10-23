@@ -211,6 +211,29 @@ post:
                     content: Hello from us!
                   source_number: MyBrand
                   source_number_type: ALPHANUMERIC
+          rcsWithSuggestions:
+            summary: RCS text with tappable suggestions
+            value:
+              messages:
+                - content: Need help with your order?
+                  destination_number: "+61491570156"
+                  format: RCS
+                  suggestions:
+                    - type: reply
+                      text: Talk to support
+                      postback_data: SUPPORT
+                    - type: url
+                      text: View help
+                      url: https://example.com/help
+                    - type: dial
+                      text: Call us
+                      phone_number: "+61391570100"
+                    - type: location
+                      text: Find store
+                      coordinates:
+                        latitude: -37.8136
+                        longitude: 144.9631
+                      label: Melbourne CBD
           legacyRcsBody:
             summary: Existing legacy RCS body shape
             value:

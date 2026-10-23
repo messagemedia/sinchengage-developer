@@ -52,7 +52,7 @@ sections:
     links:
       - title: Messages
         path: docs/api/messages/index.md
-        description: Send SMS, MMS, TTS, and plain RCS text messages (up to 100 per request), including explicit SMS fallback for RCS; poll status or cancel a scheduled message by ID.
+        description: Send SMS, MMS, TTS, and RCS text messages with optional tappable suggestions (up to 100 per request), including explicit SMS fallback for RCS; poll status or cancel a scheduled message by ID.
       - title: Delivery Reports
         path: docs/api/delivery-reports/index.md
         description: Poll or receive webhooks for message delivery status changes as a message is processed toward a handset.
