@@ -1,0 +1,39 @@
+get:
+  security:
+    - basic_auth: []
+    - hmac_auth: []
+  tags:
+    - Credits
+  summary: Get Credit Balance
+  description: Get the credit balance for a prepaid account.
+  operationId: GetCreditBalance
+  parameters: []
+  responses:
+    "200":
+      description: Credit balance
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/credits/CreditBalance.yaml
+          example:
+            remaining_credits:
+              MT_MMS: 20
+              MT_SMS: 1024
+            related_account: VendorName:RelatedAccountName
+            expiry: "2018-01-12T12:12:12.122Z"
+    "401":
+      $ref: ../../components/responses/Unauthorized.yaml
+    "403":
+      $ref: ../../components/responses/Forbidden.yaml
+    "404":
+      description: Account is not a prepaid account
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/credits/CreditError.yaml
+          example:
+            message: Description of what went wrong
+            details:
+              - More details to understand why it went wrong
+    "503":
+      $ref: ../../components/responses/ServerUnavailable.yaml

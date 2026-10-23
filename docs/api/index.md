@@ -43,3 +43,9 @@ Sinch Engage API documentation generated from the OpenAPI specification.
 | Service | Description |
 |---------|-------------|
 | [Account Management](account-management/index.md) | Create and delete reseller sub-accounts, and add Sinch Engage users for those accounts. |
+
+## Credits
+
+| Service | Description |
+|---------|-------------|
+| [Credits](credits/index.md) | Get the credit balance for an account, including remaining MT SMS and MT MMS credits and when they expire. |
