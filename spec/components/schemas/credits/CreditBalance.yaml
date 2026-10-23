@@ -1,0 +1,38 @@
+type: object
+required:
+  - remaining_credits
+properties:
+  remaining_credits:
+    type: object
+    description: Remaining credit balances. A balance field is omitted when no balance has been set.
+    properties:
+      MT_MMS:
+        type: number
+        description: >-
+          The credit balance for MT MMS credits. This field may not be present
+          if a balance hasn't been set.
+        example: 20
+      MT_SMS:
+        type: number
+        description: >-
+          The credit balance for MT SMS credits. This field may not be present
+          if a balance hasn't been set. It is a decimal value only if the
+          billing type is PREPAID_MONEY.
+        example: 1024
+  related_account:
+    type: string
+    description: Vendor and account id of the credit-tracking related account.
+    example: VendorName:RelatedAccountName
+  expiry:
+    type: string
+    format: date-time
+    description: >-
+      The expiration date time. The format is E8601DTw.d
+      (yyyy-mm-ddThh:mm:ss.ffffff).
+    example: "2018-01-12T12:12:12.122Z"
+example:
+  remaining_credits:
+    MT_MMS: 20
+    MT_SMS: 1024
+  related_account: VendorName:RelatedAccountName
+  expiry: "2018-01-12T12:12:12.122Z"
