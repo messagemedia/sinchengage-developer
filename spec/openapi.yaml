@@ -793,6 +793,10 @@ tags:
       existing account.
 
       - ```Delete a sub-account``` Permanently delete a sub-account.
+  - name: Credits
+    description: >
+      Get the credit balance for an account, including remaining MT SMS and MT
+      MMS credits and when they expire.
 x-tagGroups:
   - name: Guides
     tags:
@@ -824,6 +828,9 @@ x-tagGroups:
   - name: Accounts
     tags:
       - Account Management
+  - name: Credits
+    tags:
+      - Credits
 servers:
   - url: https://eu.app.api.sinch.com
     description: EU instance
@@ -927,6 +934,8 @@ paths:
     $ref: paths/account-management/v1_iam_accounts_{id}_users.yaml
   /v1/iam/accounts/{id}:
     $ref: paths/account-management/v1_iam_accounts_{id}.yaml
+  /v1/credits_management/account:
+    $ref: paths/credits/v1_credits_management_account.yaml
   /v1/iam/signature_keys:
     $ref: paths/signature-keys/v1_iam_signature_keys.yaml
   /v1/iam/signature_keys/{key_id}:
