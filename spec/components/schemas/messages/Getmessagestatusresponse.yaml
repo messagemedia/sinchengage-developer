@@ -23,6 +23,12 @@ properties:
     example: false
   format:
     $ref: ../_format-schemas.yaml#/Format
+  fallback_message:
+    $ref: ../RcsFallbackMessage.yaml
+  suggestions:
+    $ref: ../RcsSuggestions.yaml
+  rich_content:
+    $ref: ../RcsRichContent.yaml
   message_expiry_timestamp:
     type: string
     description: Date time after which the message expires and will not be sent

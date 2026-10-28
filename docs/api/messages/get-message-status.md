@@ -34,6 +34,30 @@ Retrieve the current status of a message using the `message_id` returned by [Sen
 }
 ```
 
+### Example RCS rich media body
+
+For an RCS message, the response includes the RCS fields that were sent: `rich_content`, `suggestions`, and `fallback_message`. Fields that were not sent are omitted.
+
+```json
+{
+    "format": "RCS",
+    "rich_content": {
+        "media": {
+            "url": "https://cdn.example.com/promo.png",
+            "filename_override": "promo.png"
+        }
+    },
+    "fallback_message": {
+        "content": "Check out our promo"
+    },
+    "message_id": "b2587d8d-2461-45d4-8893-0000361e17e0",
+    "destination_number": "+61491570156",
+    "source_number": "MyBrand",
+    "source_number_type": "ALPHANUMERIC",
+    "status": "delivered"
+}
+```
+
 `status` is the current delivery state. See Delivery Reports documentation for status meanings. Invalid or unknown `messageId` → `404`.
 
 ## Authentication
@@ -77,7 +101,10 @@ None.
 | `content` | string | No | Content of the message. Min length: 1. Max length: 5000. |
 | `destination_number` | string | No | Destination number of the message. Min length: 1. Max length: 15. |
 | `delivery_report` | boolean | No | Request a delivery report for this message |
-| `format` | string | No | Filter results by message format, using enumerable MessageType. Enum: `SMS`, `TTS`, `MMS` |
+| `format` | string | No | Message format. Enum: `SMS`, `TTS`, `MMS`, `RCS` |
+| `fallback_message` | object | No | RCS only. SMS fallback sent with the message, with its `content`. |
+| `suggestions` | array | No | RCS only. Tappable suggestions sent with the message, in request order, including `postback_data`. See [RCS text with tappable suggestions](send-messages.md#rcs-text-with-tappable-suggestions). |
+| `rich_content` | object | No | RCS only. Rich content sent with the message: `media` with `url`, and `thumbnail_url` and `filename_override` when sent. See [RCS rich media](send-messages.md#rcs-rich-media). |
 | `message_expiry_timestamp` | string (date-time) | No | Date time after which the message expires and will not be sent |
 | `metadata` | object | No | Metadata for the message specified as a set of key value pairs, each key can be up to 100 characters long and each value can be up to 256 characters long |
 | `scheduled` | string (date-time) | No | Scheduled delivery date time of the message |
@@ -88,7 +115,7 @@ None.
 
 Notes for implementers:
 
-- On this endpoint, `format` is the message’s channel (`SMS`, `TTS`, or `MMS`). The shared schema description also covers reporting filters.
+- On this endpoint, `format` is the message’s channel (`SMS`, `TTS`, `MMS`, or `RCS`).
 - `source_number` has no schema description in the OpenAPI component.
 
 ### 401 response schema

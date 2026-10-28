@@ -6,7 +6,7 @@ post:
     - Messages
   summary: Send messages
   description: >
-    Submit one or more (up to 100 per request) SMS, MMS or text to voice
+    Submit one or more (up to 100 per request) SMS, MMS, text to voice or RCS
 
     messages for delivery.
 
@@ -53,7 +53,11 @@ post:
 
     - ```content``` The content of the message. This can be a Unicode string, up
     to 5,000 characters long.
-      Message content is required.
+      Message content is required, except on an RCS message that sends ```rich_content``` instead.
+
+    - ```rich_content``` RCS only. Send an image or file as ```rich_content.media```
+
+    instead of ```content```. See the ```Message``` schema for its fields.
 
     - ```delivery_report``` Delivery reports can be requested with each
 
@@ -77,8 +81,8 @@ post:
 
     - ```format``` The format specifies which format the message will be
 
-    sent as, ```SMS``` (text message), ```MMS``` (multimedia message)
-      or ```TTS``` (text to speech). With ```TTS``` format, we will call the destination number and read out the
+    sent as, ```SMS``` (text message), ```MMS``` (multimedia message),
+      ```TTS``` (text to speech) or ```RCS``` (RCS message). With ```TTS``` format, we will call the destination number and read out the
       message using a computer generated voice. Specifying a format is optional, by default ```SMS``` will be used.
 
     - ```source_number_type``` If a source number is specified, the type of
@@ -234,15 +238,21 @@ post:
                         latitude: -37.8136
                         longitude: 144.9631
                       label: Melbourne CBD
-          legacyRcsBody:
-            summary: Existing legacy RCS body shape
+          rcsRichMedia:
+            summary: RCS rich media with an optional SMS fallback
             value:
               messages:
                 - destination_number: "+61491570156"
                   format: RCS
-                  body:
-                    - type: text
-                      value: Hello from our RCS channel!
+                  rich_content:
+                    media:
+                      url: https://cdn.example.com/promo.png
+                      thumbnail_url: https://cdn.example.com/promo_thumb.png
+                      filename_override: promo.png
+                  fallback_message:
+                    content: Check out our promo
+                  source_number: MyBrand
+                  source_number_type: ALPHANUMERIC
     required: true
   responses:
     "202":
@@ -285,6 +295,14 @@ post:
                 details:
                   - >-
                     /messages/0/callbackUrl: Invalid callback url
+            richContentWithContent:
+              summary: RCS rich_content combined with content
+              value:
+                message: >-
+                  Request failed to parse correctly. Please ensure input is valid
+                  and try again.
+                details:
+                  - '/messages/0/: content conflicts with rich_content'
     "401":
       description: Unauthorized
       content:

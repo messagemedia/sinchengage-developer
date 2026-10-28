@@ -58,6 +58,33 @@ get:
         application/json:
           schema:
             $ref: ../../components/schemas/messages/Getmessagestatusresponse.yaml
+          examples:
+            sms:
+              summary: SMS message
+              value:
+                format: SMS
+                content: My first message!
+                message_id: 877c19ef-fa2e-4cec-827a-e1df9b5509f7
+                delivery_report: true
+                destination_number: "+61401760575"
+                source_number: "+61491570157"
+                source_number_type: INTERNATIONAL
+                status: enroute
+            rcsRichMedia:
+              summary: RCS rich media with an SMS fallback
+              value:
+                format: RCS
+                rich_content:
+                  media:
+                    url: https://cdn.example.com/promo.png
+                    filename_override: promo.png
+                fallback_message:
+                  content: Check out our promo
+                message_id: b2587d8d-2461-45d4-8893-0000361e17e0
+                destination_number: "+61491570156"
+                source_number: MyBrand
+                source_number_type: ALPHANUMERIC
+                status: delivered
     "401":
       description: Unauthorized
       content:
