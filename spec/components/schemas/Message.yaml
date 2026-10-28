@@ -51,13 +51,80 @@ properties:
         maxLength: 5000
         description: Text sent as SMS when the recipient cannot receive RCS.
         example: Hello from us!
+  suggestions:
+    type: array
+    maxItems: 10
+    description: >-
+      Optional tappable suggestions shown beneath a new-shape RCS message.
+      Up to 10. Not supported with the legacy RCS `body` shape. Returned in
+      request order on the response. Fields that do not apply to a
+      suggestion's `type` are ignored and not returned.
+    items:
+      type: object
+      required:
+        - type
+        - text
+      properties:
+        type:
+          type: string
+          enum:
+            - reply
+            - url
+            - dial
+            - location
+          description: >-
+            Suggestion type. `reply` requires only `text`; `url` requires
+            `url`; `dial` requires `phone_number`; `location` requires
+            `coordinates`. Any other value, including `calendar`, is rejected
+            with `400`.
+        text:
+          type: string
+          maxLength: 25
+          description: Button label. Required for every type.
+          example: Talk to support
+        postback_data:
+          type: string
+          description: >-
+            Opaque value returned with the suggestion on the send response and
+            on `GET /v1/messages/{messageId}`. It is not included in replies.
+          example: SUPPORT
+        url:
+          type: string
+          maxLength: 2048
+          description: Required for a `url` suggestion. Must be a valid URL.
+          example: https://example.com/help
+        phone_number:
+          type: string
+          description: >-
+            Required for a `dial` suggestion. International format.
+          example: '+61391570100'
+        coordinates:
+          type: object
+          description: Required for a `location` suggestion.
+          required:
+            - latitude
+            - longitude
+          properties:
+            latitude:
+              type: number
+              format: double
+              example: -37.8136
+            longitude:
+              type: number
+              format: double
+              example: 144.9631
+        label:
+          type: string
+          maxLength: 1000
+          description: Optional label for a `location` suggestion.
+          example: Melbourne CBD
   body:
     type: array
     minItems: 1
     description: >-
       Legacy RCS payload shape. Supported unchanged when `format` is `RCS`.
-      Do not combine it with `content`, `fallback_message`, `source_number`, or
-      `source_number_type`.
+      Do not combine it with `content`, `fallback_message`, `suggestions`,
+      `source_number`, or `source_number_type`.
     items:
       type: object
       required:

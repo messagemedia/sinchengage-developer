@@ -52,6 +52,46 @@ The account must be enabled for RCS. Otherwise the request returns `402 Payment 
 
 `fallback_message` never selects a channel. An explicit `format: "RCS"` send is attempted over RCS. If the recipient cannot receive RCS, the API sends `fallback_message.content` as SMS. `source_number` and `source_number_type` identify the SMS fallback sender only. If `fallback_message` is omitted, the send is RCS-or-nothing: no SMS is sent silently, and the outcome is reported asynchronously in the delivery report rather than as a request error.
 
+### RCS text with tappable suggestions
+
+Add up to 10 `suggestions` to a plain RCS text message. Each suggestion needs a `type` and a `text` label of up to 25 characters:
+
+```json
+{
+  "messages": [
+    {
+      "content": "Need help with your order?",
+      "destination_number": "+61491570156",
+      "format": "RCS",
+      "suggestions": [
+        { "type": "reply", "text": "Talk to support", "postback_data": "SUPPORT" },
+        { "type": "url", "text": "View help", "url": "https://example.com/help" },
+        { "type": "dial", "text": "Call us", "phone_number": "+61391570100" },
+        {
+          "type": "location",
+          "text": "Find store",
+          "coordinates": { "latitude": -37.8136, "longitude": 144.9631 },
+          "label": "Melbourne CBD"
+        }
+      ]
+    }
+  ]
+}
+```
+
+| `type` | Required fields | Optional fields |
+|--------|-----------------|-----------------|
+| `reply` | `text` | `postback_data` |
+| `url` | `text`, `url` (max 2048 characters) | `postback_data` |
+| `dial` | `text`, `phone_number` | `postback_data` |
+| `location` | `text`, `coordinates` (both `latitude` and `longitude`) | `label` (max 1000 characters), `postback_data` |
+
+The `202` response and [Get message status](get-message-status.md) echo `content` and `suggestions` in the order you sent them, including `postback_data`. Fields that do not apply to a suggestion's `type`, such as `url` on a `reply`, are ignored and not returned. An empty `suggestions` array sends plain RCS text.
+
+A request with a missing required field, more than 10 suggestions, or a `text` longer than 25 characters is rejected with `400`, and no messages in the batch are sent. Any other `type`, including `calendar`, is also rejected with `400`, with the generic detail `Failed to parse message body.`
+
+`suggestions` can be combined with `fallback_message`; the SMS fallback is plain text and does not include the suggestions. When the recipient taps a suggestion, the tap arrives through the existing replies flow without `postback_data`.
+
 The existing legacy `body[]` RCS payload remains supported:
 
 ```json
@@ -71,7 +111,7 @@ The existing legacy `body[]` RCS payload remains supported:
 }
 ```
 
-Do not combine legacy `body` with `content`, `fallback_message`, `source_number`, or `source_number_type`. `rich_link`, `suggestions`, and `rich_content` are not supported by the plain RCS text shape.
+Do not combine legacy `body` with `content`, `fallback_message`, `suggestions`, `source_number`, or `source_number_type`. `rich_link` and `rich_content` are not supported.
 
 RCS delivery reports and replies appear in the account's existing `GET /v1/delivery-reports` and `GET /v1/replies` polling responses. Polling is account-scoped: an existing poller can receive RCS events after any client on that account starts sending RCS, and polling cannot be targeted or filtered per client. A per-message `callback_url` does not change that polling scope.
 
@@ -113,6 +153,7 @@ None.
 | `delivery_report` | boolean | No | Request a delivery report for this message |
 | `format` | string | No | Outbound message format. Enum: `SMS`, `TTS`, `MMS`, `RCS`. Defaults to SMS when omitted. |
 | `fallback_message` | object | No | SMS fallback for a new-shape RCS message. Requires non-blank `content`, max 5000 characters. It never selects the channel. |
+| `suggestions` | array | No | Up to 10 tappable suggestions (`reply`, `url`, `dial`, `location`) on a new-shape RCS message. Not supported with legacy `body`. See [RCS text with tappable suggestions](#rcs-text-with-tappable-suggestions). |
 | `body` | array | Conditional | Existing legacy RCS shape. Required instead of `content` for a legacy `format: "RCS"` send. |
 | `message_expiry_timestamp` | string (date-time) | No | Date time after which the message expires and will not be sent |
 | `metadata` | object | No | Metadata for the message specified as a set of key value pairs, each key can be up to 100 characters long and each value can be up to 256 characters long |
