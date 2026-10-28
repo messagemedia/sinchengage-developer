@@ -84,9 +84,13 @@ Add up to 10 `suggestions` to a plain RCS text message. Each suggestion needs a 
 | `reply` | `text` | `postback_data` |
 | `url` | `text`, `url` (max 2048 characters) | `postback_data` |
 | `dial` | `text`, `phone_number` | `postback_data` |
-| `location` | `text`, `coordinates` (`latitude`, `longitude`) | `label` (max 1000 characters), `postback_data` |
+| `location` | `text`, `coordinates` (both `latitude` and `longitude`) | `label` (max 1000 characters), `postback_data` |
 
-The `202` response echoes `content` and `suggestions` in the order you sent them, including `postback_data`. A request with a missing required field, more than 10 suggestions, or a `text` longer than 25 characters is rejected with `400` and no messages in the batch are sent. `suggestions` can be combined with `fallback_message`; the SMS fallback is plain text and does not include the suggestions.
+The `202` response and [Get message status](get-message-status.md) echo `content` and `suggestions` in the order you sent them, including `postback_data`. Fields that do not apply to a suggestion's `type`, such as `url` on a `reply`, are ignored and not returned. An empty `suggestions` array sends plain RCS text.
+
+A request with a missing required field, more than 10 suggestions, or a `text` longer than 25 characters is rejected with `400`, and no messages in the batch are sent. Any other `type`, including `calendar`, is also rejected with `400`, with the generic detail `Failed to parse message body.`
+
+`suggestions` can be combined with `fallback_message`; the SMS fallback is plain text and does not include the suggestions. When the recipient taps a suggestion, the tap arrives through the existing replies flow without `postback_data`.
 
 The existing legacy `body[]` RCS payload remains supported:
 
