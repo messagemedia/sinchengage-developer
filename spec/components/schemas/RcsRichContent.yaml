@@ -1,0 +1,32 @@
+title: RcsRichContent
+type: object
+description: >-
+  Rich content for an RCS message, sent instead of `content`. Must
+  include `media`. Do not combine it with `content` or `suggestions`.
+  `fallback_message` is supported and is
+  sent as plain SMS text.
+required:
+  - media
+properties:
+  media:
+    type: object
+    description: >-
+      Image or file sent over RCS. The media is not validated for type or
+      reachability at submission; delivery problems are reported in the
+      delivery report.
+    required:
+      - url
+    additionalProperties: false
+    properties:
+      url:
+        type: string
+        description: Publicly reachable `http` or `https` URL of the media file.
+        example: https://cdn.example.com/promo.png
+      thumbnail_url:
+        type: string
+        description: Optional `http` or `https` URL of a thumbnail image for the media.
+        example: https://cdn.example.com/promo_thumb.png
+      filename_override:
+        type: string
+        description: Optional file name to use for the media instead of the one derived from `url`.
+        example: promo.png
