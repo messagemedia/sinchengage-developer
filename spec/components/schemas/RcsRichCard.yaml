@@ -1,0 +1,37 @@
+title: RcsRichCard
+type: object
+description: >-
+  RCS rich card. At least one of `title`, `description`, or `media` is
+  required. Nested suggestions use the same types as top-level RCS
+  suggestions (`reply`, `url`, `dial`, `location`) and are limited to 4.
+additionalProperties: false
+properties:
+  title:
+    type: string
+    maxLength: 200
+    description: Card title. At least one of `title`, `description`, or `media` is required.
+    example: Order #1234 shipped
+  description:
+    type: string
+    maxLength: 2000
+    description: Card description text.
+    example: 'Estimated delivery: Fri 11 Jul'
+  height:
+    type: string
+    enum:
+      - SHORT
+      - MEDIUM
+      - TALL
+    description: Optional card media height.
+    example: MEDIUM
+  media:
+    $ref: ./RcsRichMedia.yaml
+  suggestions:
+    type: array
+    maxItems: 4
+    description: >-
+      Optional tappable suggestions nested on the card. Up to 4. Returned
+      in request order on the response. Fields that do not apply to a
+      suggestion's `type` are ignored and not returned.
+    items:
+      $ref: ./RcsSuggestion.yaml

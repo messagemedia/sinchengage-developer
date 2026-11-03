@@ -55,9 +55,10 @@ post:
     to 5,000 characters long.
       Message content is required, except on an RCS message that sends ```rich_content``` instead.
 
-    - ```rich_content``` RCS only. Send an image or file as ```rich_content.media```
+    - ```rich_content``` RCS only. Send an image or file as ```rich_content.media```,
 
-    instead of ```content```. See the ```Message``` schema for its fields.
+    or a rich card as ```rich_content.card```, instead of ```content```. See the
+    ```Message``` schema for its fields.
 
     - ```delivery_report``` Delivery reports can be requested with each
 
@@ -251,6 +252,32 @@ post:
                       filename_override: promo.png
                   fallback_message:
                     content: Check out our promo
+                  source_number: MyBrand
+                  source_number_type: ALPHANUMERIC
+          rcsRichCard:
+            summary: RCS rich card with nested suggestions and an optional SMS fallback
+            value:
+              messages:
+                - destination_number: "+61491570156"
+                  format: RCS
+                  rich_content:
+                    card:
+                      title: Order #1234 shipped
+                      description: 'Estimated delivery: Fri 11 Jul'
+                      height: MEDIUM
+                      media:
+                        url: https://cdn.example.com/parcel.png
+                        thumbnail_url: https://cdn.example.com/parcel_thumb.png
+                        filename_override: parcel.png
+                      suggestions:
+                        - type: reply
+                          text: Track
+                          postback_data: TRACK_1234
+                        - type: url
+                          text: View order
+                          url: https://example.com/o/1234
+                  fallback_message:
+                    content: Your order #1234 has shipped
                   source_number: MyBrand
                   source_number_type: ALPHANUMERIC
     required: true

@@ -132,12 +132,80 @@ The following are rejected with `400`, and no messages in the batch are sent:
 | Request | Example detail |
 |---------|----------------|
 | `rich_content` together with non-blank `content` | `/messages/0/: content conflicts with rich_content` |
-| `rich_content` together with `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
-| `rich_content` without `media` | `/messages/0/: rich_content must include media` |
+| `rich_content` together with top-level `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
+| `rich_content` without `media` or `card` | `/messages/0/: rich_content must include media or card` |
+| `rich_content.media` together with `rich_content.card` | `/messages/0/: rich_content may contain only one of media or card` |
 | Missing `url`, or `url` / `thumbnail_url` that is not a valid `http` or `https` URL | `url is required` / `Invalid url` |
 | Any other field on `media`, such as `media_type` | `/messages/0/rich_content/media/media_type: Unknown property 'media_type'` |
 
 The media file's type and reachability are not checked when you submit the message. If the file cannot be delivered, the outcome is reported asynchronously in the delivery report.
+
+### RCS rich card
+
+To send a structured rich card over RCS, set `format` to `RCS` and provide `rich_content.card` instead of `content` or `rich_content.media`. At least one of `title`, `description`, or `media` is required. Nested card suggestions use the same types as top-level suggestions (`reply`, `url`, `dial`, `location`) and are limited to 4. `fallback_message` is optional:
+
+```json
+{
+  "messages": [
+    {
+      "destination_number": "+61491570156",
+      "format": "RCS",
+      "rich_content": {
+        "card": {
+          "title": "Order #1234 shipped",
+          "description": "Estimated delivery: Fri 11 Jul",
+          "height": "MEDIUM",
+          "media": {
+            "url": "https://cdn.example.com/parcel.png",
+            "thumbnail_url": "https://cdn.example.com/parcel_thumb.png",
+            "filename_override": "parcel.png"
+          },
+          "suggestions": [
+            {
+              "type": "reply",
+              "text": "Track",
+              "postback_data": "TRACK_1234"
+            },
+            {
+              "type": "url",
+              "text": "View order",
+              "url": "https://example.com/o/1234"
+            }
+          ]
+        }
+      },
+      "fallback_message": {
+        "content": "Your order #1234 has shipped"
+      },
+      "source_number": "MyBrand",
+      "source_number_type": "ALPHANUMERIC"
+    }
+  ]
+}
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `rich_content.card.title` | Conditional | Card title, max 200 characters. At least one of `title`, `description`, or `media` is required. |
+| `rich_content.card.description` | Conditional | Card description, max 2000 characters. |
+| `rich_content.card.height` | No | Card media height. Enum: `SHORT`, `MEDIUM`, `TALL`. |
+| `rich_content.card.media` | Conditional | Same shape as `rich_content.media` (`url`, optional `thumbnail_url`, `filename_override`). |
+| `rich_content.card.suggestions` | No | Up to 4 nested suggestions. Same types and field rules as top-level [RCS suggestions](#rcs-text-with-tappable-suggestions). |
+
+The `202` response and [Get message status](get-message-status.md) echo `rich_content.card`, including nested `suggestions` in the order you sent them. Optional fields you did not send are not returned. Do not send top-level `suggestions` with a card. `fallback_message`, `source_number`, and `source_number_type` behave as for plain RCS text: the fallback is sent as plain SMS text and does not include the card, and there is no MMS fallback. `calendar` is not a supported suggestion type.
+
+The following are rejected with `400`, and no messages in the batch are sent:
+
+| Request | Example detail |
+|---------|----------------|
+| Card together with non-blank `content` | `/messages/0/: content conflicts with rich_content.card` |
+| Card together with top-level `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
+| Card together with `rich_content.media` | `/messages/0/: rich_content may contain only one of media or card` |
+| Empty card, height-only, or suggestions-only (no title, description, or media) | `/messages/0/: rich_content.card requires title, description, or media` |
+| More than 4 card suggestions | `suggestions must not exceed 4` |
+| Title over 200 or description over 2000 characters | `title must not exceed 200 characters` / `description must not exceed 2000 characters` |
+| Missing media `url`, or invalid `url` / `thumbnail_url` | `url is required` / `Invalid url` |
+| Any other field on card `media`, such as `media_type` | `/messages/0/rich_content/card/media/media_type: Unknown property 'media_type'` |
 
 RCS delivery reports and replies appear in the account's existing `GET /v1/delivery-reports` and `GET /v1/replies` polling responses. Polling is account-scoped: an existing poller can receive RCS events after any client on that account starts sending RCS, and polling cannot be targeted or filtered per client. A per-message `callback_url` does not change that polling scope.
 
@@ -180,7 +248,7 @@ None.
 | `format` | string | No | Outbound message format. Enum: `SMS`, `TTS`, `MMS`, `RCS`. Defaults to SMS when omitted. |
 | `fallback_message` | object | No | SMS fallback for an RCS message. Requires non-blank `content`, max 5000 characters. It never selects the channel. |
 | `suggestions` | array | No | Up to 10 tappable suggestions (`reply`, `url`, `dial`, `location`) on an RCS text message. Not supported with `rich_content`. See [RCS text with tappable suggestions](#rcs-text-with-tappable-suggestions). |
-| `rich_content` | object | Conditional | RCS rich content sent instead of `content`. Must include `media` with a `url`, and optionally `thumbnail_url` and `filename_override`. Not supported with `content` or `suggestions`. See [RCS rich media](#rcs-rich-media). |
+| `rich_content` | object | Conditional | RCS rich content sent instead of `content`. Include exactly one of `media` or `card`. Not supported with `content` or top-level `suggestions`. See [RCS rich media](#rcs-rich-media) and [RCS rich card](#rcs-rich-card). |
 | `message_expiry_timestamp` | string (date-time) | No | Date time after which the message expires and will not be sent |
 | `metadata` | object | No | Metadata for the message specified as a set of key value pairs, each key can be up to 100 characters long and each value can be up to 256 characters long |
 | `scheduled` | string (date-time) | No | Scheduled delivery date time of the message |
@@ -437,7 +505,7 @@ More advanced delivery features can be specified by setting the following proper
 
 - `content` The content of the message. This can be a Unicode string, up to 5,000 characters long. Message content is required, except on an RCS message that sends `rich_content` instead.
 
-- `rich_content` RCS only. Send an image or file as `rich_content.media` instead of `content`. See [RCS rich media](#rcs-rich-media).
+- `rich_content` RCS only. Send an image or file as `rich_content.media`, or a rich card as `rich_content.card`, instead of `content`. See [RCS rich media](#rcs-rich-media) and [RCS rich card](#rcs-rich-card).
 
 - `delivery_report` Delivery reports can be requested with each message. If delivery reports are requested, a webhook will be submitted to the `callback_url` property specified for the message (or to the webhooks) specified for the account every time the status of the message changes as it is processed. The current status of the message can also be retrieved via the Delivery Reports endpoint of the Messages API. Delivery reports are optional and by default will not be requested.
 

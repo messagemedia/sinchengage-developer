@@ -85,6 +85,27 @@ get:
                 source_number: MyBrand
                 source_number_type: ALPHANUMERIC
                 status: delivered
+            rcsRichCard:
+              summary: RCS rich card with nested suggestions
+              value:
+                format: RCS
+                rich_content:
+                  card:
+                    title: Order #1234 shipped
+                    description: Estimated delivery
+                    height: MEDIUM
+                    media:
+                      url: https://cdn.example.com/parcel.png
+                    suggestions:
+                      - type: reply
+                        text: Track
+                        postback_data: TRACK_1234
+                      - type: url
+                        text: View order
+                        url: https://example.com/o/1234
+                message_id: b2588d8d-2461-45d4-8893-0000361e17e0
+                destination_number: "+61491570156"
+                status: delivered
     "401":
       description: Unauthorized
       content:
