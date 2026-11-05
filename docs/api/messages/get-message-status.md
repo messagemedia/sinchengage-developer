@@ -91,6 +91,52 @@ For an RCS message, the response includes the RCS fields that were sent: `rich_c
 }
 ```
 
+### Example RCS carousel body
+
+```json
+{
+    "format": "RCS",
+    "rich_content": {
+        "carousel": {
+            "cards": [
+                {
+                    "title": "Order #1234",
+                    "description": "Shipped",
+                    "suggestions": [
+                        {
+                            "type": "reply",
+                            "text": "Track",
+                            "postback_data": "TRACK_1234"
+                        }
+                    ]
+                },
+                {
+                    "title": "Order #5678",
+                    "description": "Out for delivery",
+                    "suggestions": [
+                        {
+                            "type": "reply",
+                            "text": "Track",
+                            "postback_data": "TRACK_5678"
+                        }
+                    ]
+                }
+            ],
+            "choices": [
+                {
+                    "type": "reply",
+                    "text": "All orders",
+                    "postback_data": "ALL_ORDERS"
+                }
+            ]
+        }
+    },
+    "message_id": "b2589d8d-2461-45d4-8893-0000361e17e0",
+    "destination_number": "+61491570156",
+    "status": "delivered"
+}
+```
+
 `status` is the current delivery state. See Delivery Reports documentation for status meanings. Invalid or unknown `messageId` → `404`.
 
 ## Authentication
@@ -137,7 +183,7 @@ None.
 | `format` | string | No | Message format. Enum: `SMS`, `TTS`, `MMS`, `RCS` |
 | `fallback_message` | object | No | RCS only. SMS fallback sent with the message, with its `content`. |
 | `suggestions` | array | No | RCS only. Tappable suggestions sent with the message, in request order, including `postback_data`. See [RCS text with tappable suggestions](send-messages.md#rcs-text-with-tappable-suggestions). |
-| `rich_content` | object | No | RCS only. Rich content sent with the message: either `media` or `card` (with nested `suggestions` when sent). See [RCS rich media](send-messages.md#rcs-rich-media) and [RCS rich card](send-messages.md#rcs-rich-card). |
+| `rich_content` | object | No | RCS only. Rich content sent with the message: one of `media`, `card` (with nested `suggestions` when sent), or `carousel` (with each card's `suggestions` and the carousel `choices` when sent). See [RCS rich media](send-messages.md#rcs-rich-media), [RCS rich card](send-messages.md#rcs-rich-card), and [RCS carousel](send-messages.md#rcs-carousel). |
 | `message_expiry_timestamp` | string (date-time) | No | Date time after which the message expires and will not be sent |
 | `metadata` | object | No | Metadata for the message specified as a set of key value pairs, each key can be up to 100 characters long and each value can be up to 256 characters long |
 | `scheduled` | string (date-time) | No | Scheduled delivery date time of the message |

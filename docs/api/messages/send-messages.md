@@ -133,8 +133,8 @@ The following are rejected with `400`, and no messages in the batch are sent:
 |---------|----------------|
 | `rich_content` together with non-blank `content` | `/messages/0/: content conflicts with rich_content` |
 | `rich_content` together with top-level `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
-| `rich_content` without `media` or `card` | `/messages/0/: rich_content must include media or card` |
-| `rich_content.media` together with `rich_content.card` | `/messages/0/: rich_content may contain only one of media or card` |
+| `rich_content` without `media`, `card`, or `carousel` | `/messages/0/: rich_content must include media, card or carousel` |
+| `rich_content.media` together with `rich_content.card` or `rich_content.carousel` | `/messages/0/: rich_content may contain only one of media, card or carousel` |
 | Missing `url`, or `url` / `thumbnail_url` that is not a valid `http` or `https` URL | `url is required` / `Invalid url` |
 | Any other field on `media`, such as `media_type` | `/messages/0/rich_content/media/media_type: Unknown property 'media_type'` |
 
@@ -200,12 +200,98 @@ The following are rejected with `400`, and no messages in the batch are sent:
 |---------|----------------|
 | Card together with non-blank `content` | `/messages/0/: content conflicts with rich_content.card` |
 | Card together with top-level `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
-| Card together with `rich_content.media` | `/messages/0/: rich_content may contain only one of media or card` |
+| Card together with `rich_content.media` or `rich_content.carousel` | `/messages/0/: rich_content may contain only one of media, card or carousel` |
 | Empty card, height-only, or suggestions-only (no title, description, or media) | `/messages/0/: rich_content.card requires title, description, or media` |
 | More than 4 card suggestions | `suggestions must not exceed 4` |
 | Title over 200 or description over 2000 characters | `title must not exceed 200 characters` / `description must not exceed 2000 characters` |
 | Missing media `url`, or invalid `url` / `thumbnail_url` | `url is required` / `Invalid url` |
 | Any other field on card `media`, such as `media_type` | `/messages/0/rich_content/card/media/media_type: Unknown property 'media_type'` |
+
+### RCS carousel
+
+To send several cards that the recipient swipes through, set `format` to `RCS` and provide `rich_content.carousel` instead of `content`, `rich_content.media`, or `rich_content.card`. A carousel has 1 to 10 `cards`; a carousel with one card is rendered as a single card. Each card has the same fields and rules as a [rich card](#rcs-rich-card), including up to 4 nested `suggestions`. Optional `choices` are up to 3 suggestions for the carousel as a whole, with the same types as top-level suggestions. `fallback_message` is optional and applies to the whole message, not to each card:
+
+```json
+{
+  "messages": [
+    {
+      "destination_number": "+61491570156",
+      "format": "RCS",
+      "rich_content": {
+        "carousel": {
+          "cards": [
+            {
+              "title": "Order #1234",
+              "description": "Shipped",
+              "height": "MEDIUM",
+              "media": {
+                "url": "https://cdn.example.com/parcel.png",
+                "thumbnail_url": "https://cdn.example.com/parcel_thumb.png"
+              },
+              "suggestions": [
+                {
+                  "type": "reply",
+                  "text": "Track",
+                  "postback_data": "TRACK_1234"
+                },
+                {
+                  "type": "url",
+                  "text": "View",
+                  "url": "https://example.com/o/1234"
+                }
+              ]
+            },
+            {
+              "title": "Order #5678",
+              "description": "Out for delivery",
+              "suggestions": [
+                {
+                  "type": "reply",
+                  "text": "Track",
+                  "postback_data": "TRACK_5678"
+                }
+              ]
+            }
+          ],
+          "choices": [
+            {
+              "type": "reply",
+              "text": "All orders",
+              "postback_data": "ALL_ORDERS"
+            }
+          ]
+        }
+      },
+      "fallback_message": {
+        "content": "Your orders have shipped"
+      },
+      "source_number": "MyBrand",
+      "source_number_type": "ALPHANUMERIC"
+    }
+  ]
+}
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `rich_content.carousel.cards` | Yes | 1 to 10 cards, in display order. Each card uses the [rich card](#rcs-rich-card) fields and needs at least one of `title`, `description`, or `media`. |
+| `rich_content.carousel.choices` | No | Up to 3 suggestions for the whole carousel. Same types and field rules as top-level [RCS suggestions](#rcs-text-with-tappable-suggestions). |
+
+The `202` response and [Get message status](get-message-status.md) echo `rich_content.carousel`, including each card's `suggestions` and the carousel `choices` in the order you sent them, with `postback_data`. Optional fields you did not send are not returned. Do not send top-level `suggestions` with a carousel. `fallback_message`, `source_number`, and `source_number_type` behave as for plain RCS text: the fallback is sent as plain SMS text and does not include the cards, and there is no MMS fallback. `calendar` is not a supported suggestion type.
+
+The following are rejected with `400`, and no messages in the batch are sent:
+
+| Request | Example detail |
+|---------|----------------|
+| Carousel together with non-blank `content` | `/messages/0/: content conflicts with rich_content.carousel` |
+| Carousel together with top-level `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
+| Carousel together with `rich_content.media` or `rich_content.card` | `/messages/0/: rich_content may contain only one of media, card or carousel` |
+| No `cards`, an empty `cards` array, or more than 10 cards | `cards must contain between 1 and 10 cards` |
+| More than 3 `choices` | `choices must not exceed 3` |
+| A card with no title, description, or media (the detail names the card's position, starting at 0) | `/messages/0/: rich_content.carousel.cards[1] requires title, description, or media` |
+| A card with more than 4 suggestions | `suggestions must not exceed 4` |
+| A card title over 200 or description over 2000 characters | `title must not exceed 200 characters` / `description must not exceed 2000 characters` |
+| Missing card media `url`, or invalid `url` / `thumbnail_url` | `url is required` / `Invalid url` |
 
 RCS delivery reports and replies appear in the account's existing `GET /v1/delivery-reports` and `GET /v1/replies` polling responses. Polling is account-scoped: an existing poller can receive RCS events after any client on that account starts sending RCS, and polling cannot be targeted or filtered per client. A per-message `callback_url` does not change that polling scope.
 
@@ -248,7 +334,7 @@ None.
 | `format` | string | No | Outbound message format. Enum: `SMS`, `TTS`, `MMS`, `RCS`. Defaults to SMS when omitted. |
 | `fallback_message` | object | No | SMS fallback for an RCS message. Requires non-blank `content`, max 5000 characters. It never selects the channel. |
 | `suggestions` | array | No | Up to 10 tappable suggestions (`reply`, `url`, `dial`, `location`) on an RCS text message. Not supported with `rich_content`. See [RCS text with tappable suggestions](#rcs-text-with-tappable-suggestions). |
-| `rich_content` | object | Conditional | RCS rich content sent instead of `content`. Include exactly one of `media` or `card`. Not supported with `content` or top-level `suggestions`. See [RCS rich media](#rcs-rich-media) and [RCS rich card](#rcs-rich-card). |
+| `rich_content` | object | Conditional | RCS rich content sent instead of `content`. Include exactly one of `media`, `card`, or `carousel`. Not supported with `content` or top-level `suggestions`. See [RCS rich media](#rcs-rich-media), [RCS rich card](#rcs-rich-card), and [RCS carousel](#rcs-carousel). |
 | `message_expiry_timestamp` | string (date-time) | No | Date time after which the message expires and will not be sent |
 | `metadata` | object | No | Metadata for the message specified as a set of key value pairs, each key can be up to 100 characters long and each value can be up to 256 characters long |
 | `scheduled` | string (date-time) | No | Scheduled delivery date time of the message |
@@ -505,7 +591,7 @@ More advanced delivery features can be specified by setting the following proper
 
 - `content` The content of the message. This can be a Unicode string, up to 5,000 characters long. Message content is required, except on an RCS message that sends `rich_content` instead.
 
-- `rich_content` RCS only. Send an image or file as `rich_content.media`, or a rich card as `rich_content.card`, instead of `content`. See [RCS rich media](#rcs-rich-media) and [RCS rich card](#rcs-rich-card).
+- `rich_content` RCS only. Send an image or file as `rich_content.media`, a rich card as `rich_content.card`, or a carousel of cards as `rich_content.carousel`, instead of `content`. See [RCS rich media](#rcs-rich-media), [RCS rich card](#rcs-rich-card), and [RCS carousel](#rcs-carousel).
 
 - `delivery_report` Delivery reports can be requested with each message. If delivery reports are requested, a webhook will be submitted to the `callback_url` property specified for the message (or to the webhooks) specified for the account every time the status of the message changes as it is processed. The current status of the message can also be retrieved via the Delivery Reports endpoint of the Messages API. Delivery reports are optional and by default will not be requested.
 

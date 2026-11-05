@@ -1,0 +1,29 @@
+title: RcsRichCarousel
+type: object
+description: >-
+  RCS carousel of 1 to 10 cards that the recipient swipes through. A
+  carousel with one card is rendered as a single card. Each card has the
+  same shape and rules as `rich_content.card`. Optional `choices` are
+  suggestions shown beneath the whole carousel.
+required:
+  - cards
+additionalProperties: false
+properties:
+  cards:
+    type: array
+    minItems: 1
+    maxItems: 10
+    description: >-
+      Cards in display order. Each card needs at least one of `title`,
+      `description`, or `media`, and has up to 4 nested suggestions.
+    items:
+      $ref: ./RcsRichCard.yaml
+  choices:
+    type: array
+    maxItems: 3
+    description: >-
+      Optional tappable suggestions for the carousel as a whole, not tied
+      to one card. Up to 3. Same types and field rules as top-level RCS
+      suggestions. Returned in request order on the response.
+    items:
+      $ref: ./RcsSuggestion.yaml

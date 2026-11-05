@@ -57,7 +57,9 @@ post:
 
     - ```rich_content``` RCS only. Send an image or file as ```rich_content.media```,
 
-    or a rich card as ```rich_content.card```, instead of ```content```. See the
+    a rich card as ```rich_content.card```, or a carousel of cards as
+
+    ```rich_content.carousel```, instead of ```content```. See the
     ```Message``` schema for its fields.
 
     - ```delivery_report``` Delivery reports can be requested with each
@@ -278,6 +280,42 @@ post:
                           url: https://example.com/o/1234
                   fallback_message:
                     content: Your order #1234 has shipped
+                  source_number: MyBrand
+                  source_number_type: ALPHANUMERIC
+          rcsCarousel:
+            summary: RCS carousel with per-card suggestions, carousel choices and an optional SMS fallback
+            value:
+              messages:
+                - destination_number: "+61491570156"
+                  format: RCS
+                  rich_content:
+                    carousel:
+                      cards:
+                        - title: Order #1234
+                          description: Shipped
+                          height: MEDIUM
+                          media:
+                            url: https://cdn.example.com/parcel.png
+                            thumbnail_url: https://cdn.example.com/parcel_thumb.png
+                          suggestions:
+                            - type: reply
+                              text: Track
+                              postback_data: TRACK_1234
+                            - type: url
+                              text: View
+                              url: https://example.com/o/1234
+                        - title: Order #5678
+                          description: Out for delivery
+                          suggestions:
+                            - type: reply
+                              text: Track
+                              postback_data: TRACK_5678
+                      choices:
+                        - type: reply
+                          text: All orders
+                          postback_data: ALL_ORDERS
+                  fallback_message:
+                    content: Your orders have shipped
                   source_number: MyBrand
                   source_number_type: ALPHANUMERIC
     required: true
