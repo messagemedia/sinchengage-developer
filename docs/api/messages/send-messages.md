@@ -286,7 +286,8 @@ The following are rejected with `400`, and no messages in the batch are sent:
 | Carousel together with non-blank `content` | `/messages/0/: content conflicts with rich_content.carousel` |
 | Carousel together with top-level `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
 | Carousel together with `rich_content.media` or `rich_content.card` | `/messages/0/: rich_content may contain only one of media, card or carousel` |
-| No `cards`, an empty `cards` array, or more than 10 cards | `cards must contain between 1 and 10 cards` |
+| Missing `cards` | `cards is required` |
+| An empty `cards` array or more than 10 cards | `cards must contain between 1 and 10 cards` |
 | More than 3 `choices` | `choices must not exceed 3` |
 | A card with no title, description, or media (the detail names the card's position, starting at 0) | `/messages/0/: rich_content.carousel.cards[1] requires title, description, or media` |
 | A card with more than 4 suggestions | `suggestions must not exceed 4` |
