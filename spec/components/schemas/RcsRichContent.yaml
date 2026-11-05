@@ -2,7 +2,7 @@ title: RcsRichContent
 type: object
 description: >-
   Rich content for an RCS message, sent instead of `content`. Include
-  exactly one of `media` or `card`. Do not combine it with `content` or
+  exactly one of `media`, `card`, or `carousel`. Do not combine it with `content` or
   top-level `suggestions`. `fallback_message` is supported and is sent as
   plain SMS text.
 additionalProperties: false
@@ -11,3 +11,5 @@ properties:
     $ref: ./RcsRichMedia.yaml
   card:
     $ref: ./RcsRichCard.yaml
+  carousel:
+    $ref: ./RcsRichCarousel.yaml
