@@ -86,9 +86,11 @@ Add up to 10 `suggestions` to a plain RCS text message. Each suggestion needs a 
 | `dial` | `text`, `phone_number` | `postback_data` |
 | `location` | `text`, `coordinates` (both `latitude` and `longitude`) | `label` (max 1000 characters), `postback_data` |
 
+For a `location` suggestion, `coordinates.latitude` must be between `-90` and `90`, and `coordinates.longitude` must be between `-180` and `180`. A location suggestion is a tappable button; to send a standalone map pin use [`rich_content.location`](#rcs-location-pin) instead.
+
 The `202` response and [Get message status](get-message-status.md) echo `content` and `suggestions` in the order you sent them, including `postback_data`. Fields that do not apply to a suggestion's `type`, such as `url` on a `reply`, are ignored and not returned. An empty `suggestions` array sends plain RCS text.
 
-A request with a missing required field, more than 10 suggestions, or a `text` longer than 25 characters is rejected with `400`, and no messages in the batch are sent. Any other `type`, including `calendar`, is also rejected with `400`, with the generic detail `Failed to parse message body.`
+A request with a missing required field, more than 10 suggestions, a `text` longer than 25 characters, or out-of-range coordinates is rejected with `400`, and no messages in the batch are sent. Any other `type`, including `calendar`, is also rejected with `400`, with the generic detail `Failed to parse message body.`
 
 `suggestions` can be combined with `fallback_message`; the SMS fallback is plain text and does not include the suggestions. When the recipient taps a suggestion, the tap arrives through the existing replies flow without `postback_data`.
 
@@ -133,8 +135,8 @@ The following are rejected with `400`, and no messages in the batch are sent:
 |---------|----------------|
 | `rich_content` together with non-blank `content` | `/messages/0/: content conflicts with rich_content` |
 | `rich_content` together with top-level `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
-| `rich_content` without `media` or `card` | `/messages/0/: rich_content must include media or card` |
-| `rich_content.media` together with `rich_content.card` | `/messages/0/: rich_content may contain only one of media or card` |
+| `rich_content` without `media`, `card`, or `location` | `/messages/0/: rich_content must include media, card, carousel or location` |
+| `rich_content.media` together with `rich_content.card` or `rich_content.location` | `/messages/0/: rich_content may contain only one of media, card, carousel or location` |
 | Missing `url`, or `url` / `thumbnail_url` that is not a valid `http` or `https` URL | `url is required` / `Invalid url` |
 | Any other field on `media`, such as `media_type` | `/messages/0/rich_content/media/media_type: Unknown property 'media_type'` |
 
@@ -142,7 +144,7 @@ The media file's type and reachability are not checked when you submit the messa
 
 ### RCS rich card
 
-To send a structured rich card over RCS, set `format` to `RCS` and provide `rich_content.card` instead of `content` or `rich_content.media`. At least one of `title`, `description`, or `media` is required. Nested card suggestions use the same types as top-level suggestions (`reply`, `url`, `dial`, `location`) and are limited to 4. `fallback_message` is optional:
+To send a structured rich card over RCS, set `format` to `RCS` and provide `rich_content.card` instead of `content`, `rich_content.media`, or `rich_content.location`. At least one of `title`, `description`, or `media` is required. Nested card suggestions use the same types as top-level suggestions (`reply`, `url`, `dial`, `location`) and are limited to 4. `fallback_message` is optional:
 
 ```json
 {
@@ -200,12 +202,63 @@ The following are rejected with `400`, and no messages in the batch are sent:
 |---------|----------------|
 | Card together with non-blank `content` | `/messages/0/: content conflicts with rich_content.card` |
 | Card together with top-level `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
-| Card together with `rich_content.media` | `/messages/0/: rich_content may contain only one of media or card` |
+| Card together with `rich_content.media` or `rich_content.location` | `/messages/0/: rich_content may contain only one of media, card, carousel or location` |
 | Empty card, height-only, or suggestions-only (no title, description, or media) | `/messages/0/: rich_content.card requires title, description, or media` |
 | More than 4 card suggestions | `suggestions must not exceed 4` |
 | Title over 200 or description over 2000 characters | `title must not exceed 200 characters` / `description must not exceed 2000 characters` |
 | Missing media `url`, or invalid `url` / `thumbnail_url` | `url is required` / `Invalid url` |
 | Any other field on card `media`, such as `media_type` | `/messages/0/rich_content/card/media/media_type: Unknown property 'media_type'` |
+
+### RCS location pin
+
+To send a standalone map pin over RCS, set `format` to `RCS` and provide `rich_content.location` instead of `content`, `rich_content.media`, or `rich_content.card`. This is distinct from a tappable [`location` suggestion](#rcs-text-with-tappable-suggestions). `fallback_message` is optional:
+
+```json
+{
+  "messages": [
+    {
+      "destination_number": "+61491570156",
+      "format": "RCS",
+      "rich_content": {
+        "location": {
+          "coordinates": {
+            "latitude": -37.8136,
+            "longitude": 144.9631
+          },
+          "title": "Melbourne CBD store",
+          "label": "Store entrance"
+        }
+      },
+      "fallback_message": {
+        "content": "Find us at Melbourne CBD store"
+      },
+      "source_number": "MyBrand",
+      "source_number_type": "ALPHANUMERIC"
+    }
+  ]
+}
+```
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `rich_content.location.coordinates` | Yes | Object with required `latitude` (`-90` to `90`) and `longitude` (`-180` to `180`). |
+| `rich_content.location.title` | Yes | Non-blank location title. |
+| `rich_content.location.label` | No | Optional location label. Max 1000 characters. |
+
+The `202` response and [Get message status](get-message-status.md) echo `rich_content.location`. Optional fields you did not send are not returned. Do not send top-level `suggestions` with a location pin. `fallback_message`, `source_number`, and `source_number_type` behave as for plain RCS text: the fallback is sent as plain SMS text and does not include the map pin, and there is no MMS fallback.
+
+The following are rejected with `400`, and no messages in the batch are sent:
+
+| Request | Example detail |
+|---------|----------------|
+| Location together with non-blank `content` | `/messages/0/: content conflicts with rich_content.location` |
+| Location together with top-level `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
+| Location together with `rich_content.media` or `rich_content.card` | `/messages/0/: rich_content may contain only one of media, card, carousel or location` |
+| Missing `coordinates` | `coordinates is required` |
+| Missing `latitude` or `longitude` | `latitude is required` / `longitude is required` |
+| Latitude outside `[-90, 90]` or longitude outside `[-180, 180]` | `latitude must be between -90 and 90` / `longitude must be between -180 and 180` |
+| Missing or blank `title` | `title is required` |
+| `label` longer than 1000 characters | `label must not exceed 1000 characters` |
 
 RCS delivery reports and replies appear in the account's existing `GET /v1/delivery-reports` and `GET /v1/replies` polling responses. Polling is account-scoped: an existing poller can receive RCS events after any client on that account starts sending RCS, and polling cannot be targeted or filtered per client. A per-message `callback_url` does not change that polling scope.
 
@@ -248,7 +301,7 @@ None.
 | `format` | string | No | Outbound message format. Enum: `SMS`, `TTS`, `MMS`, `RCS`. Defaults to SMS when omitted. |
 | `fallback_message` | object | No | SMS fallback for an RCS message. Requires non-blank `content`, max 5000 characters. It never selects the channel. |
 | `suggestions` | array | No | Up to 10 tappable suggestions (`reply`, `url`, `dial`, `location`) on an RCS text message. Not supported with `rich_content`. See [RCS text with tappable suggestions](#rcs-text-with-tappable-suggestions). |
-| `rich_content` | object | Conditional | RCS rich content sent instead of `content`. Include exactly one of `media` or `card`. Not supported with `content` or top-level `suggestions`. See [RCS rich media](#rcs-rich-media) and [RCS rich card](#rcs-rich-card). |
+| `rich_content` | object | Conditional | RCS rich content sent instead of `content`. Include exactly one of `media`, `card`, or `location`. Not supported with `content` or top-level `suggestions`. See [RCS rich media](#rcs-rich-media), [RCS rich card](#rcs-rich-card), and [RCS location pin](#rcs-location-pin). |
 | `message_expiry_timestamp` | string (date-time) | No | Date time after which the message expires and will not be sent |
 | `metadata` | object | No | Metadata for the message specified as a set of key value pairs, each key can be up to 100 characters long and each value can be up to 256 characters long |
 | `scheduled` | string (date-time) | No | Scheduled delivery date time of the message |
@@ -505,7 +558,7 @@ More advanced delivery features can be specified by setting the following proper
 
 - `content` The content of the message. This can be a Unicode string, up to 5,000 characters long. Message content is required, except on an RCS message that sends `rich_content` instead.
 
-- `rich_content` RCS only. Send an image or file as `rich_content.media`, or a rich card as `rich_content.card`, instead of `content`. See [RCS rich media](#rcs-rich-media) and [RCS rich card](#rcs-rich-card).
+- `rich_content` RCS only. Send an image or file as `rich_content.media`, a rich card as `rich_content.card`, or a location pin as `rich_content.location`, instead of `content`. See [RCS rich media](#rcs-rich-media), [RCS rich card](#rcs-rich-card), and [RCS location pin](#rcs-location-pin).
 
 - `delivery_report` Delivery reports can be requested with each message. If delivery reports are requested, a webhook will be submitted to the `callback_url` property specified for the message (or to the webhooks) specified for the account every time the status of the message changes as it is processed. The current status of the message can also be retrieved via the Delivery Reports endpoint of the Messages API. Delivery reports are optional and by default will not be requested.
 

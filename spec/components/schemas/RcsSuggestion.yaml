@@ -38,20 +38,11 @@ properties:
       Required for a `dial` suggestion. International format.
     example: '+61391570100'
   coordinates:
-    type: object
-    description: Required for a `location` suggestion.
-    required:
-      - latitude
-      - longitude
-    properties:
-      latitude:
-        type: number
-        format: double
-        example: -37.8136
-      longitude:
-        type: number
-        format: double
-        example: 144.9631
+    description: >-
+      Required for a `location` suggestion. Latitude must be between -90 and
+      90; longitude must be between -180 and 180.
+    allOf:
+      - $ref: ./RcsCoordinates.yaml
   label:
     type: string
     maxLength: 1000

@@ -1,0 +1,23 @@
+title: RcsRichLocation
+type: object
+description: >-
+  Standalone RCS location pin sent as `rich_content.location`. Distinct from
+  a tappable `location` suggestion button. Requires `coordinates` and
+  `title`; `label` is optional.
+required:
+  - coordinates
+  - title
+additionalProperties: false
+properties:
+  coordinates:
+    $ref: ./RcsCoordinates.yaml
+  title:
+    type: string
+    minLength: 1
+    description: Required location title shown with the pin.
+    example: Melbourne CBD store
+  label:
+    type: string
+    maxLength: 1000
+    description: Optional location label. Max 1000 characters.
+    example: Store entrance

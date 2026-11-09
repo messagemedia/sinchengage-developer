@@ -1,0 +1,23 @@
+title: RcsCoordinates
+type: object
+description: >-
+  Latitude and longitude for an RCS location pin or a location suggestion.
+required:
+  - latitude
+  - longitude
+additionalProperties: false
+properties:
+  latitude:
+    type: number
+    format: double
+    minimum: -90
+    maximum: 90
+    description: Latitude in decimal degrees. Must be between -90 and 90.
+    example: -37.8136
+  longitude:
+    type: number
+    format: double
+    minimum: -180
+    maximum: 180
+    description: Longitude in decimal degrees. Must be between -180 and 180.
+    example: 144.9631

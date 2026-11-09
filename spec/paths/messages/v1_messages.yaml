@@ -57,7 +57,8 @@ post:
 
     - ```rich_content``` RCS only. Send an image or file as ```rich_content.media```,
 
-    or a rich card as ```rich_content.card```, instead of ```content```. See the
+    a rich card as ```rich_content.card```, or a location pin as
+    ```rich_content.location```, instead of ```content```. See the
     ```Message``` schema for its fields.
 
     - ```delivery_report``` Delivery reports can be requested with each
@@ -278,6 +279,23 @@ post:
                           url: https://example.com/o/1234
                   fallback_message:
                     content: Your order #1234 has shipped
+                  source_number: MyBrand
+                  source_number_type: ALPHANUMERIC
+          rcsRichLocation:
+            summary: RCS location pin with an optional SMS fallback
+            value:
+              messages:
+                - destination_number: "+61491570156"
+                  format: RCS
+                  rich_content:
+                    location:
+                      coordinates:
+                        latitude: -37.8136
+                        longitude: 144.9631
+                      title: Melbourne CBD store
+                      label: Store entrance
+                  fallback_message:
+                    content: Find us at Melbourne CBD store
                   source_number: MyBrand
                   source_number_type: ALPHANUMERIC
     required: true
