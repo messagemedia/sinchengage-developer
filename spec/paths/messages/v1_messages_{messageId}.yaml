@@ -106,6 +106,32 @@ get:
                 message_id: b2588d8d-2461-45d4-8893-0000361e17e0
                 destination_number: "+61491570156"
                 status: delivered
+            rcsCarousel:
+              summary: RCS carousel with per-card suggestions and carousel choices
+              value:
+                format: RCS
+                rich_content:
+                  carousel:
+                    cards:
+                      - title: Order #1234
+                        description: Shipped
+                        suggestions:
+                          - type: reply
+                            text: Track
+                            postback_data: TRACK_1234
+                      - title: Order #5678
+                        description: Out for delivery
+                        suggestions:
+                          - type: reply
+                            text: Track
+                            postback_data: TRACK_5678
+                    choices:
+                      - type: reply
+                        text: All orders
+                        postback_data: ALL_ORDERS
+                message_id: b2589d8d-2461-45d4-8893-0000361e17e0
+                destination_number: "+61491570156"
+                status: delivered
             rcsRichLocation:
               summary: RCS location pin with an SMS fallback
               value:
