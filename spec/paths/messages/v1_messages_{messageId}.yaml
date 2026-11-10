@@ -132,6 +132,24 @@ get:
                 message_id: b2589d8d-2461-45d4-8893-0000361e17e0
                 destination_number: "+61491570156"
                 status: delivered
+            rcsRichLocation:
+              summary: RCS location pin with an SMS fallback
+              value:
+                format: RCS
+                rich_content:
+                  location:
+                    coordinates:
+                      latitude: -37.8136
+                      longitude: 144.9631
+                    title: Melbourne CBD store
+                    label: Store entrance
+                fallback_message:
+                  content: Find us at Melbourne CBD store
+                message_id: b2591d8d-2461-45d4-8893-0000361e17e0
+                destination_number: "+61491570156"
+                source_number: MyBrand
+                source_number_type: ALPHANUMERIC
+                status: delivered
     "401":
       description: Unauthorized
       content:
