@@ -5,7 +5,10 @@ post:
   tags:
     - Contacts
   summary: Add contact to a list
-  description: Adds a contact to a contact list.
+  description: |-
+    Adds a contact to a contact list.
+
+    **Rate limit:** 20 requests per second per account and 100 requests per second across all accounts, shared by all Contacts create, update and delete endpoints. Requests over the limit get `429 Too Many Requests` with a `Retry-After` header.
   operationId: addContactToContactList
   parameters:
     - name: listId
@@ -45,6 +48,8 @@ post:
       $ref: ../../components/responses/Forbidden.yaml
     "409":
       $ref: ../../components/responses/Conflict.yaml
+    "429":
+      $ref: ../../components/responses/TooManyRequests.yaml
     "500":
       $ref: ../../components/responses/InternalServerError.yaml
     "501":
@@ -62,7 +67,10 @@ delete:
   tags:
     - Contacts
   summary: Remove contact from the contact list
-  description: Removes a contact from a contact list.
+  description: |-
+    Removes a contact from a contact list.
+
+    **Rate limit:** 20 requests per second per account and 100 requests per second across all accounts, shared by all Contacts create, update and delete endpoints. Requests over the limit get `429 Too Many Requests` with a `Retry-After` header.
   operationId: removeContactFromContactList
   parameters:
     - name: listId
@@ -92,6 +100,8 @@ delete:
       $ref: ../../components/responses/Forbidden.yaml
     "409":
       $ref: ../../components/responses/Conflict.yaml
+    "429":
+      $ref: ../../components/responses/TooManyRequests.yaml
     "500":
       $ref: ../../components/responses/InternalServerError.yaml
     "501":
