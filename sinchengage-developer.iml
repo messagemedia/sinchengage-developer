@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/api@v1@contacts@contacts" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/api@v1@contacts@contacts@{contactId}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/api@v1@contacts@custom-fields" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/api@v1@contacts@custom-fields@{customFieldId}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/api@v1@contacts@lists" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/api@v1@contacts@lists@{listId}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/api@v1@contacts@lists@{listId}@contacts" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/api@v1@contacts@lists@{listId}@contacts@{contactId}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@credits_management@account" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@delivery_reports" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@delivery_reports@confirmed" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@iam@accounts@{id}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@iam@accounts@{id}@users" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@iam@reseller_customers" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@iam@signature_keys" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@iam@signature_keys@enabled" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@iam@signature_keys@{key_id}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@messages" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@messages@{messageId}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@messaging@numbers@dedicated" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@messaging@numbers@dedicated@assignments" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@messaging@numbers@dedicated@{id}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@messaging@numbers@dedicated@{numberId}@assignment" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@messaging@numbers@sender_address@addresses" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@messaging@numbers@sender_address@addresses@{id}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@messaging@numbers@sender_address@addresses@{id}@reverify" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@messaging@numbers@sender_address@requests" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@messaging@numbers@sender_address@requests@{id}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@messaging@numbers@sender_address@requests@{id}@verify" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@number_authorisation@is_authorised@{numbers}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@number_authorisation@mt@blacklist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@number_authorisation@mt@blacklist@{number}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@replies" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@replies@confirmed" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@reporting@links@detail" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@reporting@links@summary" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@webhooks@messages" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v1@webhooks@messages@{webhookId}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@detail@scheduled" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@detail@scheduled@{id}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@messages@async@detail" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@messages@async@detail@fields" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@messages@async@reports" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@messages@async@reports@{reportId}@download-url" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@messages@async@status" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@messages@async@summary" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@messages@detail" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@messages@insights" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@messages@metakeys" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@scheduled" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@scheduled@{id}" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@summary@scheduled" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/spec/code_samples/Java/v2-preview@reporting@summary@scheduled@{id}" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
