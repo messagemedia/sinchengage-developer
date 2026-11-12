@@ -92,7 +92,7 @@ The `202` response and [Get message status](get-message-status.md) echo `content
 
 A request with a missing required field, more than 10 suggestions, a `text` longer than 25 characters, or out-of-range coordinates is rejected with `400`, and no messages in the batch are sent. Any other `type`, including `calendar`, is also rejected with `400`, with the generic detail `Failed to parse message body.`
 
-`suggestions` can be combined with `fallback_message`; the SMS fallback is plain text and does not include the suggestions. When the recipient taps a suggestion, the tap arrives through the existing replies flow without `postback_data`.
+`suggestions` can be combined with `fallback_message`; the SMS fallback is plain text and does not include the suggestions. When the recipient taps a suggestion, the tap is delivered on the reply webhook under `contact_message.choice_response_message`, including `postback_data` when the suggestion had one. `GET /v1/replies` does not return button taps.
 
 ### RCS rich media
 
