@@ -5,7 +5,10 @@ patch:
   tags:
     - Contacts
   summary: Add or remove multiple contacts to/from a list
-  description: Adds or removes multiple contacts to or from a contact list.
+  description: |-
+    Adds or removes multiple contacts to or from a contact list.
+
+    **Rate limit:** 20 requests per second per account and 100 requests per second across all accounts, shared by all Contacts create, update and delete endpoints. Requests over the limit get `429 Too Many Requests` with a `Retry-After` header.
   operationId: modifyContactsInContactList
   parameters:
     - name: listId
@@ -37,6 +40,8 @@ patch:
       $ref: ../../components/responses/Forbidden.yaml
     "409":
       $ref: ../../components/responses/Conflict.yaml
+    "429":
+      $ref: ../../components/responses/TooManyRequests.yaml
     "500":
       $ref: ../../components/responses/InternalServerError.yaml
     "501":

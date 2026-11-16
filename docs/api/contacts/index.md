@@ -14,6 +14,49 @@ The API provides access to two main resources:
 | APAC instance | `https://au.app.api.sinch.com` |
 | US instance | `https://us.app.api.sinch.com` |
 
+## Rate limits
+
+Requests that create, update or delete contacts, lists, list memberships or custom fields are rate limited. Requests that only read data (`GET`) are not.
+
+| Limit | Applies to |
+|-------|------------|
+| **20 requests per second** | Each account. All create, update and delete endpoints below share this limit. |
+| **100 requests per second** | All accounts combined. |
+
+When a request is over the limit, the API responds with `429 Too Many Requests` and a `Retry-After` header. The header gives the number of seconds to wait before you retry (always at least 1). The response body uses the standard error format:
+
+```json
+{
+  "uuid": "025e93d3-051b-43f9-b12e-4b5842228dee",
+  "type": "too_many_requests",
+  "title": "Rate limit exceeded",
+  "detail": "Too many requests, please retry later"
+}
+```
+
+### Handle 429 responses
+
+- Wait for the number of seconds in `Retry-After`, then send the same request again. Don't retry immediately.
+- For bulk work, keep your send rate below 20 requests per second per account instead of relying on retries.
+- To add or remove many contacts in a list, use [Add or remove multiple contacts to/from a list](modify-contacts-in-contact-list.md). One request handles many contacts and counts once against the limit.
+
+### Rate-limited endpoints
+
+| Method | Path |
+|--------|------|
+| `POST` | `/api/v1/contacts/contacts` |
+| `PATCH` | `/api/v1/contacts/contacts/{contactId}` |
+| `DELETE` | `/api/v1/contacts/contacts/{contactId}` |
+| `POST` | `/api/v1/contacts/lists` |
+| `PATCH` | `/api/v1/contacts/lists/{listId}` |
+| `DELETE` | `/api/v1/contacts/lists/{listId}` |
+| `PATCH` | `/api/v1/contacts/lists/{listId}/contacts` |
+| `POST` | `/api/v1/contacts/lists/{listId}/contacts/{contactId}` |
+| `DELETE` | `/api/v1/contacts/lists/{listId}/contacts/{contactId}` |
+| `POST` | `/api/v1/contacts/custom-fields` |
+| `PATCH` | `/api/v1/contacts/custom-fields/{customFieldId}` |
+| `DELETE` | `/api/v1/contacts/custom-fields/{customFieldId}` |
+
 ## Choose an endpoint
 
 ### Contacts

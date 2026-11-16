@@ -82,7 +82,7 @@ sections:
         description: Query click logs for the short, trackable links Sinch automatically generates from URLs in your message content.
       - title: Contacts
         path: docs/api/contacts/index.md
-        description: Manage Contacts, Contact Lists, and Custom Fields used to organize and target message recipients.
+        description: Manage Contacts, Contact Lists, and Custom Fields used to organize and target message recipients. Create, update and delete requests are limited to 20 requests/s per account and 100 requests/s across all accounts; over the limit returns HTTP 429 with a Retry-After header (seconds).
       - title: Account Management
         path: docs/api/account-management/index.md
         description: Create and delete reseller sub-accounts and add Sinch Engage users on a reseller account (POST /v1/iam/reseller_customers, POST /v1/iam/accounts/{id}/users, DELETE /v1/iam/accounts/{id}).

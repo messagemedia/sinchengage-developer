@@ -50,7 +50,10 @@ delete:
   tags:
     - Contacts
   summary: Delete a contact list
-  description: Deletes a contact list.
+  description: |-
+    Deletes a contact list.
+
+    **Rate limit:** 20 requests per second per account and 100 requests per second across all accounts, shared by all Contacts create, update and delete endpoints. Requests over the limit get `429 Too Many Requests` with a `Retry-After` header.
   operationId: deleteContactListById
   parameters:
     - name: listId
@@ -74,6 +77,8 @@ delete:
       $ref: ../../components/responses/NotFound.yaml
     "409":
       $ref: ../../components/responses/Conflict.yaml
+    "429":
+      $ref: ../../components/responses/TooManyRequests.yaml
     "500":
       $ref: ../../components/responses/InternalServerError.yaml
     "501":
@@ -91,7 +96,10 @@ patch:
   tags:
     - Contacts
   summary: Update a contact list
-  description: Updates an existing contact list.
+  description: |-
+    Updates an existing contact list.
+
+    **Rate limit:** 20 requests per second per account and 100 requests per second across all accounts, shared by all Contacts create, update and delete endpoints. Requests over the limit get `429 Too Many Requests` with a `Retry-After` header.
   operationId: updateContactList
   parameters:
     - name: listId
@@ -125,6 +133,8 @@ patch:
       $ref: ../../components/responses/NotFound.yaml
     "409":
       $ref: ../../components/responses/Conflict.yaml
+    "429":
+      $ref: ../../components/responses/TooManyRequests.yaml
     "500":
       $ref: ../../components/responses/InternalServerError.yaml
     "501":

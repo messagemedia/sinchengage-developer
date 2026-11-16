@@ -771,6 +771,12 @@ tags:
         * **Contacts**: Data associated with the individuals you need to contact.
         * **Lists**: Groups of contacts created for specific purposes.
         * **Custom Fields**: Additional fields that can be tailored to complement the basic contact fields.
+
+      ## Rate limits
+
+      Requests that create, update or delete contacts, lists, list memberships or custom fields are limited to **20 requests per second per account** and **100 requests per second across all accounts**. Read requests (`GET`) are not limited.
+
+      Requests over the limit get `429 Too Many Requests` with a `Retry-After` header: the number of seconds to wait before retrying (always at least 1). Wait that long, then retry the request.
   - name: Account Management
     description: >
       The Account Management API is for **reseller** accounts. It allows

@@ -5,7 +5,10 @@ post:
   tags:
     - Contacts
   summary: Create a custom field
-  description: Creates a new custom field for contacts.
+  description: |-
+    Creates a new custom field for contacts.
+
+    **Rate limit:** 20 requests per second per account and 100 requests per second across all accounts, shared by all Contacts create, update and delete endpoints. Requests over the limit get `429 Too Many Requests` with a `Retry-After` header.
   operationId: createCustomField
   requestBody:
     content:
@@ -28,6 +31,8 @@ post:
       $ref: ../../components/responses/Forbidden.yaml
     "409":
       $ref: ../../components/responses/Conflict.yaml
+    "429":
+      $ref: ../../components/responses/TooManyRequests.yaml
     "500":
       $ref: ../../components/responses/InternalServerError.yaml
     "501":

@@ -10,6 +10,7 @@ Updates an existing contact list.
 | **Operation ID** | `updateContactList` |
 | **Authentication** | Basic Auth, HMAC Auth |
 | **Success** | `200` — List is updated |
+| **Rate limit** | 20 requests/s per account, 100 requests/s across all accounts ([details](index.md#rate-limits)) |
 
 ## Authentication
 
@@ -64,6 +65,7 @@ None.
 | 403 | The authenticated user or account doesn't have permission | — |
 | 404 | The specified resource not found | `ApiError` |
 | 409 | Conflict. The entity already exists. | `ApiError` |
+| 429 | Too many requests. The rate limit was exceeded. | `ApiError` |
 | 500 | Internal server error | `ApiError` |
 | 501 | Request not recognised | — |
 | 502 | Invalid server response | — |
@@ -101,16 +103,22 @@ None.
 | `invalidFields[].reason` | string | Yes | Error message |
 | `invalidFields[].invalidIds` | array of string | No |  |
 
-### 404 and 409 and 500 response schema
+### 404 and 409 and 429 and 500 response schema
 
 - **Content-Type:** `application/json`
 
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
 | `uuid` | string (uuid) | Yes | Error id in UUID format |
-| `type` | string; enum: `validation`, `not_found`, `method_not_allowed`, `conflict`, `payload_too_large`, `unsupported_media_type`, `message_not_readable`, `internal_server_error`, `request_not_recognised`, `forbidden`, `bad_gateway`, `payment_required`, `unauthorized`, `unknown` | Yes | Error type |
+| `type` | string; enum: `validation`, `not_found`, `method_not_allowed`, `conflict`, `payload_too_large`, `unsupported_media_type`, `message_not_readable`, `internal_server_error`, `request_not_recognised`, `forbidden`, `bad_gateway`, `payment_required`, `unauthorized`, `too_many_requests`, `unknown` | Yes | Error type |
 | `title` | string | Yes | Error title |
 | `detail` | string | Yes | Error additional details |
+
+### 429 response headers
+
+| Header | Type | Description |
+|--------|------|-------------|
+| `Retry-After` | integer | Number of seconds to wait before retrying the request. Always at least 1. |
 
 ## Examples
 
@@ -154,6 +162,7 @@ console.log(result);
 - **403 Forbidden**: The authenticated user or account doesn't have permission
 - **404 Not Found**: The specified resource not found
 - **409 Conflict**: Conflict. The entity already exists.
+- **429 Too Many Requests**: The rate limit was exceeded. Wait the number of seconds in the `Retry-After` header, then retry. See [Rate limits](index.md#rate-limits).
 - **500 Internal Server Error**: Internal server error
 - **501 Not Implemented**: Request not recognised
 - **502 Bad Gateway**: Invalid server response
