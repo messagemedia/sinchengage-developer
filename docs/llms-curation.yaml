@@ -90,6 +90,22 @@ sections:
         path: docs/api/credits/index.md
         description: Get the credit balance for an account (GET /v1/credits_management/account), including remaining MT SMS and MT MMS credits and expiry.
 
+  - title: Channel selection
+    note: >-
+      The `format` field on a send-message request is optional. When omitted
+      the channel is inferred from the payload: if `rich_content` or
+      `suggestions` is present the message is sent as RCS; otherwise it is sent
+      as SMS. Setting `format: "SMS"` together with `rich_content` or
+      `suggestions` is rejected with 400. `suggestions` without `content` is
+      also rejected (400: RCS content is required when body is not provided) —
+      `rich_content` has no such restriction and alone satisfies the
+      sendable-content requirement. `fallback_message` never selects the channel
+      and does not satisfy `content`. `rich_link` is not rich content and never
+      triggers RCS inference. Delivery failures (recipient not RCS-capable, RCS
+      not enabled on the account) are reported in the delivery report, not as
+      request-time errors. Full truth table (T1–T8) and worked examples are in
+      the Send messages endpoint page.
+
   - title: Code Samples
     note: >-
       Most endpoint Markdown pages (see Endpoints above) include inline cURL

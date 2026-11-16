@@ -2,9 +2,13 @@ title: RcsSuggestions
 type: array
 maxItems: 10
 description: >-
-  Optional tappable suggestions shown beneath an RCS text message.
-  Up to 10. Not supported with `rich_content`. Returned in
-  request order on the response. Fields that do not apply to a
-  suggestion's `type` are ignored and not returned.
+  Tappable suggestions shown beneath an RCS text message. Their presence
+  causes the channel to be inferred as RCS when `format` is omitted — you do
+  not need to set `format: "RCS"` explicitly. `content` is still required; a
+  `suggestions`-only message with no `content` is rejected with `400`
+  (`RCS content is required when body is not provided`). Setting `format: "SMS"`
+  together with `suggestions` is rejected with `400`. Up to 10. Not supported
+  with `rich_content`. Returned in request order on the response. Fields that
+  do not apply to a suggestion's `type` are ignored and not returned.
 items:
   $ref: ./RcsSuggestion.yaml
