@@ -18,7 +18,9 @@ properties:
     description: >-
       Content of the message. Required for SMS, MMS, TTS, and RCS text. RCS
       content has a 2,000-character maximum. Omit this field when sending RCS
-      `rich_content`.
+      `rich_content`. Rich content (`rich_content` or `suggestions`) does not
+      substitute for this field on an explicit `format: "SMS"` send — such
+      requests are rejected with `400`.
     example: Hello world!
   destination_number:
     maxLength: 15

@@ -27,6 +27,55 @@ Submit one or more (up to 100 per request) SMS, MMS, text-to-speech, or RCS mess
 
 On success, each returned message includes `message_id` (UUID) and `status` (`queued`). Use [Get message status](get-message-status.md) to poll later. If any message in the batch is invalid, **no** messages are sent.
 
+### Channel selection
+
+The `format` field is optional. When omitted, the channel is inferred automatically from the payload:
+
+| # | `format` | Rich content present<br>(`rich_content` or `suggestions`) | `content` present | Outcome |
+|---|----------|----------------------------------------------------------|-------------------|---------|
+| T1 | omitted | ✓ | ✓ | Sent as **RCS** |
+| T2 | omitted | ✓ | ✗ | Sent as **RCS** (`rich_content` satisfies sendable-content; `suggestions`-only rejected — see note) |
+| T3 | omitted | ✗ | ✓ | Sent as **SMS** |
+| T4 | omitted | ✗ | ✗ | **400** — no sendable content |
+| T5 | `SMS` | ✓ | ✓ | **400** — rich content incompatible with explicit SMS |
+| T6 | `SMS` | ✓ | ✗ | **400** — rich content incompatible with explicit SMS |
+| T7 | `SMS` | ✗ | ✓ | Sent as **SMS** |
+| T8 | `SMS` | ✗ | ✗ | **400** — no sendable content |
+
+**Request-time `400` errors** (T4–T6, T8) are returned immediately — no messages in the batch are sent.
+
+**Delivery-report failures** (recipient not RCS-capable, RCS not enabled on the account) are reported asynchronously in the delivery report, not as a request-time error.
+
+> **`suggestions` without `content` (T2 edge case):** Top-level `suggestions` are attached to the `content` text bubble. A `suggestions`-only message with no `content` is rejected with `400`: `RCS content is required when body is not provided`. `rich_content` has no such restriction — it alone satisfies the sendable-content requirement.
+
+> **`fallback_message`:** Never selects the channel and does not satisfy `content`. Its presence alone does not trigger RCS inference.
+
+> **`rich_link`:** Not rich content. Never triggers RCS inference and never rejected under `format: "SMS"`.
+
+#### RCS inferred from rich content (no `format` required)
+
+You do not need to set `format: "RCS"` when sending `rich_content` or `suggestions`. The API infers RCS from the payload. The following sends over RCS without an explicit `format`:
+
+```json
+{
+  "messages": [
+    {
+      "destination_number": "+61491570156",
+      "rich_content": {
+        "media": {
+          "url": "https://cdn.example.com/promo.png"
+        }
+      },
+      "fallback_message": {
+        "content": "Check out our promo"
+      }
+    }
+  ]
+}
+```
+
+Using `format: "RCS"` explicitly is equally valid and continues to work.
+
 ### Plain RCS text with SMS fallback
 
 Set `format` to `RCS` and provide `content`. `fallback_message` is optional:
@@ -385,7 +434,7 @@ None.
 | `destination_number` | string | Yes | Destination number of the message. Min length: 1. Max length: 15. |
 | `callback_url` | string | No | URL replies and delivery reports to this message will be pushed to. Must use the `http` or `https` scheme. Hostnames must conform to RFC 1123 DNS name syntax. Paths must not contain whitespace or control characters. Invalid URLs are rejected with HTTP 400. |
 | `delivery_report` | boolean | No | Request a delivery report for this message |
-| `format` | string | No | Outbound message format. Enum: `SMS`, `TTS`, `MMS`, `RCS`. Defaults to SMS when omitted. |
+| `format` | string | No | Outbound message channel. Optional — omit to infer automatically: `rich_content` or `suggestions` present → RCS; otherwise SMS. Setting `SMS` explicitly with `rich_content` or `suggestions` present is rejected with `400`. Enum: `SMS`, `TTS`, `MMS`, `RCS`. See [Channel selection](#channel-selection). |
 | `fallback_message` | object | No | SMS fallback for an RCS message. Requires non-blank `content`, max 5000 characters. It never selects the channel. |
 | `suggestions` | array | No | Up to 10 tappable suggestions (`reply`, `url`, `dial`, `location`) on an RCS text message. Not supported with `rich_content`. See [RCS text with tappable suggestions](#rcs-text-with-tappable-suggestions). |
 | `rich_content` | object | Conditional | RCS rich content sent instead of `content`. Include exactly one of `media`, `card`, `carousel`, or `location`. Not supported with `content` or top-level `suggestions`. See [RCS rich media](#rcs-rich-media), [RCS rich card](#rcs-rich-card), [RCS carousel](#rcs-carousel), and [RCS location pin](#rcs-location-pin). |
@@ -401,7 +450,7 @@ None.
 
 Notes for implementers (schema cells above stay verbatim from the shared OpenAPI components):
 
-- On **this** endpoint, `format` selects the outbound channel. Use `SMS` (default), `MMS`, `TTS`, or `RCS`.
+- On **this** endpoint, `format` selects the outbound channel. When omitted, the channel is inferred: `rich_content` or `suggestions` present → RCS; otherwise SMS. See [Channel selection](#channel-selection).
 - From 1-Mar-2024, an SMS `source_number` or sender ID must be registered to your account.
 - `message_id` and `status` are response fields on the shared `Message` object. Do not send them on create; the API returns them.
 
@@ -652,7 +701,7 @@ More advanced delivery features can be specified by setting the following proper
 - `destination_number` The destination number the message should be delivered to. This should be specified in E.164 international format. For information on E.164, please refer to http://en.wikipedia.org/wiki/E.164. A destination number is required.  
   ⚠️ IMDA TLS Compliance Notice: From 1 April 2026, all requests sending messages to Singapore (+65) numbers must use TLS 1.3 or higher. Requests using an older TLS version will be rejected with HTTP 422 Unprocessable Entity.
 
-- `format` The format specifies which format the message will be sent as, `SMS` (text message), `MMS` (multimedia message), `TTS` (text to speech) or `RCS` (RCS message). With `TTS` format, we will call the destination number and read out the message using a computer generated voice. Specifying a format is optional, by default `SMS` will be used.
+- `format` The format specifies which format the message will be sent as: `SMS` (text message), `MMS` (multimedia message), `TTS` (text to speech), or `RCS` (RCS rich messaging). With `TTS` format, we will call the destination number and read out the message using a computer-generated voice. Specifying a format is optional — when omitted, the channel is inferred automatically: if `rich_content` or `suggestions` is present the message is sent as RCS; otherwise it is sent as SMS. Set `SMS` explicitly to enforce SMS — the request is rejected with `400` if `rich_content` or `suggestions` is also present. Set `RCS` to force RCS without relying on inference. `rich_link` is not rich content and never triggers RCS inference. See [Channel selection](#channel-selection).
 
 - `source_number_type` If a source number is specified, the type of source number may also be specified. This is recommended when using a source address type that is not an internationally formatted number, available options are `INTERNATIONAL`, `ALPHANUMERIC` or `SHORTCODE`. Specifying a source number type is only valid when the `source_number` parameter is specified and is optional. If a source number is specified and no source number type is specified, the source number type will be inferred from the source number, however this may be inaccurate.
 
