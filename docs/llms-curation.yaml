@@ -55,7 +55,7 @@ sections:
         description: Send SMS, MMS, TTS, and RCS messages (up to 100 per request), including RCS text with optional tappable suggestions, RCS rich media, RCS rich cards, RCS carousels, RCS location pins, and explicit SMS fallback for RCS; poll status or cancel a scheduled message by ID.
       - title: Delivery Reports
         path: docs/api/delivery-reports/index.md
-        description: Poll or receive webhooks for message delivery status changes as a message is processed toward a handset.
+        description: Poll or receive webhooks for message delivery status changes as a message is processed toward a handset. The callback URL webhook for a v1 RCS message includes the content, suggestions, and rich_content from the send.
       - title: Replies
         path: docs/api/replies/index.md
         description: Check and confirm inbound (MO) replies sent from a handset back to a previously sent message.

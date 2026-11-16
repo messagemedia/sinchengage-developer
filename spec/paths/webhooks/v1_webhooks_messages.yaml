@@ -237,6 +237,16 @@ post:
     | **Message Content**| $mtContent, $messageContent, $esc.json($!mtContent)
     *- when used in `JSON` encoded `template`*| `Hi Derp` | `DR` `MO` `MO MMS` |
 
+    | **RCS content**| $rcsContent, $jsonUtils.toJson($rcsContent) *- when
+    used in a JSON template*| `Hello world!` | `DR` |
+
+    | **RCS suggestions**| $rcsSuggestions, $jsonUtils.toJson($rcsSuggestions)
+    *- when used in a JSON template*| `[{"type":"reply","text":"Yes"}]` | `DR` |
+
+    | **RCS rich content**| $rcsRichContent,
+    $jsonUtils.toJson($rcsRichContent) *- when used in a JSON template*|
+    `{"card":{"title":"Hello"}}` | `DR` |
+
     | **Reply Content**| $moContent, $replyContent, $esc.json($!moContent) *-
     when used in `JSON` encoded `template`*| `Hello Derpina` | `MO` `MO MMS` |
 
@@ -248,6 +258,17 @@ post:
     `JSON` encoded `template`| <code>[<br>  {<br>    "content_type":
     "image/png",<br>    "content": "...",<br>    "original_name":
     "file.png"<br>  }<br>]</code> | `MO MMS` |
+
+
+    `$rcsContent`, `$rcsSuggestions`, and `$rcsRichContent` are set for a v1
+    RCS delivery report. On an SMS delivery of that RCS message they may
+    also be set; do not rely on them there. They are absent for SMS, MMS, and
+    TTS. Guard each with `#if` and embed it with `$jsonUtils.toJson(...)`.
+    The examples show that output. It is already a JSON value, so do not wrap
+    it in quotes. A bare `$rcsSuggestions` or `$rcsRichContent` is not JSON.
+    The sample delivery-report template below does
+    not include them. The webhook posted to a message's callback URL includes
+    `content`, `suggestions`, and `rich_content` for that RCS message.
 
 
     #### Example Webhook Request with Templates

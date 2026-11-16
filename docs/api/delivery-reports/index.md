@@ -65,6 +65,45 @@ _Note, multiple delivery report notifications will be received for a single mess
 }
 ```
 
+That example is an SMS delivery report. For a message delivered as RCS, `original_text` is omitted.
+
+For an RCS message sent with `POST /v1/messages` (`format` set to `RCS`, or RCS inferred from `rich_content` or `suggestions`), the webhook posted to that message's callback URL includes the `content`, `suggestions`, and `rich_content` from that send. Only a field that was on the message is present.
+
+```json
+{
+  "callback_url":"https://my.callback.url.com",
+  "delivery_report_id":"693e87f2-a553-4281-9ffe-ddf04cbc4bf3",
+  "source_number":"+61491570156",
+  "date_received":"2016-11-03T11:49:02.807Z",
+  "status":"delivered",
+  "delay":0,
+  "submitted_date":"2016-11-03T11:49:01.551Z",
+  "content":"Hello world!",
+  "suggestions":[
+    {
+      "type":"reply",
+      "text":"Yes",
+      "postback_data":"yes"
+    }
+  ],
+  "message_id":"389dc1a8-62a4-4110-ba61-af94806c006f",
+  "vendor_account_id":{
+    "vendor_id":"SinchEU",
+    "account_id":"MyAccount"
+  },
+  "error_code":"220",
+  "metadata":{
+    "key":"value"
+  }
+}
+```
+
+RCS text uses `content`. RCS text with tappable suggestions uses `content` and `suggestions`. A card, carousel, media file, or location pin uses `rich_content` and does not also include `content`. See [Send messages](../messages/send-messages.md).
+
+If that RCS message is delivered as SMS, the webhook stays an SMS delivery report, so `original_text` is included. The original RCS fields may also be included. Do not rely on them being present on an SMS delivery. `fallback_message` is not a field on the webhook.
+
+These fields are part of the callback URL webhook. `GET /v1/delivery_reports` does not return them. An account webhook uses the template you configure and does not include them until that template references `$rcsContent`, `$rcsSuggestions`, or `$rcsRichContent`. See [Create webhook](../webhooks-management/create-webhook.md).
+
 The properties included in the notification are as follows:
 
 * **Callback URL**: The URL specified as the callback URL in the original submit message request.
@@ -90,7 +129,13 @@ The properties included in the notification are as follows:
 
 * **Submitted Date**: Date time status of the message changed in UTC. For a delivered DR this may indicate the time at which the message was received on the handset.
 
-* **Original Text**: Text of the original message.
+* **Original Text**: Text of the original message. Omitted when the message is delivered as RCS.
+
+* **Content**: RCS message text. Present on the callback URL webhook when the RCS message included `content`.
+
+* **Suggestions**: Top-level RCS suggestions from the send. Present for RCS text that included `suggestions`. Suggestions on a card or carousel stay inside `rich_content`.
+
+* **Rich Content**: RCS `rich_content` from the send (`media`, `card`, `carousel`, or `location`). Present when the RCS message included `rich_content`.
 
 * **Message ID**: ID of the original message.
 

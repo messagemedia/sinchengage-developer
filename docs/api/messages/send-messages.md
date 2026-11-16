@@ -398,6 +398,8 @@ The following are rejected with `400`, and no messages in the batch are sent:
 
 RCS delivery reports and replies appear in the account's existing `GET /v1/delivery-reports` and `GET /v1/replies` polling responses. Polling is account-scoped: an existing poller can receive RCS events after any client on that account starts sending RCS, and polling cannot be targeted or filtered per client. A per-message `callback_url` does not change that polling scope.
 
+The webhook posted to that callback URL includes `content`, `suggestions`, and `rich_content` from the send. Only a field that was on the message is present. `GET /v1/delivery_reports` does not return those fields. See [Delivery Reports](../delivery-reports/index.md).
+
 ## Authentication
 
 - **Basic Auth**: HTTP Basic authentication using your API key as the username and API secret as the password. See the Basic Authentication guide.
