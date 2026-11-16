@@ -99,11 +99,18 @@ sections:
       `suggestions` is rejected with 400. `suggestions` without `content` is
       also rejected (400: RCS content is required when body is not provided) —
       `rich_content` has no such restriction and alone satisfies the
-      sendable-content requirement. `fallback_message` never selects the channel
-      and does not satisfy `content`. `rich_link` is not rich content and never
-      triggers RCS inference. Delivery failures (recipient not RCS-capable, RCS
-      not enabled on the account) are reported in the delivery report, not as
-      request-time errors. Full truth table (T1–T8) and worked examples are in
+      sendable-content requirement. When `format` is omitted and `rich_content` is present,
+      `content` is dropped: it is not sent, not returned, and not used as an
+      SMS fallback. Add `fallback_message` for an SMS fallback. With explicit
+      `format: "RCS"`, sending both `content` and `rich_content` is rejected
+      with 400. `fallback_message` never selects the channel and does not
+      satisfy `content`. With explicit `format: "SMS"`, `fallback_message` is
+      rejected with 400. `rich_link` is not rich content and never triggers RCS
+      inference. Request-time errors are 400 for T4–T6 and T8, and 402 Payment
+      Required when the message is sent as RCS (explicit or inferred) and the
+      account isn't enabled for RCS. Delivery failures (recipient not
+      RCS-capable) are reported in the delivery report, not as request-time
+      errors. Full truth table (T1–T8) and worked examples are in
       the Send messages endpoint page.
 
   - title: Code Samples
