@@ -6,6 +6,7 @@ description: >-
   not trigger RCS inference. When omitted, the RCS send is RCS-or-nothing: a
   non-capable recipient receives nothing, and the outcome is reported
   asynchronously in the delivery report rather than as a request-time error.
+  Rejected with `400` on an explicit `format: "SMS"` send.
 required:
   - content
 properties:

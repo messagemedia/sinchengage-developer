@@ -6,8 +6,10 @@ description: >-
   not need to set `format: "RCS"` explicitly. Setting `format: "SMS"` together
   with `rich_content` is rejected with `400`, whether or not `content` is
   present. Include exactly one of `media`, `card`, `carousel`, or `location`.
-  Do not combine it with `content` or top-level `suggestions`. `fallback_message`
-  is supported and is sent as plain SMS text.
+  With explicit `format: "RCS"`, combining it with `content` or top-level
+  `suggestions` is rejected with `400`. When `format` is omitted, `content` is
+  dropped and is not used as a fallback. `fallback_message` is supported and is
+  sent as plain SMS text.
 additionalProperties: false
 properties:
   media:
