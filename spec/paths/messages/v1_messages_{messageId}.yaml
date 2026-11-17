@@ -58,6 +58,98 @@ get:
         application/json:
           schema:
             $ref: ../../components/schemas/messages/Getmessagestatusresponse.yaml
+          examples:
+            sms:
+              summary: SMS message
+              value:
+                format: SMS
+                content: My first message!
+                message_id: 877c19ef-fa2e-4cec-827a-e1df9b5509f7
+                delivery_report: true
+                destination_number: "+61401760575"
+                source_number: "+61491570157"
+                source_number_type: INTERNATIONAL
+                status: enroute
+            rcsRichMedia:
+              summary: RCS rich media with an SMS fallback
+              value:
+                format: RCS
+                rich_content:
+                  media:
+                    url: https://cdn.example.com/promo.png
+                    filename_override: promo.png
+                fallback_message:
+                  content: Check out our promo
+                message_id: b2587d8d-2461-45d4-8893-0000361e17e0
+                destination_number: "+61491570156"
+                source_number: MyBrand
+                source_number_type: ALPHANUMERIC
+                status: delivered
+            rcsRichCard:
+              summary: RCS rich card with nested suggestions
+              value:
+                format: RCS
+                rich_content:
+                  card:
+                    title: Order #1234 shipped
+                    description: Estimated delivery
+                    height: MEDIUM
+                    media:
+                      url: https://cdn.example.com/parcel.png
+                    suggestions:
+                      - type: reply
+                        text: Track
+                        postback_data: TRACK_1234
+                      - type: url
+                        text: View order
+                        url: https://example.com/o/1234
+                message_id: b2588d8d-2461-45d4-8893-0000361e17e0
+                destination_number: "+61491570156"
+                status: delivered
+            rcsCarousel:
+              summary: RCS carousel with per-card suggestions and carousel choices
+              value:
+                format: RCS
+                rich_content:
+                  carousel:
+                    cards:
+                      - title: Order #1234
+                        description: Shipped
+                        suggestions:
+                          - type: reply
+                            text: Track
+                            postback_data: TRACK_1234
+                      - title: Order #5678
+                        description: Out for delivery
+                        suggestions:
+                          - type: reply
+                            text: Track
+                            postback_data: TRACK_5678
+                    choices:
+                      - type: reply
+                        text: All orders
+                        postback_data: ALL_ORDERS
+                message_id: b2589d8d-2461-45d4-8893-0000361e17e0
+                destination_number: "+61491570156"
+                status: delivered
+            rcsRichLocation:
+              summary: RCS location pin with an SMS fallback
+              value:
+                format: RCS
+                rich_content:
+                  location:
+                    coordinates:
+                      latitude: -37.8136
+                      longitude: 144.9631
+                    title: Melbourne CBD store
+                    label: Store entrance
+                fallback_message:
+                  content: Find us at Melbourne CBD store
+                message_id: b2591d8d-2461-45d4-8893-0000361e17e0
+                destination_number: "+61491570156"
+                source_number: MyBrand
+                source_number_type: ALPHANUMERIC
+                status: delivered
     "401":
       description: Unauthorized
       content:

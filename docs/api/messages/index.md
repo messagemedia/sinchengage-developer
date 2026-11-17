@@ -22,7 +22,7 @@ The Sinch Messages API provides a number of endpoints for building powerful two-
 
 | Goal | Endpoint |
 |------|----------|
-| Submit SMS, MMS, or TTS for delivery (up to 100 per request) | [Send messages](send-messages.md) |
+| Submit SMS, MMS, TTS, or RCS for delivery (up to 100 per request) | [Send messages](send-messages.md) |
 | Look up current status by `message_id` (retained 45 days) | [Get message status](get-message-status.md) |
 | Cancel a message that is still `scheduled` | [Cancel scheduled message](cancel-scheduled-message.md) |
 

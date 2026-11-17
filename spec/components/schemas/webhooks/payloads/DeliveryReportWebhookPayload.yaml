@@ -14,9 +14,17 @@ description: >-
   if you want them: `$billingUnits` (billing units for the report, which also
   requires the "Enable billing units in Delivery Reports and Callbacks"
   switch in your account's API settings), `$retryCount` (webhook delivery
-  retry count), and `$format` (service type; the older `$type` alias is
-  deprecated). See the Template Parameters table on the Create webhook
-  operation for the full list.
+  retry count), `$format` (service type; the older `$type` alias is
+  deprecated), and, for a v1 RCS delivery report, `$rcsContent`,
+  `$rcsSuggestions`, and `$rcsRichContent` (the sent `content`,
+  `suggestions`, and `rich_content`; embed each with
+  `$jsonUtils.toJson(...)`). On an SMS delivery of that RCS message those
+  variables may also be set, so do not rely on them there. They are absent
+  for SMS, MMS, and TTS. The webhook posted to
+  a message's callback URL already includes `content`, `suggestions`, and
+  `rich_content` for that RCS message; this sample template does not. See
+  the Template Parameters table on the Create webhook operation for the
+  full list.
 properties:
   delivery_report_id:
     type: string

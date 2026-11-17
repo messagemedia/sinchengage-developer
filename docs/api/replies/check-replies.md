@@ -46,6 +46,8 @@ Return unconfirmed inbound replies (MO) for the account. Max 100 per response. S
 
 Note: In a reply, source and destination numbers are inverted relative to the original outbound message. If the original message had no `source_number`, `destination_number` may be absent on the reply.
 
+An RCS reply uses `body` and has no `content`. Free text is `body: [{ "type": "text_response", "value": "..." }]`. A suggestion tap is not returned by this endpoint; it is delivered on the reply webhook under `contact_message.choice_response_message`, including `postback_data` when the suggestion had one. Polling is account-scoped, so a client can receive RCS free-text replies from any send on the same account.
+
 ## Authentication
 
 - **Basic Auth**: HTTP Basic authentication using your API key as the username and API secret as the password. See the Basic Authentication guide.

@@ -6,7 +6,7 @@ post:
     - Messages
   summary: Send messages
   description: >
-    Submit one or more (up to 100 per request) SMS, MMS or text to voice
+    Submit one or more (up to 100 per request) SMS, MMS, text to voice or RCS
 
     messages for delivery.
 
@@ -53,7 +53,15 @@ post:
 
     - ```content``` The content of the message. This can be a Unicode string, up
     to 5,000 characters long.
-      Message content is required.
+      Message content is required, except on an RCS message that sends ```rich_content``` instead.
+
+    - ```rich_content``` RCS only. Send an image or file as ```rich_content.media```,
+
+    a rich card as ```rich_content.card```, a carousel of cards as
+
+    ```rich_content.carousel```, or a location pin as
+    ```rich_content.location```, instead of ```content```. See the
+    ```Message``` schema for its fields.
 
     - ```delivery_report``` Delivery reports can be requested with each
 
@@ -75,11 +83,18 @@ post:
     Entity.
 
 
-    - ```format``` The format specifies which format the message will be
-
-    sent as, ```SMS``` (text message), ```MMS``` (multimedia message)
-      or ```TTS``` (text to speech). With ```TTS``` format, we will call the destination number and read out the
-      message using a computer generated voice. Specifying a format is optional, by default ```SMS``` will be used.
+    - ```format``` The format specifies which format the message will be sent
+    as: ```SMS``` (text message), ```MMS``` (multimedia message), ```TTS```
+    (text to speech), or ```RCS``` (RCS rich messaging). With ```TTS``` format,
+    we will call the destination number and read out the message using a
+    computer-generated voice. Specifying a format is optional — when omitted,
+    the channel is inferred from the payload: if ```rich_content``` or
+    ```suggestions``` is present the message is sent as RCS; otherwise it is
+    sent as SMS. Set ```SMS``` explicitly to enforce SMS — the request is
+    rejected with ```400``` if ```rich_content``` or ```suggestions``` is also
+    present. Set ```RCS``` to force RCS without relying on inference.
+    ```rich_link``` is not rich content and never triggers RCS inference. See
+    **Channel selection** below.
 
     - ```source_number_type``` If a source number is specified, the type of
 
@@ -174,6 +189,56 @@ post:
 
     to be successful. If any messages in the request are invalid, no messages
     will be sent.*
+
+
+    ## Channel selection
+
+
+    The `format` field is optional. When omitted the channel is inferred from
+    the payload:
+
+
+    | # | `format` | Rich content present (`rich_content` or `suggestions`) | `content` present | Outcome |
+
+    |---|----------|-------------------------------------------------------|-------------------|---------|
+
+    | T1 | omitted | ✓ | ✓ | Sent as RCS. With `suggestions`, `content` is the text the suggestions sit under. With `rich_content`, `content` is dropped (see note). |
+
+    | T2 | omitted | ✓ | ✗ | Sent as RCS (`rich_content` satisfies sendable-content; `suggestions`-only rejected with 400) |
+
+    | T3 | omitted | ✗ | ✓ | Sent as SMS |
+
+    | T4 | omitted | ✗ | ✗ | 400 — no sendable content |
+
+    | T5 | SMS | ✓ | ✓ | 400 — rich content incompatible with explicit SMS |
+
+    | T6 | SMS | ✓ | ✗ | 400 — rich content incompatible with explicit SMS |
+
+    | T7 | SMS | ✗ | ✓ | Sent as SMS |
+
+    | T8 | SMS | ✗ | ✗ | 400 — no sendable content |
+
+
+    **Request-time errors** are returned immediately, and no messages in the
+    batch are sent: 400 for T4–T6 and T8, and 402 Payment Required when the
+    message is sent as RCS (explicit or inferred) and the account isn't enabled
+    for RCS. **Delivery-report failures** (recipient not RCS-capable) are
+    reported asynchronously in the delivery report, not as a request-time
+    error.
+
+
+    `content` with `rich_content` (T1): when `format` is omitted, the message
+    is sent as RCS using `rich_content` only. `content` is dropped: it isn't
+    sent, isn't returned on the 202 response or by Get message status, and
+    isn't used as an SMS fallback. Add `fallback_message` to send an SMS when
+    the recipient can't receive RCS. With explicit `format: "RCS"`, sending
+    both `content` and `rich_content` is rejected with 400.
+
+
+    `fallback_message` never selects the channel and does not satisfy
+    `content`. With explicit `format: "SMS"`, `fallback_message` is rejected
+    with 400, as it isn't part of an SMS message. `rich_link` is not rich
+    content and never triggers RCS inference.
   operationId: SendMessages
   parameters: []
   requestBody:
@@ -182,36 +247,162 @@ post:
       application/json:
         schema:
           $ref: ../../components/schemas/messages/Sendmessagesrequest.yaml
-        example:
-          messages:
-            - callback_url: https://my.callback.url.com
-              content: My first message
-              destination_number: "+61491570156"
-              delivery_report: true
-              format: SMS
-              message_expiry_timestamp: "2016-11-03T11:49:02.807Z"
-              metadata:
-                key1: value1
-                key2: value2
-              scheduled: "2016-11-03T11:49:02.807Z"
-              source_number: "+61491570157"
-              source_number_type: INTERNATIONAL
-            - callback_url: https://my.callback.url.com
-              content: My second message
-              destination_number: "+61491570158"
-              delivery_report: true
-              format: MMS
-              subject: This is an MMS message
-              media:
-                - >-
-                  https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg
-              message_expiry_timestamp: "2016-11-03T11:49:02.807Z"
-              metadata:
-                key1: value1
-                key2: value2
-              scheduled: "2016-11-03T11:49:02.807Z"
-              source_number: "+61491570159"
-              source_number_type: INTERNATIONAL
+        examples:
+          standardMessages:
+            summary: SMS and MMS
+            value:
+              messages:
+                - callback_url: https://my.callback.url.com
+                  content: My first message
+                  destination_number: "+61491570156"
+                  delivery_report: true
+                  format: SMS
+                  source_number: "+61491570157"
+                  source_number_type: INTERNATIONAL
+                - content: My second message
+                  destination_number: "+61491570158"
+                  format: MMS
+                  subject: This is an MMS message
+                  media:
+                    - https://cdn.example.com/image.jpg
+          inferredRcs:
+            summary: RCS inferred from rich content (no format required)
+            value:
+              messages:
+                - destination_number: "+61491570156"
+                  rich_content:
+                    media:
+                      url: https://cdn.example.com/promo.png
+                  fallback_message:
+                    content: Check out our promo
+          plainRcsText:
+            summary: Plain RCS text with an optional SMS fallback
+            value:
+              messages:
+                - content: Hello from our RCS channel!
+                  destination_number: "+61491570156"
+                  format: RCS
+                  fallback_message:
+                    content: Hello from us!
+                  source_number: MyBrand
+                  source_number_type: ALPHANUMERIC
+          rcsWithSuggestions:
+            summary: RCS text with tappable suggestions
+            value:
+              messages:
+                - content: Need help with your order?
+                  destination_number: "+61491570156"
+                  format: RCS
+                  suggestions:
+                    - type: reply
+                      text: Talk to support
+                      postback_data: SUPPORT
+                    - type: url
+                      text: View help
+                      url: https://example.com/help
+                    - type: dial
+                      text: Call us
+                      phone_number: "+61391570100"
+                    - type: location
+                      text: Find store
+                      coordinates:
+                        latitude: -37.8136
+                        longitude: 144.9631
+                      label: Melbourne CBD
+          rcsRichMedia:
+            summary: RCS rich media with an optional SMS fallback
+            value:
+              messages:
+                - destination_number: "+61491570156"
+                  format: RCS
+                  rich_content:
+                    media:
+                      url: https://cdn.example.com/promo.png
+                      thumbnail_url: https://cdn.example.com/promo_thumb.png
+                      filename_override: promo.png
+                  fallback_message:
+                    content: Check out our promo
+                  source_number: MyBrand
+                  source_number_type: ALPHANUMERIC
+          rcsRichCard:
+            summary: RCS rich card with nested suggestions and an optional SMS fallback
+            value:
+              messages:
+                - destination_number: "+61491570156"
+                  format: RCS
+                  rich_content:
+                    card:
+                      title: Order #1234 shipped
+                      description: 'Estimated delivery: Fri 11 Jul'
+                      height: MEDIUM
+                      media:
+                        url: https://cdn.example.com/parcel.png
+                        thumbnail_url: https://cdn.example.com/parcel_thumb.png
+                        filename_override: parcel.png
+                      suggestions:
+                        - type: reply
+                          text: Track
+                          postback_data: TRACK_1234
+                        - type: url
+                          text: View order
+                          url: https://example.com/o/1234
+                  fallback_message:
+                    content: Your order #1234 has shipped
+                  source_number: MyBrand
+                  source_number_type: ALPHANUMERIC
+          rcsCarousel:
+            summary: RCS carousel with per-card suggestions, carousel choices and an optional SMS fallback
+            value:
+              messages:
+                - destination_number: "+61491570156"
+                  format: RCS
+                  rich_content:
+                    carousel:
+                      cards:
+                        - title: Order #1234
+                          description: Shipped
+                          height: MEDIUM
+                          media:
+                            url: https://cdn.example.com/parcel.png
+                            thumbnail_url: https://cdn.example.com/parcel_thumb.png
+                          suggestions:
+                            - type: reply
+                              text: Track
+                              postback_data: TRACK_1234
+                            - type: url
+                              text: View
+                              url: https://example.com/o/1234
+                        - title: Order #5678
+                          description: Out for delivery
+                          suggestions:
+                            - type: reply
+                              text: Track
+                              postback_data: TRACK_5678
+                      choices:
+                        - type: reply
+                          text: All orders
+                          postback_data: ALL_ORDERS
+                  fallback_message:
+                    content: Your orders have shipped
+                  source_number: MyBrand
+                  source_number_type: ALPHANUMERIC
+          rcsRichLocation:
+            summary: RCS location pin with an optional SMS fallback
+            value:
+              messages:
+                - destination_number: "+61491570156"
+                  format: RCS
+                  rich_content:
+                    location:
+                      coordinates:
+                        latitude: -37.8136
+                        longitude: 144.9631
+                      title: Melbourne CBD store
+                      label: Store entrance
+                  fallback_message:
+                    content: Find us at Melbourne CBD store
+                  source_number: MyBrand
+                  source_number_type: ALPHANUMERIC
     required: true
   responses:
     "202":
@@ -254,9 +445,25 @@ post:
                 details:
                   - >-
                     /messages/0/callbackUrl: Invalid callback url
+            richContentWithContent:
+              summary: RCS rich_content combined with content
+              value:
+                message: >-
+                  Request failed to parse correctly. Please ensure input is valid
+                  and try again.
+                details:
+                  - '/messages/0/: content conflicts with rich_content'
     "401":
       description: Unauthorized
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/403response.yaml
+    "402":
+      description: >-
+        The account is not enabled to send RCS. Contact your account manager
+        to have RCS enabled.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/400response.yaml

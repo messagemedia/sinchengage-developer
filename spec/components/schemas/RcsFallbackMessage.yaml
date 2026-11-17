@@ -1,0 +1,18 @@
+title: RcsFallbackMessage
+type: object
+description: >-
+  Optional SMS fallback for an RCS message. It never selects the outbound
+  channel and does not satisfy the `content` field — its presence alone does
+  not trigger RCS inference. When omitted, the RCS send is RCS-or-nothing: a
+  non-capable recipient receives nothing, and the outcome is reported
+  asynchronously in the delivery report rather than as a request-time error.
+  Rejected with `400` on an explicit `format: "SMS"` send.
+required:
+  - content
+properties:
+  content:
+    type: string
+    minLength: 1
+    maxLength: 5000
+    description: Text sent as SMS when the recipient cannot receive RCS.
+    example: Hello from us!

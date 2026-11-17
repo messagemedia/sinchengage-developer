@@ -52,10 +52,10 @@ sections:
     links:
       - title: Messages
         path: docs/api/messages/index.md
-        description: Send SMS, MMS, and TTS messages (up to 100 per request, content up to 5,000 characters, destination in E.164 format); poll status or cancel a scheduled message by ID.
+        description: Send SMS, MMS, TTS, and RCS messages (up to 100 per request), including RCS text with optional tappable suggestions, RCS rich media, RCS rich cards, RCS carousels, RCS location pins, and explicit SMS fallback for RCS; poll status or cancel a scheduled message by ID.
       - title: Delivery Reports
         path: docs/api/delivery-reports/index.md
-        description: Poll or receive webhooks for message delivery status changes as a message is processed toward a handset.
+        description: Poll or receive webhooks for message delivery status changes as a message is processed toward a handset. The callback URL webhook for a v1 RCS message includes the content, suggestions, and rich_content from the send.
       - title: Replies
         path: docs/api/replies/index.md
         description: Check and confirm inbound (MO) replies sent from a handset back to a previously sent message.
@@ -89,6 +89,29 @@ sections:
       - title: Credits
         path: docs/api/credits/index.md
         description: Get the credit balance for an account (GET /v1/credits_management/account), including remaining MT SMS and MT MMS credits and expiry.
+
+  - title: Channel selection
+    note: >-
+      The `format` field on a send-message request is optional. When omitted
+      the channel is inferred from the payload: if `rich_content` or
+      `suggestions` is present the message is sent as RCS; otherwise it is sent
+      as SMS. Setting `format: "SMS"` together with `rich_content` or
+      `suggestions` is rejected with 400. `suggestions` without `content` is
+      also rejected (400: RCS content is required when body is not provided) —
+      `rich_content` has no such restriction and alone satisfies the
+      sendable-content requirement. When `format` is omitted and `rich_content` is present,
+      `content` is dropped: it is not sent, not returned, and not used as an
+      SMS fallback. Add `fallback_message` for an SMS fallback. With explicit
+      `format: "RCS"`, sending both `content` and `rich_content` is rejected
+      with 400. `fallback_message` never selects the channel and does not
+      satisfy `content`. With explicit `format: "SMS"`, `fallback_message` is
+      rejected with 400. `rich_link` is not rich content and never triggers RCS
+      inference. Request-time errors are 400 for T4–T6 and T8, and 402 Payment
+      Required when the message is sent as RCS (explicit or inferred) and the
+      account isn't enabled for RCS. Delivery failures (recipient not
+      RCS-capable) are reported in the delivery report, not as request-time
+      errors. Full truth table (T1–T8) and worked examples are in
+      the Send messages endpoint page.
 
   - title: Code Samples
     note: >-

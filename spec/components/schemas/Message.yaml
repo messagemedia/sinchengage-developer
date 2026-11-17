@@ -1,6 +1,5 @@
 title: Message
 required:
-  - content
   - destination_number
 type: object
 properties:
@@ -16,7 +15,12 @@ properties:
     maxLength: 5000
     minLength: 1
     type: string
-    description: Content of the message
+    description: >-
+      Content of the message. Required for SMS, MMS, TTS, and RCS text. RCS
+      content has a 2,000-character maximum. Omit this field when sending RCS
+      `rich_content`. Rich content (`rich_content` or `suggestions`) does not
+      substitute for this field on an explicit `format: "SMS"` send — such
+      requests are rejected with `400`.
     example: Hello world!
   destination_number:
     maxLength: 15
@@ -30,6 +34,12 @@ properties:
     example: false
   format:
     $ref: ./_format-schemas.yaml#/Format
+  fallback_message:
+    $ref: ./RcsFallbackMessage.yaml
+  suggestions:
+    $ref: ./RcsSuggestions.yaml
+  rich_content:
+    $ref: ./RcsRichContent.yaml
   message_expiry_timestamp:
     type: string
     description: Date time after which the message expires and will not be sent
@@ -60,6 +70,9 @@ properties:
     example: '2016-11-03T11:49:02.807Z'
   source_number:
     type: string
+    description: >-
+      SMS sender used only when an RCS message falls back to SMS.
+      Accepted but unused when `fallback_message` is omitted.
     example: '+61491570156'
   source_number_type:
     $ref: ./SourceNumberType.yaml
