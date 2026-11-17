@@ -73,10 +73,15 @@ Keep in mind, if you've chosen JSON as the format, you must escape the JSON in t
 | Source Address | `$sourceAddress` | `+61491570156` | DR, MO, MO MMS |
 | Destination Address | `$destinationAddress` | `+61491593156` | MO, MO MMS |
 | Message Content | `$mtContent`, `$messageContent`, `$esc.json($!mtContent)` *- when used in `JSON` encoded `template`* | `Hi Derp` | DR, MO, MO MMS |
+| RCS content | `$rcsContent`, `$jsonUtils.toJson($rcsContent)` *- when used in a JSON template* | `Hello world!` | DR |
+| RCS suggestions | `$rcsSuggestions`, `$jsonUtils.toJson($rcsSuggestions)` *- when used in a JSON template* | `[{"type":"reply","text":"Yes"}]` | DR |
+| RCS rich content | `$rcsRichContent`, `$jsonUtils.toJson($rcsRichContent)` *- when used in a JSON template* | `{"card":{"title":"Hello"}}` | DR |
 | Reply Content | `$moContent`, `$replyContent`, `$esc.json($!moContent)` *- when used in `JSON` encoded `template`* | `Hello Derpina` | MO, MO MMS |
 | Retry Count | `$retryCount` | `1` | DR, MO, MO MMS |
 | Billing Unit | `$billingUnits` | `1` | DR |
 | Attachments | `$attachments` | See spec for JSON template example | MO MMS |
+
+`$rcsContent`, `$rcsSuggestions`, and `$rcsRichContent` are set for a v1 RCS delivery report. On an SMS delivery of that RCS message they may also be set; do not rely on them there. They are absent for SMS, MMS, and TTS. Guard each with `#if` and embed it with `$jsonUtils.toJson(...)`. The examples show that output. It is already a JSON value, so do not wrap it in quotes. A bare `$rcsSuggestions` or `$rcsRichContent` is not JSON. The example template above does not include them. The webhook posted to a message's callback URL includes `content`, `suggestions`, and `rich_content` for that RCS message. See [Delivery Reports](../delivery-reports/index.md).
 
 #### Message Statuses
 
