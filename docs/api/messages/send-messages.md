@@ -33,7 +33,7 @@ The `format` field is optional. When omitted, the channel is inferred automatica
 
 | # | `format` | Rich content present<br>(`rich_content` or `suggestions`) | `content` present | Outcome |
 |---|----------|----------------------------------------------------------|-------------------|---------|
-| T1 | omitted | ✓ | ✓ | Sent as **RCS** |
+| T1 | omitted | ✓ | ✓ | Sent as **RCS**. With `suggestions`, `content` is the text the suggestions sit under. With `rich_content`, `content` is dropped (see note). |
 | T2 | omitted | ✓ | ✗ | Sent as **RCS** (`rich_content` satisfies sendable-content; `suggestions`-only rejected — see note) |
 | T3 | omitted | ✗ | ✓ | Sent as **SMS** |
 | T4 | omitted | ✗ | ✗ | **400** — no sendable content |
@@ -42,13 +42,15 @@ The `format` field is optional. When omitted, the channel is inferred automatica
 | T7 | `SMS` | ✗ | ✓ | Sent as **SMS** |
 | T8 | `SMS` | ✗ | ✗ | **400** — no sendable content |
 
-**Request-time `400` errors** (T4–T6, T8) are returned immediately — no messages in the batch are sent.
+**Request-time errors** are returned immediately, and no messages in the batch are sent: `400` for T4–T6 and T8, and `402 Payment Required` when the message is sent as RCS (explicit or inferred) and the account isn't enabled for RCS.
 
-**Delivery-report failures** (recipient not RCS-capable, RCS not enabled on the account) are reported asynchronously in the delivery report, not as a request-time error.
+**Delivery-report failures** (recipient not RCS-capable) are reported asynchronously in the delivery report, not as a request-time error.
 
 > **`suggestions` without `content` (T2 edge case):** Top-level `suggestions` are attached to the `content` text bubble. A `suggestions`-only message with no `content` is rejected with `400`: `RCS content is required when body is not provided`. `rich_content` has no such restriction — it alone satisfies the sendable-content requirement.
 
-> **`fallback_message`:** Never selects the channel and does not satisfy `content`. Its presence alone does not trigger RCS inference.
+> **`content` with `rich_content` (T1):** When `format` is omitted, the message is sent as RCS using `rich_content` only. `content` is dropped: it isn't sent, isn't returned on the `202` response or by Get message status, and isn't used as an SMS fallback. Add `fallback_message` to send an SMS when the recipient can't receive RCS. With explicit `format: "RCS"`, sending both `content` and `rich_content` is rejected with `400`.
+
+> **`fallback_message`:** Never selects the channel and does not satisfy `content`. Its presence alone does not trigger RCS inference. With explicit `format: "SMS"`, `fallback_message` is rejected with `400`, as it isn't part of an SMS message.
 
 > **`rich_link`:** Not rich content. Never triggers RCS inference and never rejected under `format: "SMS"`.
 

@@ -202,7 +202,7 @@ post:
 
     |---|----------|-------------------------------------------------------|-------------------|---------|
 
-    | T1 | omitted | ✓ | ✓ | Sent as RCS |
+    | T1 | omitted | ✓ | ✓ | Sent as RCS. With `suggestions`, `content` is the text the suggestions sit under. With `rich_content`, `content` is dropped (see note). |
 
     | T2 | omitted | ✓ | ✗ | Sent as RCS (`rich_content` satisfies sendable-content; `suggestions`-only rejected with 400) |
 
@@ -219,15 +219,26 @@ post:
     | T8 | SMS | ✗ | ✗ | 400 — no sendable content |
 
 
-    **Request-time 400 errors** (T4, T5, T6, T8) are returned immediately —
-    no messages in the batch are sent. **Delivery-report failures** (recipient
-    not RCS-capable, RCS not enabled on the account) are reported
-    asynchronously in the delivery report, not as a request-time error.
+    **Request-time errors** are returned immediately, and no messages in the
+    batch are sent: 400 for T4–T6 and T8, and 402 Payment Required when the
+    message is sent as RCS (explicit or inferred) and the account isn't enabled
+    for RCS. **Delivery-report failures** (recipient not RCS-capable) are
+    reported asynchronously in the delivery report, not as a request-time
+    error.
+
+
+    `content` with `rich_content` (T1): when `format` is omitted, the message
+    is sent as RCS using `rich_content` only. `content` is dropped: it isn't
+    sent, isn't returned on the 202 response or by Get message status, and
+    isn't used as an SMS fallback. Add `fallback_message` to send an SMS when
+    the recipient can't receive RCS. With explicit `format: "RCS"`, sending
+    both `content` and `rich_content` is rejected with 400.
 
 
     `fallback_message` never selects the channel and does not satisfy
-    `content`. `rich_link` is not rich content and never triggers RCS
-    inference.
+    `content`. With explicit `format: "SMS"`, `fallback_message` is rejected
+    with 400, as it isn't part of an SMS message. `rich_link` is not rich
+    content and never triggers RCS inference.
   operationId: SendMessages
   parameters: []
   requestBody:
