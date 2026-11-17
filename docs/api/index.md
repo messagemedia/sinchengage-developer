@@ -36,7 +36,7 @@ Sinch Engage API documentation generated from the OpenAPI specification.
 
 | Service | Description |
 |---------|-------------|
-| [Contacts](contacts/index.md) | The API provides access to two main resources: Contacts, Lists, and Custom Fields. |
+| [Contacts](contacts/index.md) | The API provides access to two main resources: Contacts, Lists, and Custom Fields. Create, update and delete requests are rate limited to 20 requests per second per account and 100 requests per second across all accounts; requests over the limit get HTTP 429 with a `Retry-After` header. |
 
 ## Accounts
 

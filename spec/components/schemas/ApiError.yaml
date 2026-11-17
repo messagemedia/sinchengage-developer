@@ -26,6 +26,7 @@ properties:
       - bad_gateway
       - payment_required
       - unauthorized
+      - too_many_requests
       - unknown
   title:
     type: string
