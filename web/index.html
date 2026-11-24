@@ -84,6 +84,50 @@
           margin: 8px 0 0 auto;
         }
       }
+
+      /* --- Example picker in Request/Response samples (MAPI-2709) ---
+         ReDoc only renders this picker when an operation has more than one
+         named example, and its default style is easy to miss. ReDoc's class
+         names are generated, so target the stable `select.dropdown-select`
+         and its wrapper/label via :has(). */
+      div:has(> span + div > select.dropdown-select) {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      div:has(> span + div > select.dropdown-select) > span {
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        text-transform: none !important;
+      }
+      div:has(> span + div > select.dropdown-select) > span::after {
+        /* The space after the escape is consumed by it, so two are needed. */
+        content: " \2014  choose one";
+        font-weight: 400;
+        color: #c7d2fe;
+      }
+      div:has(> select.dropdown-select) {
+        border: 1px solid #8b9cff !important;
+        border-radius: 6px !important;
+        background: rgba(139, 156, 255, 0.15) !important;
+        padding: 6px 10px !important;
+        cursor: pointer;
+      }
+      div:has(> select.dropdown-select):hover,
+      div:has(> select.dropdown-select:focus-visible) {
+        background: rgba(139, 156, 255, 0.28) !important;
+      }
+      select.dropdown-select {
+        cursor: pointer;
+      }
+
+      /* Keep field names (first column) on one line in tables on
+         description-only pages such as the message type pages. */
+      [data-section-id^="tag/"] td:first-child code {
+        white-space: nowrap;
+        word-break: normal;
+      }
     </style>
     {{{redocHead}}}
   </head>
