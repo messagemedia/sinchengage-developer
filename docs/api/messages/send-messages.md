@@ -1,6 +1,6 @@
 # Send messages
 
-Submit one or more (up to 100 per request) SMS, MMS, text-to-speech, or RCS messages for delivery.
+Submit one or more (up to 100 per request) SMS, MMS, text-to-speech (TTS) or RCS messages for delivery.
 
 | | |
 |---|---|
@@ -18,389 +18,78 @@ Submit one or more (up to 100 per request) SMS, MMS, text-to-speech, or RCS mess
 {
   "messages": [
     {
-      "content": "My first message!",
+      "content": "Your appointment is confirmed for Tuesday at 10am.",
       "destination_number": "+61491570156"
     }
   ]
 }
 ```
 
-On success, each returned message includes `message_id` (UUID) and `status` (`queued`). Use [Get message status](get-message-status.md) to poll later. If any message in the batch is invalid, **no** messages are sent.
+### Message types
+
+Every message needs `destination_number`. Choose the type with `format`, then add that type's fields. See [Example request bodies](#example-request-bodies) for a payload for each type.
+
+| Type | `format` | Required | Type-specific fields | Reference |
+|---|---|---|---|---|
+| SMS | `SMS`, or omitted | `content` | — | [SMS messages](sms-messages.md) |
+| MMS | `MMS` | `content` | `media`, `subject` | [MMS messages](mms-messages.md) |
+| TTS | `TTS` | `content` | — | [Text-to-speech messages](text-to-speech-messages.md) |
+| RCS | `RCS`, or omitted with `rich_content` or `suggestions` | `content` or `rich_content` | `suggestions`, `rich_content`, `fallback_message` | [RCS messages](rcs-messages.md) |
+
+### Options for every type
+
+- `callback_url`: URL that receives webhooks for this message: delivery reports (when `delivery_report` is `true`) and replies. It must use the `http` or `https` scheme, the hostname must conform to RFC 1123 DNS name syntax, and the path must not contain whitespace or control characters. A malformed value is rejected with `400` and no messages are sent.
+- `delivery_report`: set to `true` to request delivery reports. Default `false`. You can also retrieve the current status with the Delivery Reports endpoints.
+- `scheduled`: future send time, ISO 8601 in UTC. When omitted, the message is sent immediately.
+- `message_expiry_timestamp`: latest delivery time, ISO 8601 in UTC. Undelivered messages are discarded after it.
+- `metadata`: up to 10 key/value pairs (key up to 100 characters, value up to 256 characters), returned with delivery reports and replies.
+- `source_number` / `source_number_type`: the sender. `source_number_type` is `INTERNATIONAL`, `ALPHANUMERIC` or `SHORTCODE`, is only valid with `source_number`, and is inferred from the number when omitted (which may be inaccurate). See the next section.
+
+### Source number (sender ID)
+
+The number or sender ID shown as the source of an outbound message.
+
+- If you don't specify a source number, the message is sent from your account's default number. The default may be a number you have purchased, such as a dedicated number, a 10-digit longcode or toll-free number (US/CA), or a shortcode. Log in to the web portal to manage your numbers.
+- If your account has multiple numbers, specify which one to use with `source_number`.
+- If your account has no number, the message may be sent from our shared number pool (in certain countries only).
+- **Alpha tag:** in some countries (AU, GB and others), you can send from an alpha tag that represents your brand or business. Register it in the Numbers section of the web portal before using it.
+- **Other numbers:** you can use numbers that you own as the source number, but you must register them in the Numbers section of the web portal to confirm you have the right to use them.
+- To register many source numbers or sender IDs, use the [Source Address API](../source-address/index.md).
+
+⚠️ The number or sender ID must be registered to your account (from 1-Mar-2024).
+
+⚠️ If you specify a `source_number` that isn't registered to your account, the message may fail to send, or may be sent from an alternative number.
+
+### Response
+
+A successful request returns `202` with a `messages` list that mirrors your request. Each message also has a `message_id` (a 36-character UUID) and a `status`, which is always `queued` at submission. Use `message_id` with [Get message status](get-message-status.md) to check progress.
+
+### Batches
+
+When you send multiple messages in one request, all messages must be valid for the request to succeed. If any message is invalid, no messages are sent.
+
+⚠️ IMDA TLS compliance notice: from 1 April 2026, all requests sending messages to Singapore (+65) numbers must use TLS 1.3 or higher. Requests using an older TLS version are rejected with HTTP `422 Unprocessable Entity`.
 
 ### Channel selection
 
-The `format` field is optional. When omitted, the channel is inferred automatically from the payload:
+The `format` field is optional. When omitted the channel is inferred from the payload:
 
-| # | `format` | Rich content present<br>(`rich_content` or `suggestions`) | `content` present | Outcome |
-|---|----------|----------------------------------------------------------|-------------------|---------|
-| T1 | omitted | ✓ | ✓ | Sent as **RCS**. With `suggestions`, `content` is the text the suggestions sit under. With `rich_content`, `content` is dropped (see note). |
-| T2 | omitted | ✓ | ✗ | Sent as **RCS** (`rich_content` satisfies sendable-content; `suggestions`-only rejected — see note) |
-| T3 | omitted | ✗ | ✓ | Sent as **SMS** |
-| T4 | omitted | ✗ | ✗ | **400** — no sendable content |
-| T5 | `SMS` | ✓ | ✓ | **400** — rich content incompatible with explicit SMS |
-| T6 | `SMS` | ✓ | ✗ | **400** — rich content incompatible with explicit SMS |
-| T7 | `SMS` | ✗ | ✓ | Sent as **SMS** |
-| T8 | `SMS` | ✗ | ✗ | **400** — no sendable content |
+| # | `format` | Rich content present (`rich_content` or `suggestions`) | `content` present | Outcome |
+|---|----------|-------------------------------------------------------|-------------------|---------|
+| T1 | omitted | ✓ | ✓ | Sent as RCS. With `suggestions`, `content` is the text the suggestions sit under. With `rich_content`, `content` is dropped (see note). |
+| T2 | omitted | ✓ | ✗ | Sent as RCS (`rich_content` satisfies sendable-content; `suggestions`-only rejected with 400) |
+| T3 | omitted | ✗ | ✓ | Sent as SMS |
+| T4 | omitted | ✗ | ✗ | 400 — no sendable content |
+| T5 | SMS | ✓ | ✓ | 400 — rich content incompatible with explicit SMS |
+| T6 | SMS | ✓ | ✗ | 400 — rich content incompatible with explicit SMS |
+| T7 | SMS | ✗ | ✓ | Sent as SMS |
+| T8 | SMS | ✗ | ✗ | 400 — no sendable content |
 
-**Request-time errors** are returned immediately, and no messages in the batch are sent: `400` for T4–T6 and T8, and `402 Payment Required` when the message is sent as RCS (explicit or inferred) and the account isn't enabled for RCS.
+**Request-time errors** are returned immediately, and no messages in the batch are sent: 400 for T4–T6 and T8, and 402 Payment Required when the message is sent as RCS (explicit or inferred) and the account isn't enabled for RCS. **Delivery-report failures** (recipient not RCS-capable) are reported asynchronously in the delivery report, not as a request-time error.
 
-**Delivery-report failures** (recipient not RCS-capable) are reported asynchronously in the delivery report, not as a request-time error.
+`content` with `rich_content` (T1): when `format` is omitted, the message is sent as RCS using `rich_content` only. `content` is dropped: it isn't sent, isn't returned on the 202 response or by Get message status, and isn't used as an SMS fallback. Add `fallback_message` to send an SMS when the recipient can't receive RCS. With explicit `format: "RCS"`, sending both `content` and `rich_content` is rejected with 400.
 
-> **`suggestions` without `content` (T2 edge case):** Top-level `suggestions` are attached to the `content` text bubble. A `suggestions`-only message with no `content` is rejected with `400`: `RCS content is required when body is not provided`. `rich_content` has no such restriction — it alone satisfies the sendable-content requirement.
-
-> **`content` with `rich_content` (T1):** When `format` is omitted, the message is sent as RCS using `rich_content` only. `content` is dropped: it isn't sent, isn't returned on the `202` response or by Get message status, and isn't used as an SMS fallback. Add `fallback_message` to send an SMS when the recipient can't receive RCS. With explicit `format: "RCS"`, sending both `content` and `rich_content` is rejected with `400`.
-
-> **`fallback_message`:** Never selects the channel and does not satisfy `content`. Its presence alone does not trigger RCS inference. With explicit `format: "SMS"`, `fallback_message` is rejected with `400`, as it isn't part of an SMS message.
-
-> **`rich_link`:** Not rich content. Never triggers RCS inference and never rejected under `format: "SMS"`.
-
-#### RCS inferred from rich content (no `format` required)
-
-You do not need to set `format: "RCS"` when sending `rich_content` or `suggestions`. The API infers RCS from the payload. The following sends over RCS without an explicit `format`:
-
-```json
-{
-  "messages": [
-    {
-      "destination_number": "+61491570156",
-      "rich_content": {
-        "media": {
-          "url": "https://cdn.example.com/promo.png"
-        }
-      },
-      "fallback_message": {
-        "content": "Check out our promo"
-      }
-    }
-  ]
-}
-```
-
-Using `format: "RCS"` explicitly is equally valid and continues to work.
-
-### Plain RCS text with SMS fallback
-
-Set `format` to `RCS` and provide `content`. `fallback_message` is optional:
-
-```json
-{
-  "messages": [
-    {
-      "content": "Hello from our RCS channel!",
-      "destination_number": "+61491570156",
-      "format": "RCS",
-      "fallback_message": {
-        "content": "Hello from us!"
-      },
-      "source_number": "MyBrand",
-      "source_number_type": "ALPHANUMERIC"
-    }
-  ]
-}
-```
-
-The account must be enabled for RCS. Otherwise the request returns `402 Payment Required`; contact your account manager to enable it.
-
-`fallback_message` never selects a channel. An explicit `format: "RCS"` send is attempted over RCS. If the recipient cannot receive RCS, the API sends `fallback_message.content` as SMS. `source_number` and `source_number_type` identify the SMS fallback sender only. If `fallback_message` is omitted, the send is RCS-or-nothing: no SMS is sent silently, and the outcome is reported asynchronously in the delivery report rather than as a request error.
-
-### RCS text with tappable suggestions
-
-Add up to 10 `suggestions` to a plain RCS text message. Each suggestion needs a `type` and a `text` label of up to 25 characters:
-
-```json
-{
-  "messages": [
-    {
-      "content": "Need help with your order?",
-      "destination_number": "+61491570156",
-      "format": "RCS",
-      "suggestions": [
-        { "type": "reply", "text": "Talk to support", "postback_data": "SUPPORT" },
-        { "type": "url", "text": "View help", "url": "https://example.com/help" },
-        { "type": "dial", "text": "Call us", "phone_number": "+61391570100" },
-        {
-          "type": "location",
-          "text": "Find store",
-          "coordinates": { "latitude": -37.8136, "longitude": 144.9631 },
-          "label": "Melbourne CBD"
-        }
-      ]
-    }
-  ]
-}
-```
-
-| `type` | Required fields | Optional fields |
-|--------|-----------------|-----------------|
-| `reply` | `text` | `postback_data` |
-| `url` | `text`, `url` (max 2048 characters) | `postback_data` |
-| `dial` | `text`, `phone_number` | `postback_data` |
-| `location` | `text`, `coordinates` (both `latitude` and `longitude`) | `label` (max 1000 characters), `postback_data` |
-
-For a `location` suggestion, `coordinates.latitude` must be between `-90` and `90`, and `coordinates.longitude` must be between `-180` and `180`. A location suggestion is a tappable button; to send a standalone map pin use [`rich_content.location`](#rcs-location-pin) instead.
-
-The `202` response and [Get message status](get-message-status.md) echo `content` and `suggestions` in the order you sent them, including `postback_data`. Fields that do not apply to a suggestion's `type`, such as `url` on a `reply`, are ignored and not returned. An empty `suggestions` array sends plain RCS text.
-
-A request with a missing required field, more than 10 suggestions, a `text` longer than 25 characters, or out-of-range coordinates is rejected with `400`, and no messages in the batch are sent. Any other `type`, including `calendar`, is also rejected with `400`, with the generic detail `Failed to parse message body.`
-
-`suggestions` can be combined with `fallback_message`; the SMS fallback is plain text and does not include the suggestions. When the recipient taps a suggestion, the tap is delivered on the reply webhook under `contact_message.choice_response_message`, including `postback_data` when the suggestion had one. `GET /v1/replies` does not return button taps.
-
-### RCS rich media
-
-To send an image or file over RCS, set `format` to `RCS` and provide `rich_content.media` instead of `content`. `fallback_message` is optional:
-
-```json
-{
-  "messages": [
-    {
-      "destination_number": "+61491570156",
-      "format": "RCS",
-      "rich_content": {
-        "media": {
-          "url": "https://cdn.example.com/promo.png",
-          "thumbnail_url": "https://cdn.example.com/promo_thumb.png",
-          "filename_override": "promo.png"
-        }
-      },
-      "fallback_message": {
-        "content": "Check out our promo"
-      },
-      "source_number": "MyBrand",
-      "source_number_type": "ALPHANUMERIC"
-    }
-  ]
-}
-```
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| `rich_content.media.url` | Yes | `http` or `https` URL of the media file. |
-| `rich_content.media.thumbnail_url` | No | `http` or `https` URL of a thumbnail image. |
-| `rich_content.media.filename_override` | No | File name to use for the media instead of the one derived from `url`. |
-
-The `202` response and [Get message status](get-message-status.md) echo `rich_content.media`; optional fields you did not send are not returned. `fallback_message`, `source_number`, and `source_number_type` behave as for plain RCS text: the fallback is sent as plain SMS text and does not include the media, and there is no MMS fallback.
-
-The following are rejected with `400`, and no messages in the batch are sent:
-
-| Request | Example detail |
-|---------|----------------|
-| `rich_content` together with non-blank `content` | `/messages/0/: content conflicts with rich_content` |
-| `rich_content` together with top-level `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
-| `rich_content` without `media`, `card`, `carousel`, or `location` | `/messages/0/: rich_content must include media, card, carousel or location` |
-| `rich_content.media` together with another rich piece | `/messages/0/: rich_content may contain only one of media, card, carousel or location` |
-| Missing `url`, or `url` / `thumbnail_url` that is not a valid `http` or `https` URL | `url is required` / `Invalid url` |
-| Any other field on `media`, such as `media_type` | `/messages/0/rich_content/media/media_type: Unknown property 'media_type'` |
-
-The media file's type and reachability are not checked when you submit the message. If the file cannot be delivered, the outcome is reported asynchronously in the delivery report.
-
-### RCS rich card
-
-To send a structured rich card over RCS, set `format` to `RCS` and provide `rich_content.card` instead of `content`, `rich_content.media`, `rich_content.carousel`, or `rich_content.location`. At least one of `title`, `description`, or `media` is required. Nested card suggestions use the same types as top-level suggestions (`reply`, `url`, `dial`, `location`) and are limited to 4. `fallback_message` is optional:
-
-```json
-{
-  "messages": [
-    {
-      "destination_number": "+61491570156",
-      "format": "RCS",
-      "rich_content": {
-        "card": {
-          "title": "Order #1234 shipped",
-          "description": "Estimated delivery: Fri 11 Jul",
-          "height": "MEDIUM",
-          "media": {
-            "url": "https://cdn.example.com/parcel.png",
-            "thumbnail_url": "https://cdn.example.com/parcel_thumb.png",
-            "filename_override": "parcel.png"
-          },
-          "suggestions": [
-            {
-              "type": "reply",
-              "text": "Track",
-              "postback_data": "TRACK_1234"
-            },
-            {
-              "type": "url",
-              "text": "View order",
-              "url": "https://example.com/o/1234"
-            }
-          ]
-        }
-      },
-      "fallback_message": {
-        "content": "Your order #1234 has shipped"
-      },
-      "source_number": "MyBrand",
-      "source_number_type": "ALPHANUMERIC"
-    }
-  ]
-}
-```
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| `rich_content.card.title` | Conditional | Card title, max 200 characters. At least one of `title`, `description`, or `media` is required. |
-| `rich_content.card.description` | Conditional | Card description, max 2000 characters. |
-| `rich_content.card.height` | No | Card media height. Enum: `SHORT`, `MEDIUM`, `TALL`. |
-| `rich_content.card.media` | Conditional | Same shape as `rich_content.media` (`url`, optional `thumbnail_url`, `filename_override`). |
-| `rich_content.card.suggestions` | No | Up to 4 nested suggestions. Same types and field rules as top-level [RCS suggestions](#rcs-text-with-tappable-suggestions). |
-
-The `202` response and [Get message status](get-message-status.md) echo `rich_content.card`, including nested `suggestions` in the order you sent them. Optional fields you did not send are not returned. Do not send top-level `suggestions` with a card. `fallback_message`, `source_number`, and `source_number_type` behave as for plain RCS text: the fallback is sent as plain SMS text and does not include the card, and there is no MMS fallback. `calendar` is not a supported suggestion type.
-
-The following are rejected with `400`, and no messages in the batch are sent:
-
-| Request | Example detail |
-|---------|----------------|
-| Card together with non-blank `content` | `/messages/0/: content conflicts with rich_content.card` |
-| Card together with top-level `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
-| Card together with another rich piece | `/messages/0/: rich_content may contain only one of media, card, carousel or location` |
-| Empty card, height-only, or suggestions-only (no title, description, or media) | `/messages/0/: rich_content.card requires title, description, or media` |
-| More than 4 card suggestions | `suggestions must not exceed 4` |
-| Title over 200 or description over 2000 characters | `title must not exceed 200 characters` / `description must not exceed 2000 characters` |
-| Missing media `url`, or invalid `url` / `thumbnail_url` | `url is required` / `Invalid url` |
-| Any other field on card `media`, such as `media_type` | `/messages/0/rich_content/card/media/media_type: Unknown property 'media_type'` |
-
-### RCS carousel
-
-To send several cards that the recipient swipes through, set `format` to `RCS` and provide `rich_content.carousel` instead of `content`, `rich_content.media`, `rich_content.card`, or `rich_content.location`. A carousel has 1 to 10 `cards`; a carousel with one card is rendered as a single card. Each card has the same fields and rules as a [rich card](#rcs-rich-card), including up to 4 nested `suggestions`. Optional `choices` are up to 3 suggestions for the carousel as a whole, with the same types as top-level suggestions. `fallback_message` is optional and applies to the whole message, not to each card:
-
-```json
-{
-  "messages": [
-    {
-      "destination_number": "+61491570156",
-      "format": "RCS",
-      "rich_content": {
-        "carousel": {
-          "cards": [
-            {
-              "title": "Order #1234",
-              "description": "Shipped",
-              "height": "MEDIUM",
-              "media": {
-                "url": "https://cdn.example.com/parcel.png",
-                "thumbnail_url": "https://cdn.example.com/parcel_thumb.png"
-              },
-              "suggestions": [
-                {
-                  "type": "reply",
-                  "text": "Track",
-                  "postback_data": "TRACK_1234"
-                },
-                {
-                  "type": "url",
-                  "text": "View",
-                  "url": "https://example.com/o/1234"
-                }
-              ]
-            },
-            {
-              "title": "Order #5678",
-              "description": "Out for delivery",
-              "suggestions": [
-                {
-                  "type": "reply",
-                  "text": "Track",
-                  "postback_data": "TRACK_5678"
-                }
-              ]
-            }
-          ],
-          "choices": [
-            {
-              "type": "reply",
-              "text": "All orders",
-              "postback_data": "ALL_ORDERS"
-            }
-          ]
-        }
-      },
-      "fallback_message": {
-        "content": "Your orders have shipped"
-      },
-      "source_number": "MyBrand",
-      "source_number_type": "ALPHANUMERIC"
-    }
-  ]
-}
-```
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| `rich_content.carousel.cards` | Yes | 1 to 10 cards, in display order. Each card uses the [rich card](#rcs-rich-card) fields and needs at least one of `title`, `description`, or `media`. |
-| `rich_content.carousel.choices` | No | Up to 3 suggestions for the whole carousel. Same types and field rules as top-level [RCS suggestions](#rcs-text-with-tappable-suggestions). |
-
-The `202` response and [Get message status](get-message-status.md) echo `rich_content.carousel`, including each card's `suggestions` and the carousel `choices` in the order you sent them, with `postback_data`. Optional fields you did not send are not returned. Do not send top-level `suggestions` with a carousel. `fallback_message`, `source_number`, and `source_number_type` behave as for plain RCS text: the fallback is sent as plain SMS text and does not include the cards, and there is no MMS fallback. `calendar` is not a supported suggestion type.
-
-The following are rejected with `400`, and no messages in the batch are sent:
-
-| Request | Example detail |
-|---------|----------------|
-| Carousel together with non-blank `content` | `/messages/0/: content conflicts with rich_content.carousel` |
-| Carousel together with top-level `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
-| Carousel together with another rich piece | `/messages/0/: rich_content may contain only one of media, card, carousel or location` |
-| Missing `cards` | `cards is required` |
-| An empty `cards` array or more than 10 cards | `cards must contain between 1 and 10 cards` |
-| More than 3 `choices` | `choices must not exceed 3` |
-| A card with no title, description, or media (the detail names the card's position, starting at 0) | `/messages/0/: rich_content.carousel.cards[1] requires title, description, or media` |
-| A card with more than 4 suggestions | `suggestions must not exceed 4` |
-| A card title over 200 or description over 2000 characters | `title must not exceed 200 characters` / `description must not exceed 2000 characters` |
-| Missing card media `url`, or invalid `url` / `thumbnail_url` | `url is required` / `Invalid url` |
-
-### RCS location pin
-
-To send a standalone map pin over RCS, set `format` to `RCS` and provide `rich_content.location` instead of `content`, `rich_content.media`, `rich_content.card`, or `rich_content.carousel`. This is distinct from a tappable [`location` suggestion](#rcs-text-with-tappable-suggestions). `fallback_message` is optional:
-
-```json
-{
-  "messages": [
-    {
-      "destination_number": "+61491570156",
-      "format": "RCS",
-      "rich_content": {
-        "location": {
-          "coordinates": {
-            "latitude": -37.8136,
-            "longitude": 144.9631
-          },
-          "title": "Melbourne CBD store",
-          "label": "Store entrance"
-        }
-      },
-      "fallback_message": {
-        "content": "Find us at Melbourne CBD store"
-      },
-      "source_number": "MyBrand",
-      "source_number_type": "ALPHANUMERIC"
-    }
-  ]
-}
-```
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| `rich_content.location.coordinates` | Yes | Object with required `latitude` (`-90` to `90`) and `longitude` (`-180` to `180`). |
-| `rich_content.location.title` | Yes | Non-blank location title. |
-| `rich_content.location.label` | No | Optional location label. Max 1000 characters. |
-
-The `202` response and [Get message status](get-message-status.md) echo `rich_content.location`. Optional fields you did not send are not returned. Do not send top-level `suggestions` with a location pin. `fallback_message`, `source_number`, and `source_number_type` behave as for plain RCS text: the fallback is sent as plain SMS text and does not include the map pin, and there is no MMS fallback.
-
-The following are rejected with `400`, and no messages in the batch are sent:
-
-| Request | Example detail |
-|---------|----------------|
-| Location together with non-blank `content` | `/messages/0/: content conflicts with rich_content.location` |
-| Location together with top-level `suggestions` | `/messages/0/: suggestions conflicts with rich_content` |
-| Location together with another rich piece | `/messages/0/: rich_content may contain only one of media, card, carousel or location` |
-| Missing `coordinates` | `coordinates is required` |
-| Missing `latitude` or `longitude` | `latitude is required` / `longitude is required` |
-| Latitude outside `[-90, 90]` or longitude outside `[-180, 180]` | `latitude must be between -90 and 90` / `longitude must be between -180 and 180` |
-| Missing or blank `title` | `title is required` |
-| `label` longer than 1000 characters | `label must not exceed 1000 characters` |
-
-RCS delivery reports and replies appear in the account's existing `GET /v1/delivery-reports` and `GET /v1/replies` polling responses. Polling is account-scoped: an existing poller can receive RCS events after any client on that account starts sending RCS, and polling cannot be targeted or filtered per client. A per-message `callback_url` does not change that polling scope.
-
-The webhook posted to that callback URL includes `content`, `suggestions`, and `rich_content` from the send. Only a field that was on the message is present. `GET /v1/delivery_reports` does not return those fields. See [Delivery Reports](../delivery-reports/index.md).
+`fallback_message` never selects the channel and does not satisfy `content`. With explicit `format: "SMS"`, `fallback_message` is rejected with 400, as it isn't part of an SMS message.
 
 ## Authentication
 
@@ -428,74 +117,361 @@ None.
 
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
-| `messages` | array | Yes | List of messages. |
+| `messages` | array | Yes | List of messages. Up to 100 per request. |
 
 ### `messages` item schema (`Message`)
 
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
-| `content` | string | Conditional | Required except on an RCS `rich_content` message. Max length: 5000, or 2000 for RCS text. |
+| `content` | string | Conditional | Message text. Required for SMS, MMS, TTS and RCS text; omit when sending RCS `rich_content`. Min length: 1. Max length: 5000 (SMS, MMS, TTS) or 2000 (RCS). Not a substitute for `rich_content` or `suggestions` on an explicit `format: "SMS"` send (rejected with `400`). |
 | `destination_number` | string | Yes | Destination number of the message. Min length: 1. Max length: 15. |
 | `callback_url` | string | No | URL replies and delivery reports to this message will be pushed to. Must use the `http` or `https` scheme. Hostnames must conform to RFC 1123 DNS name syntax. Paths must not contain whitespace or control characters. Invalid URLs are rejected with HTTP 400. |
 | `delivery_report` | boolean | No | Request a delivery report for this message |
-| `format` | string | No | Outbound message channel. Optional — omit to infer automatically: `rich_content` or `suggestions` present → RCS; otherwise SMS. Setting `SMS` explicitly with `rich_content` or `suggestions` present is rejected with `400`. Enum: `SMS`, `TTS`, `MMS`, `RCS`. See [Channel selection](#channel-selection). |
-| `fallback_message` | object | No | SMS fallback for an RCS message. Requires non-blank `content`, max 5000 characters. It never selects the channel. |
-| `suggestions` | array | No | Up to 10 tappable suggestions (`reply`, `url`, `dial`, `location`) on an RCS text message. Not supported with `rich_content`. See [RCS text with tappable suggestions](#rcs-text-with-tappable-suggestions). |
-| `rich_content` | object | Conditional | RCS rich content sent instead of `content`. Include exactly one of `media`, `card`, `carousel`, or `location`. Not supported with `content` or top-level `suggestions`. See [RCS rich media](#rcs-rich-media), [RCS rich card](#rcs-rich-card), [RCS carousel](#rcs-carousel), and [RCS location pin](#rcs-location-pin). |
+| `format` | string | No | Outbound message channel. Optional: when omitted, the channel is inferred from the payload (`rich_content` or `suggestions` present: RCS; otherwise SMS). Setting `SMS` with `rich_content` or `suggestions` is rejected with `400`. Set `RCS` to force RCS without relying on inference. Enum: `SMS`, `TTS`, `MMS`, `RCS`. See [Channel selection](#channel-selection). |
+| `fallback_message` | object | No | Optional SMS fallback for an RCS message: `{ "content": "..." }` (1–5000 characters). It never selects the channel. Rejected with `400` on an explicit `format: "SMS"` send. |
+| `suggestions` | array | No | Up to 10 tappable suggestions (`reply`, `url`, `dial`, `location`) on an RCS text message. Requires `content`. Not supported with `rich_content`. See [RCS messages](rcs-messages.md). |
+| `rich_content` | object | Conditional | RCS rich content sent instead of `content`. Include exactly one of `media`, `card`, `carousel`, or `location`. See [RCS messages](rcs-messages.md). |
 | `message_expiry_timestamp` | string (date-time) | No | Date time after which the message expires and will not be sent |
 | `metadata` | object | No | Metadata for the message specified as a set of key value pairs, each key can be up to 100 characters long and each value can be up to 256 characters long |
 | `scheduled` | string (date-time) | No | Scheduled delivery date time of the message |
-| `source_number` | string | No | SMS sender. On an RCS message it applies only to SMS fallback and is unused without `fallback_message`. |
+| `source_number` | string | No | Sender for the message: a number or alpha tag registered to your account. When omitted, your account's default number is used. On an RCS message, it's the sender of the SMS `fallback_message` and isn't used when `fallback_message` is omitted. |
 | `source_number_type` | string | No | Type of source address specified, this can be INTERNATIONAL, ALPHANUMERIC or SHORTCODE. Enum: `INTERNATIONAL`, `ALPHANUMERIC`, `SHORTCODE` |
 | `message_id` | string (uuid) | No | Unique ID of this message |
 | `status` | string | No | The status of the message. Enum: `undefined`, `queued`, `processing`, `processed`, `failed`, `scheduled`, `cancelled`, `delivered`, `expired`, `enroute`, `held`, `submitted`, `rejected`, `read` |
-| `media` | array of strings | No | The media is used to specify a list of URLs of the media file(s) that you are trying to send. Supported file formats include png, jpeg and gif. format parameter must be set to MMS for this to work. |
-| `subject` | string | No | The subject field is used to denote subject of the MMS message and has a maximum size of 64 characters long |
+| `media` | array of strings | No | MMS only. List of publicly reachable URLs of media files. Supported formats are png, jpeg and gif. Requires `format: "MMS"`. Rejected with `400` on SMS, TTS and RCS messages. |
+| `subject` | string | No | MMS only. Subject of the message, up to 64 characters. Rejected with `400` on other message types. |
 
-Notes for implementers (schema cells above stay verbatim from the shared OpenAPI components):
+Notes for implementers:
 
-- On **this** endpoint, `format` selects the outbound channel. When omitted, the channel is inferred: `rich_content` or `suggestions` present → RCS; otherwise SMS. See [Channel selection](#channel-selection).
-- From 1-Mar-2024, an SMS `source_number` or sender ID must be registered to your account.
+- On this endpoint, `format` selects the outbound channel. When omitted, the channel is inferred. See [Channel selection](#channel-selection).
+- From 1-Mar-2024, a `source_number` or sender ID must be registered to your account.
 - `message_id` and `status` are response fields on the shared `Message` object. Do not send them on create; the API returns them.
 
-### Example request body
+## Example request bodies
+
+Each example is a complete request body. Examples 1–4 are SMS, MMS and TTS, 5–11 are RCS, and 12 sends several types in one request.
+
+### 1. SMS (`sms`)
 
 ```json
 {
   "messages": [
     {
-      "callback_url": "https://my.callback.url.com",
-      "content": "My first message",
+      "content": "Your appointment is confirmed for Tuesday at 10am.",
+      "destination_number": "+61491570156"
+    }
+  ]
+}
+```
+
+### 2. SMS with delivery options (`smsWithOptions`)
+
+```json
+{
+  "messages": [
+    {
+      "content": "Your appointment is confirmed for Tuesday at 10am.",
       "destination_number": "+61491570156",
-      "delivery_report": true,
       "format": "SMS",
-      "message_expiry_timestamp": "2016-11-03T11:49:02.807Z",
-      "metadata": {
-        "key1": "value1",
-        "key2": "value2"
-      },
-      "scheduled": "2016-11-03T11:49:02.807Z",
       "source_number": "+61491570157",
-      "source_number_type": "INTERNATIONAL"
+      "source_number_type": "INTERNATIONAL",
+      "callback_url": "https://example.com/webhooks/messages",
+      "delivery_report": true,
+      "scheduled": "2027-03-01T09:00:00Z",
+      "message_expiry_timestamp": "2027-03-01T12:00:00Z",
+      "metadata": {
+        "order_id": "1234",
+        "team": "support"
+      }
+    }
+  ]
+}
+```
+
+### 3. MMS (`mms`)
+
+```json
+{
+  "messages": [
+    {
+      "content": "Here is your event ticket.",
+      "destination_number": "+61491570156",
+      "format": "MMS",
+      "subject": "Your ticket",
+      "media": [
+        "https://cdn.example.com/ticket.png"
+      ]
+    }
+  ]
+}
+```
+
+### 4. Text-to-speech (TTS) (`tts`)
+
+```json
+{
+  "messages": [
+    {
+      "content": "Hello. Your appointment is confirmed for Tuesday at 10am. Goodbye.",
+      "destination_number": "+61491570156",
+      "format": "TTS"
+    }
+  ]
+}
+```
+
+### 5. RCS text with SMS fallback (`rcsText`)
+
+```json
+{
+  "messages": [
+    {
+      "content": "Hello from our RCS channel!",
+      "destination_number": "+61491570156",
+      "format": "RCS",
+      "source_number": "+61491570157",
+      "fallback_message": {
+        "content": "Hello from us!"
+      }
+    }
+  ]
+}
+```
+
+### 6. RCS text with suggestions (`rcsSuggestions`)
+
+```json
+{
+  "messages": [
+    {
+      "content": "Need help with your order?",
+      "destination_number": "+61491570156",
+      "format": "RCS",
+      "suggestions": [
+        {
+          "type": "reply",
+          "text": "Talk to support",
+          "postback_data": "SUPPORT"
+        },
+        {
+          "type": "url",
+          "text": "View help",
+          "url": "https://example.com/help"
+        },
+        {
+          "type": "dial",
+          "text": "Call us",
+          "phone_number": "+61291570100"
+        },
+        {
+          "type": "location",
+          "text": "Find us",
+          "coordinates": {
+            "latitude": -33.8688,
+            "longitude": 151.2093
+          },
+          "label": "Sydney office"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### 7. RCS media (`rcsMedia`)
+
+```json
+{
+  "messages": [
+    {
+      "destination_number": "+61491570156",
+      "format": "RCS",
+      "rich_content": {
+        "media": {
+          "url": "https://cdn.example.com/welcome.png",
+          "thumbnail_url": "https://cdn.example.com/welcome_thumb.png",
+          "filename_override": "welcome.png"
+        }
+      },
+      "fallback_message": {
+        "content": "Welcome! View our latest update at https://example.com/news"
+      }
+    }
+  ]
+}
+```
+
+### 8. RCS rich card (`rcsCard`)
+
+```json
+{
+  "messages": [
+    {
+      "destination_number": "+61491570156",
+      "format": "RCS",
+      "rich_content": {
+        "card": {
+          "title": "Order",
+          "description": "Estimated delivery: Friday",
+          "height": "MEDIUM",
+          "media": {
+            "url": "https://cdn.example.com/parcel.png"
+          },
+          "suggestions": [
+            {
+              "type": "reply",
+              "text": "Track",
+              "postback_data": "TRACK_1234"
+            },
+            {
+              "type": "url",
+              "text": "View order",
+              "url": "https://example.com/orders/1234"
+            }
+          ]
+        }
+      },
+      "fallback_message": {
+        "content": "Your order"
+      }
+    }
+  ]
+}
+```
+
+### 9. RCS carousel (`rcsCarousel`)
+
+```json
+{
+  "messages": [
+    {
+      "destination_number": "+61491570156",
+      "format": "RCS",
+      "rich_content": {
+        "carousel": {
+          "cards": [
+            {
+              "title": "Order",
+              "description": "Shipped",
+              "height": "MEDIUM",
+              "media": {
+                "url": "https://cdn.example.com/parcel.png"
+              },
+              "suggestions": [
+                {
+                  "type": "reply",
+                  "text": "Track",
+                  "postback_data": "TRACK_1234"
+                },
+                {
+                  "type": "url",
+                  "text": "View order",
+                  "url": "https://example.com/orders/1234"
+                }
+              ]
+            },
+            {
+              "title": "Order",
+              "description": "Out for delivery",
+              "suggestions": [
+                {
+                  "type": "reply",
+                  "text": "Track",
+                  "postback_data": "TRACK_5678"
+                }
+              ]
+            }
+          ],
+          "choices": [
+            {
+              "type": "reply",
+              "text": "All orders",
+              "postback_data": "ALL_ORDERS"
+            }
+          ]
+        }
+      },
+      "fallback_message": {
+        "content": "Your orders are on their way"
+      }
+    }
+  ]
+}
+```
+
+### 10. RCS location pin (`rcsLocation`)
+
+```json
+{
+  "messages": [
+    {
+      "destination_number": "+61491570156",
+      "format": "RCS",
+      "rich_content": {
+        "location": {
+          "coordinates": {
+            "latitude": -33.8688,
+            "longitude": 151.2093
+          },
+          "title": "Sydney office",
+          "label": "Reception, level 2"
+        }
+      },
+      "fallback_message": {
+        "content": "Find us at our Sydney office"
+      }
+    }
+  ]
+}
+```
+
+### 11. RCS without format (inferred from rich_content) (`rcsInferred`)
+
+No `format` needed: `rich_content` selects RCS.
+
+```json
+{
+  "messages": [
+    {
+      "destination_number": "+61491570156",
+      "rich_content": {
+        "media": {
+          "url": "https://cdn.example.com/welcome.png",
+          "thumbnail_url": "https://cdn.example.com/welcome_thumb.png",
+          "filename_override": "welcome.png"
+        }
+      },
+      "fallback_message": {
+        "content": "Welcome! View our latest update at https://example.com/news"
+      }
+    }
+  ]
+}
+```
+
+### 12. Several messages in one request (`batch`)
+
+```json
+{
+  "messages": [
+    {
+      "content": "Your appointment is confirmed for Tuesday at 10am.",
+      "destination_number": "+61491570156",
+      "format": "SMS"
     },
     {
-      "callback_url": "https://my.callback.url.com",
-      "content": "My second message",
-      "destination_number": "+61491570158",
-      "delivery_report": true,
+      "content": "Here is your event ticket.",
+      "destination_number": "+61491570157",
       "format": "MMS",
-      "subject": "This is an MMS message",
+      "subject": "Your ticket",
       "media": [
-        "https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg"
-      ],
-      "message_expiry_timestamp": "2016-11-03T11:49:02.807Z",
-      "metadata": {
-        "key1": "value1",
-        "key2": "value2"
-      },
-      "scheduled": "2016-11-03T11:49:02.807Z",
-      "source_number": "+61491570159",
-      "source_number_type": "INTERNATIONAL"
+        "https://cdn.example.com/ticket.png"
+      ]
+    },
+    {
+      "content": "Hello. Your appointment is confirmed for Tuesday at 10am. Goodbye.",
+      "destination_number": "+61491570158",
+      "format": "TTS"
     }
   ]
 }
@@ -516,7 +492,7 @@ Notes for implementers (schema cells above stay verbatim from the shared OpenAPI
 |----------|------|----------|-------------|
 | `messages` | array | No | List of messages. Max items: 100. |
 
-Each item uses the same `Message` schema as the request. On success the API populates `message_id` (36-character UUID) and `status` (`queued` at submission). See the request `Message` table above — it is not repeated here.
+Each item uses the same `Message` schema as the request. On success the API populates `message_id` (36-character UUID) and `status` (`queued` at submission). See the request `Message` table above; it is not repeated here.
 
 ### 400 response schema
 
@@ -579,96 +555,72 @@ Each item uses the same `Message` schema as the request. On success the API popu
 ### cURL (minimal)
 
 ```bash
-curl -X POST "https://eu.app.api.sinch.com/v1/messages" \
-  -H "Authorization: Basic BASE64_ENCODED_CREDENTIALS" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -d '{
-    "messages": [
-      {
-        "content": "My first message!",
-        "destination_number": "+61491570156"
-      }
-    ]
-  }'
-```
+API_KEY="YOUR_API_KEY"
+API_SECRET="YOUR_API_SECRET"
+API_HOST="YOUR_API_HOST" # Set YOUR_API_HOST to the regional host (for example https://eu.app.api.sinch.com)
 
-### cURL (full example from the spec)
+# Minimal SMS. For MMS, TTS and RCS payloads, see the message type pages.
+BODY=$(cat <<'EOF'
+{
+  "messages": [
+    {
+      "content": "Your appointment is confirmed for Tuesday at 10am.",
+      "destination_number": "+61491570156"
+    }
+  ]
+}
+EOF
+)
 
-```bash
-curl -X POST "https://eu.app.api.sinch.com/v1/messages" \
-  -H "Authorization: Basic BASE64_ENCODED_CREDENTIALS" \
-  -H "Content-Type: application/json" \
+# HMAC authentication is also supported instead of Basic
+BASIC_AUTH=$(printf '%s' "${API_KEY}:${API_SECRET}" | base64 | tr -d '\n')
+curl -sS -X POST "${API_HOST}/v1/messages" \
+  -H "Authorization: Basic ${BASIC_AUTH}" \
   -H "Accept: application/json" \
-  -d '{
-    "messages": [
-      {
-        "callback_url": "https://my.callback.url.com",
-        "content": "My first message",
-        "destination_number": "+61491570156",
-        "delivery_report": true,
-        "format": "SMS",
-        "message_expiry_timestamp": "2016-11-03T11:49:02.807Z",
-        "metadata": {
-          "key1": "value1",
-          "key2": "value2"
-        },
-        "scheduled": "2016-11-03T11:49:02.807Z",
-        "source_number": "+61491570157",
-        "source_number_type": "INTERNATIONAL"
-      },
-      {
-        "callback_url": "https://my.callback.url.com",
-        "content": "My second message",
-        "destination_number": "+61491570158",
-        "delivery_report": true,
-        "format": "MMS",
-        "subject": "This is an MMS message",
-        "media": [
-          "https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg"
-        ],
-        "message_expiry_timestamp": "2016-11-03T11:49:02.807Z",
-        "metadata": {
-          "key1": "value1",
-          "key2": "value2"
-        },
-        "scheduled": "2016-11-03T11:49:02.807Z",
-        "source_number": "+61491570159",
-        "source_number_type": "INTERNATIONAL"
-      }
-    ]
-  }'
+  -H "Content-Type: application/json" \
+  -d "${BODY}"
 ```
 
 ### JavaScript (fetch)
 
 ```javascript
-const response = await fetch("https://eu.app.api.sinch.com/v1/messages", {
-  method: "POST",
+const apiKey = 'YOUR_API_KEY';
+const apiSecret = 'YOUR_API_SECRET';
+const apiHost = 'YOUR_API_HOST'; // Set YOUR_API_HOST to the regional host (for example https://eu.app.api.sinch.com)
+
+// Minimal SMS. For MMS, TTS and RCS payloads, see the message type pages.
+const body = {
+  "messages": [
+    {
+      "content": "Your appointment is confirmed for Tuesday at 10am.",
+      "destination_number": "+61491570156"
+    }
+  ]
+};
+
+// HMAC authentication is also supported instead of Basic
+const auth = Buffer.from(`${apiKey}:${apiSecret}`).toString('base64');
+
+const response = await fetch(`${apiHost}/v1/messages`, {
+  method: 'POST',
   headers: {
-    "Authorization": "Basic " + btoa("API_KEY:API_SECRET"),
-    "Content-Type": "application/json",
-    "Accept": "application/json"
+    Authorization: `Basic ${auth}`,
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
   },
-  body: JSON.stringify({
-    messages: [
-      {
-        content: "My first message!",
-        destination_number: "+61491570156"
-      }
-    ]
-  })
+  body: JSON.stringify(body),
 });
 
-const result = await response.json();
-console.log(result.messages);
+console.log(response.status);
+console.log(await response.text());
 ```
 
 ## Error handling
 
-- **400 Bad Request**: Unexpected error in API call. See HTTP response body for details. Returned when the request fails to parse or message fields are invalid, including a malformed per-message `callback_url` (unsupported scheme, malformed hostname or DNS syntax, or path containing whitespace or control characters — e.g. `https://-invalid.com`, `https://invalid_.com`, `https:///path`, `https://:/path`, `http://.example.com`, `http://example..com`). If any message in a multi-message request is invalid, no messages are sent. Example detail: `"/messages/0/callbackUrl: Invalid callback url"`.
+- **400 Bad Request**: Unexpected error in API call. See HTTP response body for details. Returned when the request fails to parse or message fields are invalid, including a malformed per-message `callback_url` (unsupported scheme, malformed hostname or DNS syntax, or path containing whitespace or control characters). If any message in a multi-message request is invalid, no messages are sent. Example detail: `"/messages/0/callbackUrl: Invalid callback url"`.
 - **401 Unauthorized**: Unauthorized. Verify Basic or HMAC credentials on the request.
-- The operation description also notes HTTP **422** for Singapore (+65) destinations when the client does not use TLS 1.3 or higher (IMDA). That status is not declared on this operation’s `responses` map.
+- **402 Payment Required**: The account is not enabled to send RCS. Contact your account manager.
+- The operation description also notes HTTP **422** for Singapore (+65) destinations when the client does not use TLS 1.3 or higher (IMDA). That status is not declared on this operation's `responses` map.
 
 ## Related endpoints
 
@@ -677,67 +629,6 @@ console.log(result.messages);
 
 ## Specification details
 
-Submit one or more (up to 100 per request) SMS, MMS, text to voice or RCS messages for delivery.
-
-The most basic message has the following structure:
-
-```json
-{
-    "messages": [
-        {
-            "content": "My first message!",
-            "destination_number": "+61491570156"
-        }
-    ]
-}
-```
-
-More advanced delivery features can be specified by setting the following properties in a message:
-
-- `callback_url` A URL can be included with each message to which Webhooks will be pushed to via a HTTP POST request. Webhooks will be sent if and when the status of the message changes as it is processed (if the delivery report property of the request is set to `true`) and when replies are received. Specifying a callback URL is optional. When provided, the URL must use the `http` or `https` scheme, the hostname must conform to RFC 1123 DNS name syntax, and the path must not contain whitespace or control characters. Malformed values are rejected with HTTP 400. If any message in a multi-message request has an invalid `callback_url`, no messages are sent.
-
-- `content` The content of the message. This can be a Unicode string, up to 5,000 characters long. Message content is required, except on an RCS message that sends `rich_content` instead.
-
-- `rich_content` RCS only. Send an image or file as `rich_content.media`, a rich card as `rich_content.card`, a carousel of cards as `rich_content.carousel`, or a location pin as `rich_content.location`, instead of `content`. See [RCS rich media](#rcs-rich-media), [RCS rich card](#rcs-rich-card), [RCS carousel](#rcs-carousel), and [RCS location pin](#rcs-location-pin).
-
-- `delivery_report` Delivery reports can be requested with each message. If delivery reports are requested, a webhook will be submitted to the `callback_url` property specified for the message (or to the webhooks) specified for the account every time the status of the message changes as it is processed. The current status of the message can also be retrieved via the Delivery Reports endpoint of the Messages API. Delivery reports are optional and by default will not be requested.
-
-- `destination_number` The destination number the message should be delivered to. This should be specified in E.164 international format. For information on E.164, please refer to http://en.wikipedia.org/wiki/E.164. A destination number is required.  
-  ⚠️ IMDA TLS Compliance Notice: From 1 April 2026, all requests sending messages to Singapore (+65) numbers must use TLS 1.3 or higher. Requests using an older TLS version will be rejected with HTTP 422 Unprocessable Entity.
-
-- `format` The format specifies which format the message will be sent as: `SMS` (text message), `MMS` (multimedia message), `TTS` (text to speech), or `RCS` (RCS rich messaging). With `TTS` format, we will call the destination number and read out the message using a computer-generated voice. Specifying a format is optional — when omitted, the channel is inferred automatically: if `rich_content` or `suggestions` is present the message is sent as RCS; otherwise it is sent as SMS. Set `SMS` explicitly to enforce SMS — the request is rejected with `400` if `rich_content` or `suggestions` is also present. Set `RCS` to force RCS without relying on inference. `rich_link` is not rich content and never triggers RCS inference. See [Channel selection](#channel-selection).
-
-- `source_number_type` If a source number is specified, the type of source number may also be specified. This is recommended when using a source address type that is not an internationally formatted number, available options are `INTERNATIONAL`, `ALPHANUMERIC` or `SHORTCODE`. Specifying a source number type is only valid when the `source_number` parameter is specified and is optional. If a source number is specified and no source number type is specified, the source number type will be inferred from the source number, however this may be inaccurate.
-
-- `source_number`[optional]  Specify a source number to be used.  Refer to the section below for more information on source numbers.  
-
-  ⚠️ The number or sender ID must be registered to your account (from 1-Mar-2024).
-
-  #### Source number (sender ID)
-
-  There are several options for the number or sender ID that will show as the source of an outbound message. Some things to note:
-  - If you do not specify a source number, the message will be sent with the default number for your account.
-    - The default may be a number you have purchased from us - such as a dedicated number, a 10-digit longcode or toll-free number (US/CA), or a shortcode. Log into the web portal to manage your numbers.
-    - If your account has multiple numbers, you can specify which source number to use in the request.
-    - If your account does not have a number, your message may be sent using our shared number pool (in certain countries only)
-  - `Alpha tag:` In some countries (AU, GB, some others), you may be able to send using an alpha tag - text that represents your brand of business.  Before using an alpha tag, you must register it in the Numbers section of the web portal.
-  - `Other numbers:` You may use numbers that you own as the source number, but you must register them in the Numbers section of the web portal to confirm you have a right to use the number.
-  If you need to register a large number of source numbers/sender IDs, consider using our [Source Address API](../source-address/index.md)
-
-  ⚠️ If you specify a source_number that is not registered to your account, the message may fail to send, or may be sent with an alternative number.
-
-- `media` The media is used to specify a list of URLs of the media file(s) that you are trying to send. Supported file formats include png, jpeg and gif. `format` parameter must be set to `MMS` for this to work.
-
-- `subject` The subject field is used to denote subject of the MMS message and has a maximum size of 64 characters long. Specifying a subject is optional.
-
-- `scheduled` A message can be scheduled for delivery in the future by setting the scheduled property. The scheduled property expects a date time specified in ISO 8601 format. The scheduled time must be provided in UTC and is optional. If no scheduled property is set, the message will be delivered immediately.
-
-- `message_expiry_timestamp` A message expiry timestamp can be provided to specify the latest time at which the message should be delivered. If the message cannot be delivered before the specified message expiry timestamp elapses, the message will be discarded. Specifying a message expiry timestamp is optional.
-
-- `metadata` Metadata can be included with the message which will then be included with any delivery reports or replies matched to the message. This can be used to create powerful two-way messaging applications without having to store persistent data in the application. Up to 10 key / value metadata data pairs can be specified in a message. Each key can be up to 100 characters long, and each value up to 256 characters long. Specifying metadata for a message is optional.
-
-The response body of a successful POST request to the messages endpoint will include a `messages` property which contains a list of all messages submitted. The list of messages submitted will reflect the list of messages included in the request, but each message will also contain two new properties, `message_id` and `status`. The returned message ID will be a 36 character UUID which can be used to check the status of the message via the Get Message Status endpoint. The status of the message which reflect the status of the message at submission time which will always be `queued`. See the Delivery Reports section of this documentation for more information on message statuses.
-
-*Note: when sending multiple messages in a request, all messages must be valid for the request to be successful. If any messages in the request are invalid, no messages will be sent.*
+Source: `spec/paths/messages/v1_messages.yaml` (operation `SendMessages`). Message type references: [SMS messages](sms-messages.md), [MMS messages](mms-messages.md), [Text-to-speech messages](text-to-speech-messages.md), [RCS messages](rcs-messages.md).
 
 [← Messages](index.md)

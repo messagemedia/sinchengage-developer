@@ -26,6 +26,15 @@ The Sinch Messages API provides a number of endpoints for building powerful two-
 | Look up current status by `message_id` (retained 45 days) | [Get message status](get-message-status.md) |
 | Cancel a message that is still `scheduled` | [Cancel scheduled message](cancel-scheduled-message.md) |
 
+## Message types
+
+| Type | `format` | Page |
+|------|----------|------|
+| SMS | `SMS`, or omitted | [SMS messages](sms-messages.md) |
+| MMS | `MMS` | [MMS messages](mms-messages.md) |
+| Text-to-speech | `TTS` | [Text-to-speech messages](text-to-speech-messages.md) |
+| RCS | `RCS`, or omitted with `rich_content` or `suggestions` | [RCS messages](rcs-messages.md) |
+
 ## Endpoints
 
 | Endpoint | Method | Path | Description |
