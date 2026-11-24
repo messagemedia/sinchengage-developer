@@ -81,6 +81,10 @@
     retrievewebhook: 'docs/api/webhooks-management/retrieve-webhook.md',
     reverifysenderaddressusingpost: 'docs/api/source-address/re-verify-sender-address-using-post.md',
     sendmessages: 'docs/api/messages/send-messages.md',
+    sendsms: 'docs/api/messages/sms-messages.md',
+    sendmms: 'docs/api/messages/mms-messages.md',
+    sendtts: 'docs/api/messages/text-to-speech-messages.md',
+    sendrcs: 'docs/api/messages/rcs-messages.md',
     submittingverificationcodepost: 'docs/api/source-address/submitting-verification-code-post.md',
     summaryscheduledreport: 'docs/api/messaging-reports/summaryscheduledreport.md',
     updateassignment: 'docs/api/dedicated-numbers/update-assignment.md',
@@ -339,8 +343,31 @@
     }
   }
 
+  // Docs-only operations (scripts/add-doc-variants.mjs) use path keys such as
+  // "/v1/messages#sms"; show readers plain "/v1/messages". Text nodes only,
+  // never hrefs.
+  var PATH_SUFFIX_RE = /(\/v1\/messages)#(?:sms|mms|tts|rcs)\b/g;
+
+  function rewritePathSuffixes() {
+    var root = document.querySelector('.api-content') || document.body;
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    var node;
+    while ((node = walker.nextNode())) {
+      var text = node.nodeValue;
+      if (text.indexOf('#') === -1) {
+        continue;
+      }
+      PATH_SUFFIX_RE.lastIndex = 0;
+      if (PATH_SUFFIX_RE.test(text)) {
+        PATH_SUFFIX_RE.lastIndex = 0;
+        node.nodeValue = text.replace(PATH_SUFFIX_RE, '$1');
+      }
+    }
+  }
+
   function init() {
     injectAll();
+    rewritePathSuffixes();
 
     // ReDoc hydrates/re-renders after load; re-run when the DOM changes
     // (guarded so we never duplicate bars).
@@ -353,6 +380,7 @@
       window.requestAnimationFrame(function () {
         scheduled = false;
         injectAll();
+        rewritePathSuffixes();
       });
     });
     observer.observe(document.body, { childList: true, subtree: true });

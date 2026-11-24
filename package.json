@@ -7,7 +7,7 @@
     "inject": "redocly bundle engage -o .tmp/openapi.bundled.yaml && node scripts/inject-code-samples.mjs",
     "bundle": "redocly bundle engage -o web_deploy/openapi.yaml",
     "preview-docs": "npm run build && npx --yes serve web_deploy -l 8080",
-    "build-docs": "npm run inject && redocly build-docs .tmp/openapi.injected.yaml -t web/index.html -o web_deploy/index.html",
+    "build-docs": "npm run inject && node scripts/add-doc-variants.mjs && redocly build-docs .tmp/openapi.docs.yaml -t web/index.html -o web_deploy/index.html",
     "copy-docs": "node scripts/copy-docs.mjs",
     "llms": "node scripts/generate-llms-txt.mjs",
     "build": "npm run build-docs && node scripts/copy-assets.mjs && npm run copy-docs && npm run llms",
