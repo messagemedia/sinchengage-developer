@@ -90,13 +90,18 @@
          named example, and its default style is easy to miss. ReDoc's class
          names are generated, so target the stable `select.dropdown-select`
          and its wrapper/label via :has(). */
+      /* ReDoc absolutely positions the label 11px above its thin picker border;
+         with the padded, outlined picker below they overlap, so stack the
+         label above the picker in normal flow instead. */
       div:has(> span + div > select.dropdown-select) {
         display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        margin-top: 8px;
       }
       div:has(> span + div > select.dropdown-select) > span {
+        position: static !important;
         color: #ffffff !important;
         font-weight: 600 !important;
         text-transform: none !important;
