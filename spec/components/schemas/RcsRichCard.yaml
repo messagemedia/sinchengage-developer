@@ -10,7 +10,7 @@ properties:
     type: string
     maxLength: 200
     description: Card title. At least one of `title`, `description`, or `media` is required.
-    example: Order #1234 shipped
+    example: 'Order #1234 shipped'
   description:
     type: string
     maxLength: 2000

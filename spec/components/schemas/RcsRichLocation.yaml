@@ -15,9 +15,9 @@ properties:
     type: string
     minLength: 1
     description: Required location title shown with the pin.
-    example: Melbourne CBD store
+    example: Sydney office
   label:
     type: string
     maxLength: 1000
     description: Optional location label. Max 1000 characters.
-    example: Store entrance
+    example: Reception, level 2

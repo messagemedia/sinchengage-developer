@@ -45,6 +45,5 @@ Format:
     from the payload: if `rich_content` or `suggestions` is present the message
     is sent as RCS; otherwise it is sent as SMS. Setting `format: "SMS"`
     together with `rich_content` or `suggestions` is rejected with `400`.
-    Set to `RCS` to force RCS without relying on inference. `rich_link` is not
-    rich content and never triggers RCS inference.
+    Set to `RCS` to force RCS without relying on inference.
   example: SMS
