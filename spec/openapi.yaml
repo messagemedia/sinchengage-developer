@@ -351,21 +351,18 @@ tags:
         } 
         ```
   - name: Messages
-    description: >-
-      The Sinch Messages API provides a number of endpoints for building
-      powerful two-way messaging applications. The Messages API provides access
-      to three main resources:
+    description: |
+      The Sinch Messages API provides a number of endpoints for building powerful two-way messaging applications. The Messages API provides access to three main resources:
 
       * Messages - Messages delivered from an application to a handset.
 
-      * Delivery Reports - Real time reports on the delivery status of a
-      message. As a message is processed, it's status may change several times
-      before it is finally delivered to a handset.
+      * Delivery Reports - Real time reports on the delivery status of a message. As a message is processed, it's status may change several times before it is finally delivered to a handset.
 
-      * Replies - Messages sent from a handset to an application. These messages
-      are typically a reply to a previously sent message.
+      * Replies - Messages sent from a handset to an application. These messages are typically a reply to a previously sent message.
 
       ![Message Flow](./message-flow.png)
+
+      Send a message type: [SMS](#tag/Messages/operation/SendSMS), [MMS](#tag/Messages/operation/SendMMS), [text-to-speech](#tag/Messages/operation/SendTTS) or [RCS](#tag/Messages/operation/SendRCS). To send several types in one request, use [Send messages](#tag/Messages/operation/SendMessages).
   - name: Source Address
     description: >
       The source address API provides several endpoints for you to request an
