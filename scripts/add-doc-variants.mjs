@@ -141,7 +141,7 @@ function main() {
             enum: [op.format],
             description: op.format_required
               ? 'Required.'
-              : 'Optional; inferred when omitted (see overview).',
+              : 'Optional. When omitted, the channel is inferred (see Channel selection in Send messages).',
           }
         : clone(srcSchema.properties[f]);
     }
