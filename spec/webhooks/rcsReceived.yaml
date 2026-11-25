@@ -5,8 +5,8 @@ post:
   summary: RCS received webhook
   description: >-
     Sent when a customer replies to an RCS message you sent with `content`,
-    `suggestions` or `rich_content`. It goes to the reply webhook: an account
-    webhook subscribed to replies, or the message's `callback_url`. The body
+    `suggestions` or `rich_content`. It goes to account webhooks subscribed to
+    `RECEIVED_RCS`, and to the message's `callback_url`. The body
     shown here is the default/example shape produced by the RCS branch of the
     sample reply `template` on the Create webhook operation under Webhooks
     Management; the actual JSON structure is fully controlled by the

@@ -44,6 +44,8 @@ A webhook will be triggered when any one or more of the events occur:
   + `OPT_OUT_SMS` Opt-out occurred
 + **MMS**
   + `RECEIVED_MMS` Receive an MMS
++ **RCS**
+  + `RECEIVED_RCS` Receive an RCS reply: text, media, location or a suggestion tap
 + **DR (Delivery Reports)**
   + `ENROUTE_DR` Message is enroute
   + `EXPIRED_DR` Message has expired
@@ -51,7 +53,7 @@ A webhook will be triggered when any one or more of the events occur:
   + `FAILED_DR` Message has failed
   + `DELIVERED_DR` Message is delivered
   + `SUBMITTED_DR` Message is submitted
-  + `DR_READ` Message has been read (RCS only; follows `DELIVERED_DR`)
+  + `READ_DR` Message has been read (RCS only; follows `DELIVERED_DR`)
 
 #### Template Parameters
 
@@ -89,14 +91,14 @@ Keep in mind, if you've chosen JSON as the format, you must escape the JSON in t
 
 ##### MO RCS
 
-Use the RCS branch in the template of the webhook that receives your replies.
+Subscribe to `RECEIVED_RCS` and use the RCS branch of the reply template.
 
 ```json
 {
   "url": "http://webhook.com",
   "method": "POST",
   "encoding": "JSON",
-  "events": ["RECEIVED_MMS"],
+  "events": ["RECEIVED_RCS"],
   "template": "{  \"account_id\": \"$accountId\",  \"reply_id\": \"$replyId\",  \"destination_number\": \"$destinationAddress\",  \"source_number\": \"$sourceAddress\",  \"date_received\": \"$receivedTimestamp\",  \"message_id\": \"$messageId\",  #if ($attachments)  \"attachments\": [   #foreach ($entry in $attachments)    {      \"content_type\": \"$entry.contentType\",      \"content\": \"$entry.base64\",      \"original_name\": \"$entry.originalName\"    }#if( $foreach.hasNext ),#end    #end  ],  #else    #if($format == \"RCS\")    \"contact_message\":$jsonUtils.toJson($contact_message),    \"messageid\":\"$mtId\",    #else    \"content\": \"$esc.json($moContent)\",    #end  #end  \"metadata\": {    #foreach ($entry in $metadata.entrySet())    \"$entry.key\": \"$entry.value\"#if( $foreach.hasNext ),#end    #end  }}"
 }
 ```

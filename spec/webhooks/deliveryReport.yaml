@@ -6,7 +6,7 @@ post:
   description: >-
     Sent to the `url` configured on a webhook subscribed to one or more
     delivery report events (`ENROUTE_DR`, `SUBMITTED_DR`, `DELIVERED_DR`,
-    `EXPIRED_DR`, `REJECTED_DR`, `FAILED_DR`, and, for RCS only, `DR_READ` — see the Create webhook
+    `EXPIRED_DR`, `REJECTED_DR`, `FAILED_DR`, and, for RCS only, `READ_DR` — see the Create webhook
     operation under Webhooks Management). The body shown here is the
     default/example shape produced by the sample `template` on that
     operation; the actual JSON structure is fully controlled by the
@@ -17,7 +17,7 @@ post:
     RCS delivery reports use the same webhook and sample `template`. For RCS
     only, `status` can also be `read`: it is sent after `delivered`, when the
     handset sends a read receipt. An account webhook receives it only if it is
-    subscribed to `DR_READ`; the per-message `callback_url` is not filtered by
+    subscribed to `READ_DR`; the per-message `callback_url` is not filtered by
     event.
 
 
