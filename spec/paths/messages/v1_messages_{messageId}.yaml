@@ -91,7 +91,7 @@ get:
                 format: RCS
                 rich_content:
                   card:
-                    title: Order #1234 shipped
+                    title: 'Order #1234 shipped'
                     description: Estimated delivery
                     height: MEDIUM
                     media:
@@ -113,13 +113,13 @@ get:
                 rich_content:
                   carousel:
                     cards:
-                      - title: Order #1234
+                      - title: 'Order #1234'
                         description: Shipped
                         suggestions:
                           - type: reply
                             text: Track
                             postback_data: TRACK_1234
-                      - title: Order #5678
+                      - title: 'Order #5678'
                         description: Out for delivery
                         suggestions:
                           - type: reply
@@ -139,12 +139,12 @@ get:
                 rich_content:
                   location:
                     coordinates:
-                      latitude: -37.8136
-                      longitude: 144.9631
-                    title: Melbourne CBD store
-                    label: Store entrance
+                      latitude: -33.8688
+                      longitude: 151.2093
+                    title: Sydney office
+                    label: Reception, level 2
                 fallback_message:
-                  content: Find us at Melbourne CBD store
+                  content: Find us at our Sydney office
                 message_id: b2591d8d-2461-45d4-8893-0000361e17e0
                 destination_number: "+61491570156"
                 source_number: MyBrand

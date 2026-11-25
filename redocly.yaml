@@ -36,6 +36,15 @@ openapi:
       url: ./openapi.yaml
     - title: Download OpenAPI (JSON)
       url: ./openapi.json
+  # Expand request/response JSON samples fully by default (ReDoc default is 2,
+  # which collapses message payloads and re-collapses them on every example switch).
+  jsonSampleExpandLevel: all
+  # Expand request/response schemas 3 levels deep by default: every field under
+  # `messages[]` plus one level inside nested objects (e.g. suggestion fields and
+  # the rich_content options). Deeper RCS detail (card/carousel internals) stays
+  # one click away; the JSON samples beside it are fully expanded. `all` made
+  # Send RCS ~2.4x longer (81 fields vs 26).
+  schemaExpansionLevel: 3
   theme:
     colors:
       primary:

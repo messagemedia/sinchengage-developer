@@ -81,6 +81,15 @@ See [`/spec/code_samples/README.md`](spec/code_samples/README.md) for the full c
 
 To smoke-test that samples execute against a real host (matrix or all ops), see [`/local/sample-smoke/README.md`](local/sample-smoke/README.md).
 
+#### Docs-only operations (message types)
+
+The ReDoc page shows four extra operations, **Send SMS**, **Send MMS**, **Send TTS** and **Send RCS**, each with only the fields, examples and cURL sample for that message type. They are all `POST /v1/messages`; they exist **only in the HTML build**. `web_deploy/openapi.yaml|json` and the `llms` files are generated from `.tmp/openapi.injected.yaml` and do not contain them.
+
+- Config: [`spec/doc-variants/message-types.yaml`](spec/doc-variants/message-types.yaml) (not referenced from `openapi.yaml`). Each entry lists `fields`, `required`, `examples` (keys from the `SendMessages` request examples), `responses` and a description.
+- Script: `scripts/add-doc-variants.mjs` reads `.tmp/openapi.injected.yaml` and writes `.tmp/openapi.docs.yaml`, which `build-docs` renders. Internally the paths are `/v1/messages#sms` etc.; `web/llm-actions.js` hides the `#...` suffix on the page.
+- To add a field or example: add the field to `components/schemas/Message.yaml` or the example to `spec/paths/messages/v1_messages.yaml` first, then list it in the config for the types that accept it.
+- The build fails (exit 1, with a message) if the config names a field, example or response that does not exist in the source operation, a required field that is not listed in `fields`, a duplicate `operationId`, or a missing Markdown file.
+
 ### `/web`
 Static assets and the Handlebars HTML template used by `redocly build-docs`.
 

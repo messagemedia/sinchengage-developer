@@ -6,12 +6,19 @@ post:
   description: >-
     Sent to the `url` configured on a webhook subscribed to one or more
     delivery report events (`ENROUTE_DR`, `SUBMITTED_DR`, `DELIVERED_DR`,
-    `EXPIRED_DR`, `REJECTED_DR`, `FAILED_DR` — see the Create webhook
+    `EXPIRED_DR`, `REJECTED_DR`, `FAILED_DR`, and, for RCS only, `READ_DR` — see the Create webhook
     operation under Webhooks Management). The body shown here is the
     default/example shape produced by the sample `template` on that
     operation; the actual JSON structure is fully controlled by the
     `template` you configure, so treat this as a suggested default rather
     than a fixed contract.
+
+
+    RCS delivery reports use the same webhook and sample `template`. For RCS
+    only, `status` can also be `read`: it is sent after `delivered`, when the
+    handset sends a read receipt. An account webhook receives it only if it is
+    subscribed to `READ_DR`; the per-message `callback_url` is not filtered by
+    event.
 
 
     If your account has `API_SECURE_CALLBACKS` enabled with an active
@@ -42,21 +49,39 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/webhooks/payloads/DeliveryReportWebhookPayload.yaml
-        example:
-          delivery_report_id: 01e1fa0a-6e27-4945-9cdb-18644b4de043
-          source_number: '+61491570156'
-          date_received: '2016-11-03T11:49:02.807Z'
-          status: delivered
-          delay: '0'
-          submitted_date: '2016-11-03T11:49:02.807Z'
-          message_id: 877c19ef-fa2e-4cec-827a-e1df9b5509f7
-          original_text: Hello back
-          vendor_account_id:
-            vendor_id: SinchEU
-            account_id: MyAccount001
-          error_code: '220'
-          metadata:
-            myKey: myValue
+        examples:
+          sms:
+            summary: SMS delivered
+            value:
+              delivery_report_id: 01e1fa0a-6e27-4945-9cdb-18644b4de043
+              source_number: '+61491570156'
+              date_received: '2016-11-03T11:49:02.807Z'
+              status: delivered
+              delay: '0'
+              submitted_date: '2016-11-03T11:49:02.807Z'
+              message_id: 877c19ef-fa2e-4cec-827a-e1df9b5509f7
+              original_text: Hello back
+              vendor_account_id:
+                vendor_id: SinchEU
+                account_id: MyAccount001
+              error_code: '220'
+              metadata:
+                myKey: myValue
+          rcsRead:
+            summary: RCS read receipt
+            value:
+              delivery_report_id: 5c0e2f1a-3b7d-4e89-a1c4-7d2b9e6f4a10
+              source_number: '+61491570156'
+              date_received: '2027-03-01T09:20:00.000Z'
+              status: read
+              delay: '0'
+              submitted_date: '2027-03-01T09:20:00.000Z'
+              message_id: 3f2a9c1e-8b47-4d65-9e0a-6c1d5b7f2e84
+              vendor_account_id:
+                vendor_id: SinchEU
+                account_id: MyAccount001
+              metadata:
+                myKey: myValue
   responses:
     "200":
       description: >-

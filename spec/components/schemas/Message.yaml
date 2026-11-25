@@ -16,8 +16,9 @@ properties:
     minLength: 1
     type: string
     description: >-
-      Content of the message. Required for SMS, MMS, TTS, and RCS text. RCS
-      content has a 2,000-character maximum. Omit this field when sending RCS
+      Content of the message. Required for SMS, MMS, TTS, and RCS text. Up to
+      5,000 characters for SMS, MMS and TTS (read aloud for TTS) and up to
+      2,000 characters for RCS. Omit this field when sending RCS
       `rich_content`. Rich content (`rich_content` or `suggestions`) does not
       substitute for this field on an explicit `format: "SMS"` send — such
       requests are rejected with `400`.
@@ -44,7 +45,7 @@ properties:
     type: string
     description: Date time after which the message expires and will not be sent
     format: date-time
-    example: '2016-11-03T11:49:02.807Z'
+    example: '2027-03-01T09:00:00Z'
   metadata:
     type: object
     description: >-
@@ -67,13 +68,15 @@ properties:
     type: string
     description: Scheduled delivery date time of the message
     format: date-time
-    example: '2016-11-03T11:49:02.807Z'
+    example: '2027-03-01T09:00:00Z'
   source_number:
     type: string
     description: >-
-      SMS sender used only when an RCS message falls back to SMS.
-      Accepted but unused when `fallback_message` is omitted.
-    example: '+61491570156'
+      Sender for the message: a number or alpha tag registered to your
+      account. When omitted, your account's default number is used. On an RCS
+      message, it's the sender of the SMS `fallback_message` and isn't used
+      when `fallback_message` is omitted.
+    example: '+61491570157'
   source_number_type:
     $ref: ./SourceNumberType.yaml
   message_id:
@@ -87,15 +90,14 @@ properties:
     items:
       type: string
     description: >-
-      The media is used to specify a list of URLs of the media file(s) that you
-      are trying to send. Supported file formats include png, jpeg and gif.
-      format parameter must be set to MMS for this to work.
+      MMS only. List of publicly reachable URLs of media files. Supported
+      formats are png, jpeg and gif. Requires `format: "MMS"`. Rejected with
+      `400` on SMS, TTS and RCS messages.
     example:
-      - >-
-        https://images.pexels.com/photos/1018350/pexels-photo-1018350.jpeg?cs=srgb&dl=architecture-buildings-city-1018350.jpg
+      - https://cdn.example.com/ticket.png
   subject:
     type: string
     description: >-
-      The subject field is used to denote subject of the MMS message and has a
-      maximum size of 64 characters long
-    example: New Products
+      MMS only. Subject of the message, up to 64 characters. Rejected with
+      `400` on other message types.
+    example: Your ticket

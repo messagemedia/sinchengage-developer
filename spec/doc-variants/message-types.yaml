@@ -1,0 +1,117 @@
+# Docs-only "Send <type>" operations added to the ReDoc HTML build by
+# scripts/add-doc-variants.mjs. Not part of the published OpenAPI spec.
+source:
+  path: /v1/messages
+  method: post
+  schema: Message # components.schemas name for one message item
+# Doc operations are placed (in this order) right before the real path, and
+# /v1/messages itself is then moved to sit right after them, ahead of the
+# other Messages paths.
+insert_before_path: /v1/messages
+operations:
+  - key: sms
+    operationId: SendSMS
+    summary: Send SMS
+    format: SMS # narrows `format` to this one enum value in the doc schema
+    format_required: false
+    markdown: docs/api/messages/sms-messages.md
+    fields: [destination_number, format, content, source_number, source_number_type, callback_url, delivery_report, scheduled, message_expiry_timestamp, metadata]
+    required: [destination_number, content]
+    examples: [sms, smsWithOptions]
+    responses: ['202', '400', '401']
+    description: |
+      A plain text message and the default message type. It is selected by `format: "SMS"`, or by omitting `format` when the message has no `rich_content` or `suggestions`. `content` can be up to 5,000 characters of Unicode text.
+
+      This is `POST /v1/messages`, the same endpoint as [Send messages](#tag/Messages/operation/SendMessages), shown with only the fields SMS accepts.
+
+      Fields not listed here are rejected with `400`.
+
+      ### Limits and errors
+
+      - 400 if `content` is missing, empty or over 5,000 characters.
+      - 400 if a field that SMS does not accept is present.
+      - Up to 100 messages per request. One invalid message rejects the whole request and nothing is sent.
+  - key: mms
+    operationId: SendMMS
+    summary: Send MMS
+    format: MMS
+    format_required: true
+    markdown: docs/api/messages/mms-messages.md
+    fields: [destination_number, format, content, media, subject, source_number, source_number_type, callback_url, delivery_report, scheduled, message_expiry_timestamp, metadata]
+    required: [destination_number, format, content]
+    examples: [mms]
+    responses: ['202', '400', '401']
+    description: |
+      Text with a subject and media attachments (png, jpeg, gif). MMS is selected only by `format: "MMS"`. It is never inferred, so `media` without it is rejected with 400.
+
+      This is `POST /v1/messages`, the same endpoint as [Send messages](#tag/Messages/operation/SendMessages), shown with only the fields MMS accepts.
+
+      Fields not listed here are rejected with `400`.
+
+      ### Limits and errors
+
+      - 400 if `format` is not `MMS` when `media` or `subject` is present.
+      - 400 if `content` is missing, empty or over 5,000 characters.
+      - 400 if a field that MMS does not accept is present.
+      - Up to 100 messages per request. One invalid message rejects the whole request and nothing is sent.
+  - key: tts
+    operationId: SendTTS
+    summary: Send TTS
+    format: TTS
+    format_required: true
+    markdown: docs/api/messages/text-to-speech-messages.md
+    fields: [destination_number, format, content, source_number, source_number_type, callback_url, delivery_report, scheduled, message_expiry_timestamp, metadata]
+    required: [destination_number, format, content]
+    examples: [tts]
+    responses: ['202', '400', '401']
+    description: |
+      Sinch calls `destination_number` and reads `content` aloud with a computer-generated voice. Text-to-speech is selected by `format: "TTS"`. Write `content` as it should be spoken.
+
+      This is `POST /v1/messages`, the same endpoint as [Send messages](#tag/Messages/operation/SendMessages), shown with only the fields TTS accepts.
+
+      Fields not listed here are rejected with `400`.
+
+      ### Limits and errors
+
+      - 400 if `content` is missing, empty or over 5,000 characters.
+      - 400 if a field that TTS does not accept is present.
+      - Write `content` as it should be spoken: numbers and abbreviations are read as written.
+      - Up to 100 messages per request. One invalid message rejects the whole request and nothing is sent.
+  - key: rcs
+    operationId: SendRCS
+    summary: Send RCS
+    format: RCS
+    format_required: false
+    markdown: docs/api/messages/rcs-messages.md
+    fields: [destination_number, format, content, suggestions, rich_content, fallback_message, source_number, source_number_type, callback_url, delivery_report, scheduled, message_expiry_timestamp, metadata]
+    required: [destination_number]
+    examples: [rcsText, rcsSuggestions, rcsMedia, rcsCard, rcsCarousel, rcsLocation, rcsInferred]
+    responses: ['202', '400', '401', '402']
+    description: |
+      Rich messages for RCS-capable handsets. Supported shapes:
+
+      - Text.
+      - Text with suggestions (up to 10 buttons: reply, url, dial, location).
+      - Media.
+      - Rich card.
+      - Carousel (1–10 cards).
+      - Location pin.
+
+      RCS is selected by `format: "RCS"`, or inferred when the message has `rich_content` or `suggestions`. Your account must be enabled for RCS (402 otherwise). `fallback_message` sends an SMS when the recipient can't receive RCS. Without it, the send is RCS-or-nothing and the failure is reported in the delivery report. For how `format` is chosen when it's omitted, see **Channel selection** at the end of [Send messages](#tag/Messages/operation/SendMessages).
+
+      This is `POST /v1/messages`, the same endpoint as [Send messages](#tag/Messages/operation/SendMessages), shown with only the fields RCS accepts.
+
+      Fields not listed here are rejected with `400`: `media` and `subject`. `source_number_type` is accepted but not used. `content` must be omitted when sending `rich_content`.
+
+      ### Limits and errors
+
+      - `content` up to 2,000 characters.
+      - `suggestions` up to 10; text up to 25 characters, URL up to 2,048 characters.
+      - Card `title` up to 200 characters, `description` up to 2,000; up to 4 suggestions per card.
+      - Carousel: 1–10 cards, up to 3 choices.
+      - Location `label` up to 1,000 characters.
+      - Exactly one `rich_content` type per message.
+      - `suggestions` without `content` returns 400.
+      - 402 when the account is not enabled for RCS.
+      - A recipient that isn't RCS-capable is reported in the delivery report, not at request time.
+      - Up to 100 messages per request. One invalid message rejects the whole request and nothing is sent.

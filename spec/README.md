@@ -6,6 +6,8 @@ Edit path and component files under `paths/` and `components/`. The entry docume
 
 For the full layout, edit rules, and build pipeline (`bundle` → inject code samples → ReDoc), see the [root README](../README.md).
 
+The per-type "Send SMS / MMS / TTS / RCS" operations in the ReDoc page are docs-only: they are generated at build time from [`doc-variants/message-types.yaml`](doc-variants/message-types.yaml) by `scripts/add-doc-variants.mjs` and are not part of this OpenAPI tree or the published spec.
+
 ## Path filename conventions
 
 Path files live under `paths/<tag>/` and are named after the URL path with `/` replaced by `_`.

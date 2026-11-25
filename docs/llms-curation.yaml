@@ -52,7 +52,19 @@ sections:
     links:
       - title: Messages
         path: docs/api/messages/index.md
-        description: Send SMS, MMS, TTS, and RCS messages (up to 100 per request), including RCS text with optional tappable suggestions, RCS rich media, RCS rich cards, RCS carousels, RCS location pins, and explicit SMS fallback for RCS; poll status or cancel a scheduled message by ID.
+        description: Send SMS, MMS, TTS, and RCS messages (up to 100 per request) with POST /v1/messages; per-type pages cover fields, examples, and limits; poll status or cancel a scheduled message by ID.
+      - title: SMS messages
+        path: docs/api/messages/sms-messages.md
+        description: SMS fields, minimal request, delivery options, and limits.
+      - title: MMS messages
+        path: docs/api/messages/mms-messages.md
+        description: MMS fields (media, subject), minimal request, and limits.
+      - title: Text-to-speech messages
+        path: docs/api/messages/text-to-speech-messages.md
+        description: TTS fields, minimal request, and limits.
+      - title: RCS messages
+        path: docs/api/messages/rcs-messages.md
+        description: RCS text, suggestions, media, cards, carousels, location pins, SMS fallback, and channel selection (T1-T8).
       - title: Delivery Reports
         path: docs/api/delivery-reports/index.md
         description: Poll or receive webhooks for message delivery status changes as a message is processed toward a handset. The callback URL webhook for a v1 RCS message includes the content, suggestions, and rich_content from the send.
@@ -105,13 +117,12 @@ sections:
       `format: "RCS"`, sending both `content` and `rich_content` is rejected
       with 400. `fallback_message` never selects the channel and does not
       satisfy `content`. With explicit `format: "SMS"`, `fallback_message` is
-      rejected with 400. `rich_link` is not rich content and never triggers RCS
-      inference. Request-time errors are 400 for T4–T6 and T8, and 402 Payment
+      rejected with 400. Request-time errors are 400 for T4–T6 and T8, and 402 Payment
       Required when the message is sent as RCS (explicit or inferred) and the
       account isn't enabled for RCS. Delivery failures (recipient not
       RCS-capable) are reported in the delivery report, not as request-time
       errors. Full truth table (T1–T8) and worked examples are in
-      the Send messages endpoint page.
+      the Send messages page (also repeated on the RCS messages page).
 
   - title: Code Samples
     note: >-

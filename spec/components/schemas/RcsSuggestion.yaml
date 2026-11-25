@@ -47,4 +47,4 @@ properties:
     type: string
     maxLength: 1000
     description: Optional label for a `location` suggestion.
-    example: Melbourne CBD
+    example: Sydney office

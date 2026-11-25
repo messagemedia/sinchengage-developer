@@ -176,6 +176,9 @@ post:
       + `OPT_OUT_SMS` Opt-out occurred
     + **MMS**
       + `RECEIVED_MMS` Receive an MMS
+    + **RCS**
+      + `RECEIVED_RCS` Receive an RCS reply: text, media, location or a
+      suggestion tap
     + **DR (Delivery Reports)**
       + `ENROUTE_DR` Message is enroute
       + `EXPIRED_DR` Message has expired
@@ -183,6 +186,7 @@ post:
       + `FAILED_DR` Message has failed
       + `DELIVERED_DR` Message is delivered
       + `SUBMITTED_DR` Message is submitted
+      + `READ_DR` Message has been read (RCS only; follows `DELIVERED_DR`)
 
     #### Template Parameters
 
@@ -247,6 +251,8 @@ post:
     $jsonUtils.toJson($rcsRichContent) *- when used in a JSON template*|
     `{"card":{"title":"Hello"}}` | `DR` |
 
+    | **RCS reply**| $contact_message, $jsonUtils.toJson($contact_message) *- RCS reply, as a JSON object; embed with `$jsonUtils.toJson($contact_message)`*| `{"text_message":{"text":"Yes please"}}` | `MO` |
+
     | **Reply Content**| $moContent, $replyContent, $esc.json($!moContent) *-
     when used in `JSON` encoded `template`*| `Hello Derpina` | `MO` `MO MMS` |
 
@@ -290,6 +296,26 @@ post:
     ```
 
 
+    ##### MO RCS
+
+
+    Subscribe to `RECEIVED_RCS` and use the RCS branch of the reply
+    template.
+
+
+    ```
+
+    {
+      "url": "http://webhook.com",
+      "method": "POST",
+      "encoding": "JSON",
+      "events": ["RECEIVED_RCS"],
+      "template": "{  \"account_id\": \"$accountId\",  \"reply_id\": \"$replyId\",  \"destination_number\": \"$destinationAddress\",  \"source_number\": \"$sourceAddress\",  \"date_received\": \"$receivedTimestamp\",  \"message_id\": \"$messageId\",  #if ($attachments)  \"attachments\": [   #foreach ($entry in $attachments)    {      \"content_type\": \"$entry.contentType\",      \"content\": \"$entry.base64\",      \"original_name\": \"$entry.originalName\"    }#if( $foreach.hasNext ),#end    #end  ],  #else    #if($format == \"RCS\")    \"contact_message\":$jsonUtils.toJson($contact_message),    \"messageid\":\"$mtId\",    #else    \"content\": \"$esc.json($moContent)\",    #end  #end  \"metadata\": {    #foreach ($entry in $metadata.entrySet())    \"$entry.key\": \"$entry.value\"#if( $foreach.hasNext ),#end    #end  }}"
+    }
+
+    ```
+
+
     ##### DR (Delivery Report)
 
 
@@ -318,6 +344,8 @@ post:
 
     * `delivered`: Message delivery has been confirmed by the provider,
     including to the handset (where possible).
+
+    * `read`: RCS only. The handset sent a read receipt, after `delivered`.
 
     * `expired`: The message has expired.
 

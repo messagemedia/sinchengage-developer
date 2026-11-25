@@ -145,15 +145,15 @@ For an RCS message, the response includes the RCS fields that were sent: `rich_c
     "rich_content": {
         "location": {
             "coordinates": {
-                "latitude": -37.8136,
-                "longitude": 144.9631
+                "latitude": -33.8688,
+                "longitude": 151.2093
             },
-            "title": "Melbourne CBD store",
-            "label": "Store entrance"
+            "title": "Sydney office",
+            "label": "Reception, level 2"
         }
     },
     "fallback_message": {
-        "content": "Find us at Melbourne CBD store"
+        "content": "Find us at our Sydney office"
     },
     "message_id": "b2591d8d-2461-45d4-8893-0000361e17e0",
     "destination_number": "+61491570156",

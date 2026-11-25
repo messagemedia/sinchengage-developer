@@ -2,7 +2,7 @@ title: DeliveryReportWebhookPayload
 type: object
 description: >-
   Default/example payload for a delivery report webhook (`ENROUTE_DR`,
-  `SUBMITTED_DR`, `DELIVERED_DR`, `EXPIRED_DR`, `REJECTED_DR`, `FAILED_DR`),
+  `SUBMITTED_DR`, `DELIVERED_DR`, `EXPIRED_DR`, `REJECTED_DR`, `FAILED_DR`, and, for RCS only, `READ_DR`),
   built from the sample `template` shown on the Create webhook operation. The
   actual JSON structure sent to your `url` is fully controlled by the
   `template` you configure — this describes the payload produced by that
