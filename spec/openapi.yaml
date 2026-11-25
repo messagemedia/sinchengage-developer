@@ -924,6 +924,8 @@ webhooks:
     $ref: webhooks/smsReceived.yaml
   mmsReceived:
     $ref: webhooks/mmsReceived.yaml
+  rcsReceived:
+    $ref: webhooks/rcsReceived.yaml
   optOut:
     $ref: webhooks/optOut.yaml
 paths:

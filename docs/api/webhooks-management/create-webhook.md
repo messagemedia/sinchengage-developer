@@ -51,6 +51,7 @@ A webhook will be triggered when any one or more of the events occur:
   + `FAILED_DR` Message has failed
   + `DELIVERED_DR` Message is delivered
   + `SUBMITTED_DR` Message is submitted
+  + `DR_READ` Message has been read (RCS only; follows `DELIVERED_DR`)
 
 #### Template Parameters
 
@@ -76,12 +77,29 @@ Keep in mind, if you've chosen JSON as the format, you must escape the JSON in t
 | RCS content | `$rcsContent`, `$jsonUtils.toJson($rcsContent)` *- when used in a JSON template* | `Hello world!` | DR |
 | RCS suggestions | `$rcsSuggestions`, `$jsonUtils.toJson($rcsSuggestions)` *- when used in a JSON template* | `[{"type":"reply","text":"Yes"}]` | DR |
 | RCS rich content | `$rcsRichContent`, `$jsonUtils.toJson($rcsRichContent)` *- when used in a JSON template* | `{"card":{"title":"Hello"}}` | DR |
+| RCS reply | `$contact_message`, `$jsonUtils.toJson($contact_message)` *- RCS reply, as a JSON object; embed with `$jsonUtils.toJson($contact_message)`* | `{"text_message":{"text":"Yes please"}}` | MO |
 | Reply Content | `$moContent`, `$replyContent`, `$esc.json($!moContent)` *- when used in `JSON` encoded `template`* | `Hello Derpina` | MO, MO MMS |
 | Retry Count | `$retryCount` | `1` | DR, MO, MO MMS |
 | Billing Unit | `$billingUnits` | `1` | DR |
 | Attachments | `$attachments` | See spec for JSON template example | MO MMS |
 
 `$rcsContent`, `$rcsSuggestions`, and `$rcsRichContent` are set for a v1 RCS delivery report. On an SMS delivery of that RCS message they may also be set; do not rely on them there. They are absent for SMS, MMS, and TTS. Guard each with `#if` and embed it with `$jsonUtils.toJson(...)`. The examples show that output. It is already a JSON value, so do not wrap it in quotes. A bare `$rcsSuggestions` or `$rcsRichContent` is not JSON. The example template above does not include them. The webhook posted to a message's callback URL includes `content`, `suggestions`, and `rich_content` for that RCS message. See [Delivery Reports](../delivery-reports/index.md).
+
+#### Example Webhook Request with Templates
+
+##### MO RCS
+
+Use the RCS branch in the template of the webhook that receives your replies.
+
+```json
+{
+  "url": "http://webhook.com",
+  "method": "POST",
+  "encoding": "JSON",
+  "events": ["RECEIVED_MMS"],
+  "template": "{  \"account_id\": \"$accountId\",  \"reply_id\": \"$replyId\",  \"destination_number\": \"$destinationAddress\",  \"source_number\": \"$sourceAddress\",  \"date_received\": \"$receivedTimestamp\",  \"message_id\": \"$messageId\",  #if ($attachments)  \"attachments\": [   #foreach ($entry in $attachments)    {      \"content_type\": \"$entry.contentType\",      \"content\": \"$entry.base64\",      \"original_name\": \"$entry.originalName\"    }#if( $foreach.hasNext ),#end    #end  ],  #else    #if($format == \"RCS\")    \"contact_message\":$jsonUtils.toJson($contact_message),    \"messageid\":\"$mtId\",    #else    \"content\": \"$esc.json($moContent)\",    #end  #end  \"metadata\": {    #foreach ($entry in $metadata.entrySet())    \"$entry.key\": \"$entry.value\"#if( $foreach.hasNext ),#end    #end  }}"
+}
+```
 
 #### Message Statuses
 
@@ -90,6 +108,7 @@ Delivery Reports indicate message status. A message can have one of the followin
 * `enroute`: Message has been received by the gateway and is being processed (or waiting to be processed).
 * `submitted`: Message has been submitted to a provider/carrier for delivery.
 * `delivered`: Message delivery has been confirmed by the provider, including to the handset (where possible).
+* `read`: RCS only. The handset sent a read receipt, after `delivered`.
 * `expired`: The message has expired.
 * `rejected`: The message will not be delivered - permanent failure. Reasons may include usage limit exceeded, insufficient credit, number blocked, or content filtered
 * `failed`: The message has failed. Reasons may include no active routes to destination or undeliverable by downstream provider.

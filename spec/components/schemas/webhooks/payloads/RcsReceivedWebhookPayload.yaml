@@ -1,0 +1,124 @@
+title: RcsReceivedWebhookPayload
+type: object
+description: >-
+  Default/example payload for an inbound RCS reply webhook, built from the RCS
+  branch of the sample reply `template` shown on the Create webhook operation.
+  It carries `contact_message` and `messageid` in place of `content`. The
+  actual JSON structure sent to your `url` is fully controlled by the
+  `template` you configure — this describes the payload produced by that
+  sample template, not a fixed contract.
+properties:
+  account_id:
+    type: string
+    description: >-
+      The account that received the reply. Template variable `$accountId`.
+    example: DeveloperPortal7000
+  reply_id:
+    type: string
+    description: Unique ID of this reply. Template variable `$replyId`.
+    format: uuid
+    example: a175e797-2b54-468b-9850-41a3eab32f74
+  destination_number:
+    maxLength: 15
+    minLength: 1
+    type: string
+    description: >-
+      Address from which this reply was sent to. Template variable
+      `$destinationAddress`.
+    example: '+61491593156'
+  source_number:
+    maxLength: 15
+    minLength: 1
+    type: string
+    description: >-
+      Address from which this reply was received from. Template variable
+      `$sourceAddress`.
+    example: '+61491570156'
+  date_received:
+    type: string
+    description: >-
+      Date time when the reply was received. Template variable
+      `$receivedTimestamp`.
+    format: date-time
+    example: '2016-12-07T08:44:00.850Z'
+  message_id:
+    type: string
+    description: Unique ID of the original message. Template variable `$messageId`.
+    format: uuid
+    example: 877c19ef-fa2e-4cec-827a-e1df9b5509f7
+  messageid:
+    type: string
+    description: >-
+      ID of the message being replied to. Use it to correlate the reply.
+      Template variable `$mtId`.
+    format: uuid
+    example: 877c19ef-fa2e-4cec-827a-e1df9b5509f7
+  contact_message:
+    type: object
+    description: >-
+      The reply, as a JSON object. Exactly one of the properties below is
+      present. Template variable `$contact_message`.
+    properties:
+      text_message:
+        type: object
+        description: A free-text reply.
+        properties:
+          text:
+            type: string
+            description: Text of the reply.
+            example: Yes please
+      media_message:
+        type: object
+        description: A media reply.
+        properties:
+          url:
+            type: string
+            description: URL of the media the customer sent.
+            example: https://cdn.example.com/inbound/photo.jpg
+      location_message:
+        type: object
+        description: A location reply.
+        properties:
+          coordinates:
+            type: object
+            description: Coordinates of the location.
+            properties:
+              latitude:
+                type: number
+                description: Latitude in decimal degrees.
+                example: -33.8688
+              longitude:
+                type: number
+                description: Longitude in decimal degrees.
+                example: 151.2093
+          title:
+            type: string
+            description: Title of the location.
+            example: Location
+          label:
+            type: string
+            description: Label of the location. May be empty.
+            example: ''
+      choice_response_message:
+        type: object
+        description: A tap on a suggestion. Webhook only.
+        properties:
+          message_id:
+            type: string
+            description: >-
+              Internal Sinch message identifier. It is not the API
+              `message_id`; use `messageid` to correlate.
+            example: 01M76KTMPGXDPV1VJZF10Q8BVH
+          postback_data:
+            type: string
+            description: >-
+              Value set on the tapped suggestion. Present when the suggestion
+              had one.
+            example: TRACK_1234
+  metadata:
+    type: object
+    additionalProperties:
+      type: string
+    description: >-
+      Any metadata that was included in the original submit message request.
+      Template variable `$metadata`. Keys and values are both strings.
